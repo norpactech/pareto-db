@@ -24,7 +24,8 @@ create table pareto.ref_tables (
 alter table pareto.ref_tables
   add primary key (id);
 
-create unique index ref_tables_alt_key on pareto.ref_tables(id_tenant, id_ref_table_type, lower(name));
+create unique index ref_tables_alt_key 
+    on pareto.ref_tables(id_tenant, id_ref_table_type, lower(name));
 
 alter table pareto.ref_tables
   add constraint ref_tables_ref_table_type
