@@ -66,18 +66,7 @@ begin
   -- ----------------------------------
   -- Delete
   -- ----------------------------------
-  call pareto.d_alt_tenant(c_name, c_username, v_response);
-  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
-  assert v_response.success = true, 'Test failed: d_alt_tenant was not successful. See logs for details.';
-  
-  -- ----------------------------------
-  -- Delete (by id)
-  -- ----------------------------------
-  call pareto.i_tenant(c_name, c_description, c_copyright, 'Scott1', v_response);
-  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
-  assert v_response.success = true, 'Test failed: i_tenant was not successful. See logs for details.';
-
-  call pareto.d_pri_tenant(v_response.id, c_username, v_response);
+  call pareto.d_tenant(v_response.id, c_username, v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   assert v_response.success = true, 'Test failed: d_alt_tenant was not successful. See logs for details.';
 
@@ -87,4 +76,4 @@ end;
 $$;
 
 call pareto.t_tenant();
-drop procedure if exists pareto.t_tenant;
+-- drop procedure if exists pareto.t_tenant;
