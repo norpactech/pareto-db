@@ -20,6 +20,8 @@ declare
   
 begin
 
+  raise notice 'Test tenant Persist Beginning';
+
   -- ----------------------------------
   -- Clean if necessary
   -- ----------------------------------
@@ -78,6 +80,8 @@ begin
   call pareto.d_pri_tenant(v_response.id, c_username, v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   assert v_response.success = true, 'Test failed: d_alt_tenant was not successful. See logs for details.';
+
+  raise notice 'Test tenant Persist Completed';
 
 end;
 $$;

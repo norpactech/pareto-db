@@ -23,3 +23,4 @@ rem Create Stored Procedures
 psql -d norpac -h %host% -p 5432 -f "..\logs\s_logs.sql"
 psql -d norpac -h %host% -p 5432 -f "..\tenant\s_tenant.sql"
 psql -d norpac -h %host% -p 5432 -f "..\ref_table_type\s_ref_table_type.sql"
+psql -d norpac -h %host% -p 5432 -f "..\ref_tables\s_ref_tables.sql"

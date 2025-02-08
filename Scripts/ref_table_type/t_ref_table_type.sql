@@ -21,6 +21,8 @@ declare
   
 begin
 
+  raise notice 'Test ref_table_type Persist Beginning';
+
   -- ----------------------------------
   -- Clean if necessary
   -- ----------------------------------
@@ -65,20 +67,11 @@ begin
   -- ----------------------------------
   -- Delete
   -- ----------------------------------
-  call pareto.d_alt_ref_table_type(c_name, c_username, v_response);
+  call pareto.d_ref_table_type(v_response.id, c_username, v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   assert v_response.success = true, 'Test failed: d_alt_ref_table_type was not successful. See logs for details.';
-  
-  -- ----------------------------------
-  -- Delete (by id)
-  -- ----------------------------------
-  call pareto.i_ref_table_type(c_name, c_description, v_is_global, 'Scott1', v_response);
-  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
-  assert v_response.success = true, 'Test failed: i_ref_table_type was not successful. See logs for details.';
 
-  call pareto.d_pri_ref_table_type(v_response.id, c_username, v_response);
-  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
-  assert v_response.success = true, 'Test failed: d_alt_ref_table_type was not successful. See logs for details.';
+  raise notice 'Test ref_table_type Persist Completed';
 
 end;
 $$;

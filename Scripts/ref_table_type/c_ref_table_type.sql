@@ -20,7 +20,7 @@ create table pareto.ref_table_type (
 alter table pareto.ref_table_type
   add primary key (id);
 
-create unique index ref_table_type_alt_key on pareto.tenant(lower(name));
+create unique index ref_table_type_alt_key on pareto.ref_table_type(lower(name));
 
 create trigger ref_table_type_update_at
   before update on pareto.ref_table_type

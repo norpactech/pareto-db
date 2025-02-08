@@ -97,6 +97,7 @@ declare
 begin
 
   v_metadata := jsonb_build_object(
+    'id'         , in_id,
     'name'       , in_name,
     'description', in_description,
     'is_global'  , in_is_global
@@ -138,7 +139,7 @@ $$;
 -- Delete by Primary Key
 -- ----------------------------------------------------------------------------
 
-create procedure pareto.d_pri_ref_table_type(
+create procedure pareto.d_ref_table_type(
   in in_id          uuid,
   in in_deleted_by  varchar,
   out response      pareto.response
@@ -147,7 +148,7 @@ language plpgsql
 as $$
 declare
  
-  c_service_name constant varchar := 'pareto.d_pri_ref_table_type';
+  c_service_name constant varchar := 'pareto.d_ref_table_type';
   v_metadata   jsonb;
   
 begin
@@ -181,56 +182,6 @@ exception
     response.message := 'Exception: ' || sqlerrm;
     call pareto.i_logs('ERROR', response.message, c_service_name, in_deleted_by, v_metadata);
   
-end;
-$$;
-
--- ----------------------------------------------------------------------------
--- Delete by Alternate Key
--- ----------------------------------------------------------------------------
-
-create procedure pareto.d_alt_ref_table_type(
-  in in_name        varchar,
-  in in_deleted_by  varchar,
-  out response      pareto.response
-)
-language plpgsql
-as $$
-declare
- 
-  c_service_name constant varchar := 'pareto.d_alt_ref_table_type';
-  v_metadata   jsonb;
-  
-begin
-
-  v_metadata := jsonb_build_object(
-    'name', in_name
-  );
-
-  delete from pareto.ref_table_type 
-   where name = in_name;
-
-  if not found then
-    response.success := false;
-    response.id := null;
-    response.updated := null;
-    response.message := 'Error: Reference Table does not exist for Alternate Key: ' || in_name;
-    call pareto.i_logs('ERROR', response.message, c_service_name, in_deleted_by, v_metadata);
-  else
-    response.success := true;
-    response.id := null;
-    response.updated := null;
-    response.message := 'Delete Successful';
-    call pareto.i_logs('INFO', response.message, c_service_name, in_deleted_by, v_metadata);
-  end if;
-
-exception
-  when others then
-    response.success := false;
-    response.id := null;
-    response.updated := null;
-    response.message := 'Exception: ' || sqlerrm;
-    call pareto.i_logs('ERROR', response.message, c_service_name, in_deleted_by, v_metadata);
-	
 end;
 $$;
 
