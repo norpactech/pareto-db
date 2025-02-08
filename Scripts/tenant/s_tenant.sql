@@ -4,6 +4,13 @@
 -- See LICENSE file in the project root for full license information.
 -- ----------------------------------------------------------------------------
 
+drop procedure if exists pareto.i_tenant;
+drop procedure if exists pareto.u_tenant;
+drop procedure if exists pareto.d_pri_tenant;
+drop procedure if exists pareto.d_alt_tenant;
+drop procedure if exists pareto.inact_tenant;
+drop procedure if exists pareto.react_tenant;
+
 create procedure pareto.i_tenant(
   in in_name        varchar,
   in in_description text,
@@ -127,10 +134,60 @@ end;
 $$;
 
 -- ----------------------------------------------------------------------------
--- Delete by Alt Key
+-- Delete by Primary Key
 -- ----------------------------------------------------------------------------
 
-create procedure pareto.d_tenant_by_alt_key(
+create procedure pareto.d_pri_tenant(
+  in in_id          uuid,
+  in in_deleted_by  varchar,
+  out response      pareto.response
+)
+language plpgsql
+as $$
+declare
+ 
+  c_service_name constant varchar := 'pareto.d_pri_tenant';
+  v_metadata   jsonb;
+  
+begin
+
+  v_metadata := jsonb_build_object(
+    'id', in_id
+  );
+
+  delete from pareto.tenant 
+   where id = in_id;
+
+  if not found then
+    response.success := false;
+    response.id := null;
+    response.updated := null;
+    response.message := 'Error: Tenant does not exist for Primary Key: ' || in_id;
+    call pareto.i_logs('ERROR', response.message, c_service_name, in_deleted_by, v_metadata);
+  else
+    response.success := true;
+    response.id := null;
+    response.updated := null;
+    response.message := 'Delete successful';
+    call pareto.i_logs('INFO', response.message, c_service_name, in_deleted_by, v_metadata);
+  end if;
+
+exception
+  when others then
+    response.success := false;
+    response.id := null;
+    response.updated := null;
+    response.message := 'An unexpected error occurred: ' || sqlerrm;
+    call pareto.i_logs('ERROR', response.message, c_service_name, in_deleted_by, v_metadata);
+  
+end;
+$$;
+
+-- ----------------------------------------------------------------------------
+-- Delete by Alternate Key
+-- ----------------------------------------------------------------------------
+
+create procedure pareto.d_alt_tenant(
   in in_name        varchar,
   in in_deleted_by  varchar,
   out response      pareto.response
@@ -139,7 +196,7 @@ language plpgsql
 as $$
 declare
  
-  c_service_name constant varchar := 'pareto.d_tenant';
+  c_service_name constant varchar := 'pareto.d_alt_tenant';
   v_metadata   jsonb;
   
 begin
@@ -155,7 +212,7 @@ begin
     response.success := false;
     response.id := null;
     response.updated := null;
-    response.message := 'Error: Tenant does not exist for alternate key: ' || in_name;
+    response.message := 'Error: Tenant does not exist for Alternate Key: ' || in_name;
     call pareto.i_logs('ERROR', response.message, c_service_name, in_deleted_by, v_metadata);
   else
     response.success := true;
@@ -176,4 +233,98 @@ exception
 end;
 $$;
 
+-- ----------------------------------------------------------------------------
+-- Set to inactive status
+-- ----------------------------------------------------------------------------
 
+create procedure pareto.inact_tenant(
+  in in_id          uuid,
+  out response      pareto.response
+)
+language plpgsql
+as $$
+declare
+ 
+  c_service_name constant varchar := 'pareto.inact_tenant';
+  v_metadata   jsonb;
+
+begin
+
+  v_metadata := jsonb_build_object(
+    'id', in_id
+  );
+
+  update pareto.tenant set active = false
+   where id = in_id;
+
+  if not found then
+    response.success := false;
+    response.id := null;
+    response.updated := null;
+    response.message := 'Error: Tenant does not exist for id: ' || in_id;
+    call pareto.i_logs('ERROR', response.message, c_service_name, in_deleted_by, v_metadata);
+  else
+    response.success := true;
+    response.id := null;
+    response.updated := null;
+    response.message := 'Record set to Inactive Status';
+  end if;
+
+exception
+  when others then
+    response.success := false;
+    response.id := null;
+    response.updated := null;
+    response.message := 'An unexpected error occurred: ' || sqlerrm;
+    call pareto.i_logs('ERROR', response.message, c_service_name, in_deleted_by, v_metadata);
+  
+end;
+$$;
+
+-- ----------------------------------------------------------------------------
+-- Set to active status
+-- ----------------------------------------------------------------------------
+
+create procedure pareto.react_tenant(
+  in in_id          uuid,
+  out response      pareto.response
+)
+language plpgsql
+as $$
+declare
+ 
+  c_service_name constant varchar := 'pareto.react_tenant';
+  v_metadata   jsonb;
+
+begin
+
+  v_metadata := jsonb_build_object(
+    'id', in_id
+  );
+
+  update pareto.tenant set active = true
+   where id = in_id;
+
+  if not found then
+    response.success := false;
+    response.id := null;
+    response.updated := null;
+    response.message := 'Error: Tenant does not exist for id: ' || in_id;
+    call pareto.i_logs('ERROR', response.message, c_service_name, in_deleted_by, v_metadata);
+  else
+    response.success := true;
+    response.id := null;
+    response.updated := null;
+    response.message := 'Record set to Active Status';
+  end if;
+
+exception
+  when others then
+    response.success := false;
+    response.id := null;
+    response.updated := null;
+    response.message := 'An unexpected error occurred: ' || sqlerrm;
+    call pareto.i_logs('ERROR', response.message, c_service_name, in_deleted_by, v_metadata);
+  
+end;
+$$;
