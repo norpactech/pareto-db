@@ -4,25 +4,51 @@
 -- See LICENSE file in the project root for full license information.
 -- ----------------------------------------------------------------------------
 
-drop procedure if exists pareto.i_tenant;
-drop procedure if exists pareto.u_tenant;
-drop procedure if exists pareto.d_pri_tenant;
-drop procedure if exists pareto.d_alt_tenant;
-drop procedure if exists pareto.deact_tenant;
-drop procedure if exists pareto.react_tenant;
+drop procedure if exists pareto.i_ref_tables;
+drop procedure if exists pareto.u_ref_tables;
+drop procedure if exists pareto.d_pri_ref_tables;
+drop procedure if exists pareto.d_alt_ref_tables;
+drop procedure if exists pareto.deact_ref_tables;
+drop procedure if exists pareto.react_ref_tables;
 
-create procedure pareto.i_tenant(
+create procedure pareto.i_ref_tables(
   in in_name        varchar,
   in in_description text,
   in in_copyright   varchar,
+  
+  id_tenant             uuid        not null,
+  id_ref_table_type     uuid        not null,
+  name                  varchar(50) not null,
+  value                 text        not null,
+  sort_seq              int         not null  default 0,
+  description           text,
+  created_at            timestamptz not null  default current_timestamp,
+  created_by            varchar(50) not null,
+  updated_at            timestamptz not null  default current_timestamp,
+  updated_by            varchar(50) not null,
+  is_active             boolean     not null  default true
+  
+  
+  
+  
+  
+  
+  
+  
   in in_created_by  varchar,
+  
+  
+  
+  
+  
+  
   out response      pareto.response
 )
 language plpgsql
 as $$
 declare
  
-  c_service_name constant varchar := 'pareto.i_tenant';
+  c_service_name constant varchar := 'pareto.i_ref_tables';
   v_id uuid;
   v_updated_at timestamp;
   v_metadata   jsonb;
@@ -35,7 +61,7 @@ begin
     'copyright'  , in_copyright
   );
 
-  insert into pareto.tenant (
+  insert into pareto.ref_tables (
     name,
     description,
     copyright,
@@ -50,7 +76,6 @@ begin
 	in_created_by
   )
   returning id, updated_at into v_id, v_updated_at;
-
   response.success := true;
   response.id := v_id;
   response.updated := v_updated_at;
@@ -61,7 +86,7 @@ exception
     response.success := false;
     response.id := null;
     response.updated := null;
-    response.message := 'Error: Tenant Already Exists';
+    response.message := 'Error: ref_tables already exists.';
     call pareto.i_logs('ERROR', response.message, c_service_name, in_created_by, v_metadata);
 	
   when others then
@@ -78,7 +103,7 @@ $$;
 -- Update
 -- ----------------------------------------------------------------------------
 
-create procedure pareto.u_tenant(
+create procedure pareto.u_ref_tables(
   in in_id          uuid,
   in in_name        varchar,
   in in_description text,
@@ -90,7 +115,7 @@ language plpgsql
 as $$
 declare
  
-  c_service_name constant varchar := 'pareto.u_tenant';
+  c_service_name constant varchar := 'pareto.u_ref_tables';
   v_updated_at timestamp;
   v_metadata   jsonb;
   
@@ -102,7 +127,7 @@ begin
     'copyright'  , in_copyright
   );
 
-  update pareto.tenant set 
+  update pareto.ref_tables set 
     name = in_name,
     description = in_description,
     copyright = in_copyright,
@@ -114,7 +139,7 @@ begin
     response.success := false;
     response.id := null;
     response.updated := null;
-    response.message := 'Error: Tenant not Found for Primary Key: ' || in_uuid;
+    response.message := 'Error: ref_tables does not exist for primary key: ' || in_uuid;
     call pareto.i_logs('ERROR', response.message, c_service_name, in_updated_by, v_metadata);
   else
     response.success := true;
@@ -138,7 +163,7 @@ $$;
 -- Delete by Primary Key
 -- ----------------------------------------------------------------------------
 
-create procedure pareto.d_pri_tenant(
+create procedure pareto.d_pri_ref_tables(
   in in_id          uuid,
   in in_deleted_by  varchar,
   out response      pareto.response
@@ -147,7 +172,7 @@ language plpgsql
 as $$
 declare
  
-  c_service_name constant varchar := 'pareto.d_pri_tenant';
+  c_service_name constant varchar := 'pareto.d_pri_ref_tables';
   v_metadata   jsonb;
   
 begin
@@ -156,14 +181,14 @@ begin
     'id', in_id
   );
 
-  delete from pareto.tenant 
+  delete from pareto.ref_tables 
    where id = in_id;
 
   if not found then
     response.success := false;
     response.id := null;
     response.updated := null;
-    response.message := 'Error: Tenant does not exist for Primary Key: ' || in_id;
+    response.message := 'Error: ref_tables does not exist for Primary Key: ' || in_id;
     call pareto.i_logs('ERROR', response.message, c_service_name, in_deleted_by, v_metadata);
   else
     response.success := true;
@@ -188,7 +213,7 @@ $$;
 -- Delete by Alternate Key
 -- ----------------------------------------------------------------------------
 
-create procedure pareto.d_alt_tenant(
+create procedure pareto.d_alt_ref_tables(
   in in_name        varchar,
   in in_deleted_by  varchar,
   out response      pareto.response
@@ -197,7 +222,7 @@ language plpgsql
 as $$
 declare
  
-  c_service_name constant varchar := 'pareto.d_alt_tenant';
+  c_service_name constant varchar := 'pareto.d_alt_ref_tables';
   v_metadata   jsonb;
   
 begin
@@ -206,14 +231,14 @@ begin
     'name', in_name
   );
 
-  delete from pareto.tenant 
+  delete from pareto.ref_tables 
    where name = in_name;
 
   if not found then
     response.success := false;
     response.id := null;
     response.updated := null;
-    response.message := 'Error: Tenant does not Exist for Alternate Key: ' || in_name;
+    response.message := 'Error: ref_tables does not exist for Alternate Key: ' || in_name;
     call pareto.i_logs('ERROR', response.message, c_service_name, in_deleted_by, v_metadata);
   else
     response.success := true;
@@ -238,7 +263,7 @@ $$;
 -- Set to Deactivate Status (hide)
 -- ----------------------------------------------------------------------------
 
-create procedure pareto.deact_tenant(
+create procedure pareto.deact_ref_tables(
   in in_id          uuid,
   in in_deact_by    varchar,
   out response      pareto.response
@@ -247,7 +272,7 @@ language plpgsql
 as $$
 declare
  
-  c_service_name constant varchar := 'pareto.deact_tenant';
+  c_service_name constant varchar := 'pareto.deact_ref_tables';
   v_metadata   jsonb;
   v_updated_at timestamp;
 
@@ -257,7 +282,7 @@ begin
     'id', in_id
   );
 
-  update pareto.tenant set is_active = false
+  update pareto.ref_tables set is_active = false
    where id = in_id
   returning updated_at into v_updated_at;
 
@@ -265,7 +290,7 @@ begin
     response.success := false;
     response.id := null;
     response.updated := null;
-    response.message := 'Error: Tenant does not exist for id: ' || in_id;
+    response.message := 'Error: ref_tables does not exist for id: ' || in_id;
     call pareto.i_logs('ERROR', response.message, c_service_name, in_deact_by, v_metadata);
   else
     response.success := true;
@@ -289,7 +314,7 @@ $$;
 -- Set to Active Status
 -- ----------------------------------------------------------------------------
 
-create procedure pareto.react_tenant(
+create procedure pareto.react_ref_tables(
   in in_id          uuid,
   in in_react_by    varchar,  
   out response      pareto.response
@@ -298,7 +323,7 @@ language plpgsql
 as $$
 declare
  
-  c_service_name constant varchar := 'pareto.react_tenant';
+  c_service_name constant varchar := 'pareto.react_ref_tables';
   v_metadata   jsonb;
   v_updated_at timestamp;
 
@@ -308,7 +333,7 @@ begin
     'id', in_id
   );
 
-  update pareto.tenant set is_active = true
+  update pareto.ref_tables set is_active = true
    where id = in_id
   returning updated_at into v_updated_at;
 
@@ -316,7 +341,7 @@ begin
     response.success := false;
     response.id := null;
     response.updated := null;
-    response.message := 'Error: Tenant does not exist for id: ' || in_id;
+    response.message := 'Error: ref_tables does not exist for id: ' || in_id;
     call pareto.i_logs('ERROR', response.message, c_service_name, in_react_by, v_metadata);
   else
     response.success := true;

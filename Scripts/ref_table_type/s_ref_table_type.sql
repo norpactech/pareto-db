@@ -4,17 +4,17 @@
 -- See LICENSE file in the project root for full license information.
 -- ----------------------------------------------------------------------------
 
-drop procedure if exists pareto.i_tenant;
-drop procedure if exists pareto.u_tenant;
-drop procedure if exists pareto.d_pri_tenant;
-drop procedure if exists pareto.d_alt_tenant;
-drop procedure if exists pareto.deact_tenant;
-drop procedure if exists pareto.react_tenant;
+drop procedure if exists pareto.i_ref_table_type;
+drop procedure if exists pareto.u_ref_table_type;
+drop procedure if exists pareto.d_pri_ref_table_type;
+drop procedure if exists pareto.d_alt_ref_table_type;
+drop procedure if exists pareto.deact_ref_table_type;
+drop procedure if exists pareto.react_ref_table_type;
 
-create procedure pareto.i_tenant(
+create procedure pareto.i_ref_table_type(
   in in_name        varchar,
   in in_description text,
-  in in_copyright   varchar,
+  in in_is_global   boolean,
   in in_created_by  varchar,
   out response      pareto.response
 )
@@ -22,7 +22,7 @@ language plpgsql
 as $$
 declare
  
-  c_service_name constant varchar := 'pareto.i_tenant';
+  c_service_name constant varchar := 'pareto.i_ref_table_type';
   v_id uuid;
   v_updated_at timestamp;
   v_metadata   jsonb;
@@ -32,25 +32,25 @@ begin
   v_metadata := jsonb_build_object(
     'name'       , in_name,
     'description', in_description,
-    'copyright'  , in_copyright
+    'is_global'  , in_is_global
   );
 
-  insert into pareto.tenant (
+  insert into pareto.ref_table_type (
     name,
     description,
-    copyright,
+    is_global,
     created_by,
 	updated_by
   )
   values (
     in_name,
     in_description,
-    in_copyright,
+    in_is_global,
     in_created_by,
 	in_created_by
   )
   returning id, updated_at into v_id, v_updated_at;
-
+  
   response.success := true;
   response.id := v_id;
   response.updated := v_updated_at;
@@ -61,7 +61,7 @@ exception
     response.success := false;
     response.id := null;
     response.updated := null;
-    response.message := 'Error: Tenant Already Exists';
+    response.message := 'Error: Table Type Already Exists';
     call pareto.i_logs('ERROR', response.message, c_service_name, in_created_by, v_metadata);
 	
   when others then
@@ -78,11 +78,11 @@ $$;
 -- Update
 -- ----------------------------------------------------------------------------
 
-create procedure pareto.u_tenant(
+create procedure pareto.u_ref_table_type(
   in in_id          uuid,
   in in_name        varchar,
   in in_description text,
-  in in_copyright   varchar,
+  in in_is_global   boolean,
   in in_updated_by  varchar,
   out response      pareto.response
 )
@@ -90,7 +90,7 @@ language plpgsql
 as $$
 declare
  
-  c_service_name constant varchar := 'pareto.u_tenant';
+  c_service_name constant varchar := 'pareto.u_ref_table_type';
   v_updated_at timestamp;
   v_metadata   jsonb;
   
@@ -99,13 +99,13 @@ begin
   v_metadata := jsonb_build_object(
     'name'       , in_name,
     'description', in_description,
-    'copyright'  , in_copyright
+    'is_global'  , in_is_global
   );
 
-  update pareto.tenant set 
+  update pareto.ref_table_type set 
     name = in_name,
     description = in_description,
-    copyright = in_copyright,
+    is_global = in_is_global,
 	updated_by = in_updated_by
   where id = in_id
   returning updated_at into v_updated_at;
@@ -114,7 +114,7 @@ begin
     response.success := false;
     response.id := null;
     response.updated := null;
-    response.message := 'Error: Tenant not Found for Primary Key: ' || in_uuid;
+    response.message := 'Error: Table Type not Found for Primary Key: ' || in_uuid;
     call pareto.i_logs('ERROR', response.message, c_service_name, in_updated_by, v_metadata);
   else
     response.success := true;
@@ -138,7 +138,7 @@ $$;
 -- Delete by Primary Key
 -- ----------------------------------------------------------------------------
 
-create procedure pareto.d_pri_tenant(
+create procedure pareto.d_pri_ref_table_type(
   in in_id          uuid,
   in in_deleted_by  varchar,
   out response      pareto.response
@@ -147,7 +147,7 @@ language plpgsql
 as $$
 declare
  
-  c_service_name constant varchar := 'pareto.d_pri_tenant';
+  c_service_name constant varchar := 'pareto.d_pri_ref_table_type';
   v_metadata   jsonb;
   
 begin
@@ -156,14 +156,14 @@ begin
     'id', in_id
   );
 
-  delete from pareto.tenant 
+  delete from pareto.ref_table_type 
    where id = in_id;
 
   if not found then
     response.success := false;
     response.id := null;
     response.updated := null;
-    response.message := 'Error: Tenant does not exist for Primary Key: ' || in_id;
+    response.message := 'Error: Reference Table does not Exist for Primary Key: ' || in_id;
     call pareto.i_logs('ERROR', response.message, c_service_name, in_deleted_by, v_metadata);
   else
     response.success := true;
@@ -188,7 +188,7 @@ $$;
 -- Delete by Alternate Key
 -- ----------------------------------------------------------------------------
 
-create procedure pareto.d_alt_tenant(
+create procedure pareto.d_alt_ref_table_type(
   in in_name        varchar,
   in in_deleted_by  varchar,
   out response      pareto.response
@@ -197,7 +197,7 @@ language plpgsql
 as $$
 declare
  
-  c_service_name constant varchar := 'pareto.d_alt_tenant';
+  c_service_name constant varchar := 'pareto.d_alt_ref_table_type';
   v_metadata   jsonb;
   
 begin
@@ -206,14 +206,14 @@ begin
     'name', in_name
   );
 
-  delete from pareto.tenant 
+  delete from pareto.ref_table_type 
    where name = in_name;
 
   if not found then
     response.success := false;
     response.id := null;
     response.updated := null;
-    response.message := 'Error: Tenant does not Exist for Alternate Key: ' || in_name;
+    response.message := 'Error: Reference Table does not exist for Alternate Key: ' || in_name;
     call pareto.i_logs('ERROR', response.message, c_service_name, in_deleted_by, v_metadata);
   else
     response.success := true;
@@ -238,7 +238,7 @@ $$;
 -- Set to Deactivate Status (hide)
 -- ----------------------------------------------------------------------------
 
-create procedure pareto.deact_tenant(
+create procedure pareto.deact_ref_table_type(
   in in_id          uuid,
   in in_deact_by    varchar,
   out response      pareto.response
@@ -247,7 +247,7 @@ language plpgsql
 as $$
 declare
  
-  c_service_name constant varchar := 'pareto.deact_tenant';
+  c_service_name constant varchar := 'pareto.deact_ref_table_type';
   v_metadata   jsonb;
   v_updated_at timestamp;
 
@@ -257,7 +257,7 @@ begin
     'id', in_id
   );
 
-  update pareto.tenant set is_active = false
+  update pareto.ref_table_type set is_active = false
    where id = in_id
   returning updated_at into v_updated_at;
 
@@ -265,7 +265,7 @@ begin
     response.success := false;
     response.id := null;
     response.updated := null;
-    response.message := 'Error: Tenant does not exist for id: ' || in_id;
+    response.message := 'Error: Reference Table does not Exist for Primary Key: ' || in_id;
     call pareto.i_logs('ERROR', response.message, c_service_name, in_deact_by, v_metadata);
   else
     response.success := true;
@@ -289,7 +289,7 @@ $$;
 -- Set to Active Status
 -- ----------------------------------------------------------------------------
 
-create procedure pareto.react_tenant(
+create procedure pareto.react_ref_table_type(
   in in_id          uuid,
   in in_react_by    varchar,  
   out response      pareto.response
@@ -298,7 +298,7 @@ language plpgsql
 as $$
 declare
  
-  c_service_name constant varchar := 'pareto.react_tenant';
+  c_service_name constant varchar := 'pareto.react_ref_table_type';
   v_metadata   jsonb;
   v_updated_at timestamp;
 
@@ -308,7 +308,7 @@ begin
     'id', in_id
   );
 
-  update pareto.tenant set is_active = true
+  update pareto.ref_table_type set is_active = true
    where id = in_id
   returning updated_at into v_updated_at;
 
@@ -316,7 +316,7 @@ begin
     response.success := false;
     response.id := null;
     response.updated := null;
-    response.message := 'Error: Tenant does not exist for id: ' || in_id;
+    response.message := 'Error: Reference Table does not Exist for Primary Key: ' || in_id;
     call pareto.i_logs('ERROR', response.message, c_service_name, in_react_by, v_metadata);
   else
     response.success := true;

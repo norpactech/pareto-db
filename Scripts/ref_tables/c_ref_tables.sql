@@ -13,7 +13,6 @@ create table pareto.ref_tables (
   value                 text        not null,
   sort_seq              int         not null  default 0,
   description           text,
-  is_global             boolean     not null,
   created_at            timestamptz not null  default current_timestamp,
   created_by            varchar(50) not null,
   updated_at            timestamptz not null  default current_timestamp,
@@ -26,6 +25,13 @@ alter table pareto.ref_tables
 
 create unique index ref_tables_alt_key 
     on pareto.ref_tables(id_tenant, id_ref_table_type, lower(name));
+
+alter table pareto.ref_tables
+  add constraint ref_tables_tenant
+  foreign key (id_tenant)
+  references pareto.tenant(id)
+  on update cascade
+  on delete cascade;
 
 alter table pareto.ref_tables
   add constraint ref_tables_ref_table_type

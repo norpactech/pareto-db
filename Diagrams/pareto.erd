@@ -22,5 +22,6 @@
 	</entities>
 	<relations>
 		<relation name="ref_tables_ref_table_type" fq-name="pareto.ref_tables.ref_tables_ref_table_type" type="fk" pk-ref="2" fk-ref="3"/>
+		<relation name="ref_tables_tenant" fq-name="pareto.ref_tables.ref_tables_tenant" type="fk" pk-ref="4" fk-ref="3"/>
 	</relations>
 </diagram>
