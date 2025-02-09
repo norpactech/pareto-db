@@ -3,24 +3,45 @@ rem ----------------------------------------------------------------------------
 rem © 2025 Northern Pacific Technologies, LLC.
 rem Licensed under the MIT License.
 rem See LICENSE file in the project root for full license information.
-rem ----------------------------------------------------------------------------
+rem
+rem To capture all psql output use the following command:
+rem  tester.bat > tester.log 2>&1
+rem
+rem ---------------------------------------------------------------------------
 
-rem SET host=v01.norpactech.com
-SET host=localhost
+if not defined PGHOST (
+  set PGHOST=localhost
+)
 
-rem Recreate the norpac schema
-psql -d norpac -h %host% -p 5432 -f ".\rebuild.sql"
+echo Beginning norpac Schema Creation
 
-rem Create Tables 
+psql -d norpac -h %PGHOST% -p 5432 -f ".\rebuild.sql" || goto exception
 
-psql -d norpac -h %host% -p 5432 -f "..\logs\c_logs.sql"
-psql -d norpac -h %host% -p 5432 -f "..\tenant\c_tenant.sql"
-psql -d norpac -h %host% -p 5432 -f "..\ref_table_type\c_ref_table_type.sql"
-psql -d norpac -h %host% -p 5432 -f "..\ref_tables\c_ref_tables.sql"
+echo Completed norpac Schema Creation
+echo Beginning Create Tables 
 
-rem Create Stored Procedures 
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\user\c_user.sql" || goto exception
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\logs\c_logs.sql" || goto exception
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\tenant\c_tenant.sql" || goto exception
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ref_table_type\c_ref_table_type.sql" || goto exception
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ref_tables\c_ref_tables.sql" || goto exception
 
-psql -d norpac -h %host% -p 5432 -f "..\logs\s_logs.sql"
-psql -d norpac -h %host% -p 5432 -f "..\tenant\s_tenant.sql"
-psql -d norpac -h %host% -p 5432 -f "..\ref_table_type\s_ref_table_type.sql"
-psql -d norpac -h %host% -p 5432 -f "..\ref_tables\s_ref_tables.sql"
+echo Completed Create Tables 
+echo Beginning Create Stored Procedures 
+
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\user\s_user.sql" || goto exception
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\logs\s_logs.sql" || goto exception
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\tenant\s_tenant.sql" || goto exception
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ref_table_type\s_ref_table_type.sql" || goto exception
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ref_tables\s_ref_tables.sql" || goto exception
+
+echo Completed Create Stored Procedures 
+echo Create Completed Successfully
+exit /b 0
+
+rem ---------------------------------------------------------------------------
+rem Tests Failed! Stopping Execution
+rem ---------------------------------------------------------------------------
+:exception
+echo Create Failed!
+exit /b 1

@@ -9,14 +9,20 @@ rem  tester.bat > tester.log 2>&1
 rem
 rem ---------------------------------------------------------------------------
 
+if not defined PGHOST (
+  set PGHOST=localhost
+)
+
 echo Beginning Tester
-rem  Comment the following line to run all tests or copy specific tests under :tester
+rem  Comment the following line to run all tests 
+rem    ... or uncomment and copy specific tests under :tester
 rem goto tester
 
-psql -d norpac -v ON_ERROR_STOP=ON -h localhost -p 5432 -f "..\logs\t_logs.sql" || goto exception
-psql -d norpac -v ON_ERROR_STOP=ON -h localhost -p 5432 -f "..\tenant\t_tenant.sql" || goto exception
-psql -d norpac -v ON_ERROR_STOP=ON -h localhost -p 5432 -f "..\ref_table_type\t_ref_table_type.sql" || goto exception
-psql -d norpac -v ON_ERROR_STOP=ON -h localhost -p 5432 -f "..\ref_tables\t_ref_tables.sql" || goto exception
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\user\t_user.sql" || goto exception
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\logs\t_logs.sql" || goto exception
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\tenant\t_tenant.sql" || goto exception
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ref_table_type\t_ref_table_type.sql" || goto exception
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ref_tables\t_ref_tables.sql" || goto exception
 
 rem Place Test to be run here
 :tester

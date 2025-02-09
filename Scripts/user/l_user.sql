@@ -4,8 +4,8 @@
 -- See LICENSE file in the project root for full license information.
 -- ----------------------------------------------------------------------------
 
-drop procedure if exists pareto.l_tenant;
-create procedure pareto.l_tenant()
+drop procedure if exists pareto.l_user;
+create procedure pareto.l_user()
 language plpgsql
 as $$
 declare 
@@ -14,17 +14,17 @@ declare
 
 begin
 
-  call pareto.i_tenant('system', 'System Tenant for Global Actions', 'Norther Pacific Technologies', 'scott', v_response);
+  call pareto.i_user('system', 'system@nomail.com', 'System User', 'scott', v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
 
-  call pareto.i_tenant('norpac-plsql', 'Pareto Tenant for PgSQL', 'Norther Pacific Technologies', 'scott', v_response);
+  call pareto.i_user('pgsql', 'plsql@nomail.com', 'PgSQL User', 'scott', v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   
-  call pareto.i_tenant('norpac-mysql', 'Pareto Tenant for MySQL', 'Norther Pacific Technologies', 'scott', v_response);
+  call pareto.i_user('mysql', 'mysql@nomail.com', 'MySQL User', 'scott', v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
 
 end;
 $$;
 
-call pareto.l_tenant();
-drop procedure if exists pareto.l_tenant;
+call pareto.l_user();
+drop procedure if exists pareto.l_user;
