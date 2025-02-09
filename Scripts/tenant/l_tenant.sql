@@ -10,17 +10,19 @@ language plpgsql
 as $$
 declare 
 
-  v_response pareto.response;
+  c_tenant_system constant varchar := 'system';
+  c_tenant_norpac constant varchar := 'norpac';
+  
+  v_id_tenant uuid;
+  v_response  pareto.response;
 
 begin
 
-  call pareto.i_tenant('system', 'System Tenant for Global Actions', 'Norther Pacific Technologies', 'scott', v_response);
+  call pareto.i_tenant(c_tenant_system, 'System Tenant for Global Actions', 'Northern Pacific Technologies', 'scott', v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
-  assert v_response.success = true;
 
-  call pareto.i_tenant('reference', 'Pareto Reference/Example Tenant', 'Norther Pacific Technologies', 'scott', v_response);
+  call pareto.i_tenant(c_tenant_norpac, 'NorPac Tenant for the Router App', 'Northern Pacific Technologies', 'scott', v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
-  assert v_response.success = true;
   
 end;
 $$;

@@ -4,14 +4,14 @@
 -- See LICENSE file in the project root for full license information.
 -- ----------------------------------------------------------------------------
 
-drop procedure if exists pareto.l_system_commons_object;
-create procedure pareto.l_system_commons_object()
+drop procedure if exists pareto.l_customer;
+create procedure pareto.l_customer()
 language plpgsql
 as $$
 declare 
 
-  c_tenant_name constant varchar := 'reference';
-  c_schema_name constant varchar := 'reference';
+  c_tenant_name constant varchar := 'norpac';
+  c_schema_name constant varchar := 'router';
   c_domain_name constant varchar := 'customer';
   
   v_id_domain uuid;
@@ -40,5 +40,5 @@ begin
 end;
 $$;
 
-call pareto.l_system_commons_object();
-drop procedure if exists pareto.l_system_commons_object;
+call pareto.l_customer();
+drop procedure if exists pareto.l_customer;

@@ -29,7 +29,7 @@ begin
    where name = in_tenant_name;
   
   if (v_id_tenant is null) then
-    raise exception 'Search failed: Tenant % not found', in_tenant_name;
+    raise exception 'Search failed: Tenant <%> not found', in_tenant_name;
   end if;
 
   select id into v_id_schema
@@ -56,7 +56,7 @@ begin
      and name = in_domain_object_name;
 
   if (v_id_domain is null) then
-    raise exception 'Search failed: Domain Object % not found', in_domain_name;
+    raise exception 'Search failed: Domain Object % not found', in_domain_object_name;
   end if;
   
   return v_id_domain_object;

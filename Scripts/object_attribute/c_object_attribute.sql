@@ -4,10 +4,10 @@
 -- See LICENSE file in the project root for full license information.
 -- ----------------------------------------------------------------------------
 
-create table pareto.domain_object (
+create table pareto.object_attribute (
   
   id                    uuid        default gen_random_uuid(),
-  id_domain             uuid        not null,
+  id_domain_object      uuid        not null,
   name                  varchar(50) not null,
   description           text,
   created_at            timestamptz not null  default current_timestamp,
@@ -17,20 +17,20 @@ create table pareto.domain_object (
   is_active             boolean     not null  default true
 );
 
-alter table pareto.domain_object
+alter table pareto.object_attribute
   add primary key (id);
 
-create unique index domain_object_alt_key 
-  on pareto.domain_object(id_domain, lower(name));
+create unique index object_attribute_alt_key 
+  on pareto.object_attribute(id_domain_object, lower(name));
 
-alter table pareto.domain_object
-  add constraint domain_object_domain
-  foreign key (id_domain)
-  references pareto.domain(id)
+alter table pareto.object_attribute
+  add constraint object_attribute_domain_object
+  foreign key (id_domain_object)
+  references pareto.domain_object(id)
   on update cascade
   on delete cascade;
 
-create trigger domain_object_update_at
-  before update on pareto.domain_object
+create trigger object_attribute_update_at
+  before update on pareto.object_attribute
     for each row
       execute function pareto.update_at();

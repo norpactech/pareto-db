@@ -131,7 +131,7 @@ begin
     response.success := false;
     response.id := null;
     response.updated := null;
-    response.message := 'Error: ref_tables not Found for Primary Key: ' || in_uuid;
+    response.message := 'Error: ref_tables not Found for Primary Key: ' || coalesce(in_id::text, 'NULL');
     call pareto.i_logs('ERROR', response.message, c_service_name, in_updated_by, v_metadata);
   else
     response.success := true;
@@ -180,7 +180,7 @@ begin
     response.success := false;
     response.id := null;
     response.updated := null;
-    response.message := 'Error: ref_tables not Found for Primary Key: ' || in_uuid;
+    response.message := 'Error: ref_tables not Found for Primary Key: ' || coalesce(in_id::text, 'NULL');
     call pareto.i_logs('ERROR', response.message, c_service_name, in_deleted_by, v_metadata);
   else
     response.success := true;
@@ -232,7 +232,7 @@ begin
     response.success := false;
     response.id := null;
     response.updated := null;
-    response.message := 'Error: ref_tables not Found for Primary Key: ' || in_uuid;
+    response.message := 'Error: ref_tables not Found for Primary Key: ' || coalesce(in_id::text, 'NULL');
     call pareto.i_logs('ERROR', response.message, c_service_name, in_deact_by, v_metadata);
   else
     response.success := true;
@@ -283,7 +283,7 @@ begin
     response.success := false;
     response.id := null;
     response.updated := null;
-    response.message := 'Error: ref_tables not Found for Primary Key: ' || in_uuid;
+    response.message := 'Error: ref_tables not Found for Primary Key: ' || coalesce(in_id::text, 'NULL');
     call pareto.i_logs('ERROR', response.message, c_service_name, in_react_by, v_metadata);
   else
     response.success := true;
