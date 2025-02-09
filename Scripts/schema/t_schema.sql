@@ -88,4 +88,4 @@ end;
 $$;
 
 call pareto.t_schema();
--- drop procedure if exists pareto.t_schema;
+drop procedure if exists pareto.t_schema;
