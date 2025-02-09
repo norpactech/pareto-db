@@ -23,22 +23,26 @@ begin
   -- ----------------------------------
   
   select id into v_id_tenant
-    from pareto.schema
+    from pareto.tenant
    where name = c_tenant_system;
+  assert v_id_tenant is not null;
     
   call pareto.i_schema(v_id_tenant, 'system', 'System schema for Global Actions', 'scott', v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
+  assert v_response.success = true;
 
   -- ----------------------------------
   -- Reference Schema
   -- ----------------------------------
   
   select id into v_id_tenant
-    from pareto.schema
+    from pareto.tenant
    where name = c_tenant_reference;
+  assert v_id_tenant is not null;
     
   call pareto.i_schema(v_id_tenant, 'reference', 'Reference Schama for an Example', 'scott', v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
+  assert v_response.success = true;
   
 end;
 $$;

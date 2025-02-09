@@ -16,9 +16,11 @@ begin
 
   call pareto.i_tenant('system', 'System Tenant for Global Actions', 'Norther Pacific Technologies', 'scott', v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
+  assert v_response.success = true;
 
   call pareto.i_tenant('reference', 'Pareto Reference/Example Tenant', 'Norther Pacific Technologies', 'scott', v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
+  assert v_response.success = true;
   
 end;
 $$;
