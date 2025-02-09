@@ -16,7 +16,9 @@ if not defined PGHOST (
 echo Beginning Tester
 rem  Comment the following line to run all tests 
 rem    ... or uncomment and copy specific tests under :tester
-rem goto tester
+goto tester
+
+rem Commons Domain
 
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\user\t_user.sql" || goto exception
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\logs\t_logs.sql" || goto exception
@@ -24,8 +26,13 @@ psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\tenant\t_tenant.sq
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ref_table_type\t_ref_table_type.sql" || goto exception
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ref_tables\t_ref_tables.sql" || goto exception
 
+rem Schema Domain
+
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\schema\t_schema.sql" || goto exception
+
 rem Place Test to be run here
 :tester
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\schema\t_schema.sql" || goto exception
 
 echo Tester Completed Successfully
 exit /b 0
