@@ -91,7 +91,8 @@ begin
   -- ----------------------------------
   select pareto.g_id_domain_alt_keys(c_tenant_name, c_schema_name, c_name) into v_id;
   assert v_id is not null, 'Test failed: g_id_domain_alt_keys failed to find the domain.';
-  
+  raise notice 'g_id_domain_alt_keys Successful';
+
   -- ----------------------------------
   -- Delete
   -- ----------------------------------
