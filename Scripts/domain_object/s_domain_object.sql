@@ -4,66 +4,52 @@
 -- See LICENSE file in the project root for full license information.
 -- ----------------------------------------------------------------------------
 
-drop procedure if exists pareto.i_ref_tables;
-drop procedure if exists pareto.u_ref_tables;
-drop procedure if exists pareto.d_ref_tables;
-drop procedure if exists pareto.deact_ref_tables;
-drop procedure if exists pareto.react_ref_tables;
+drop procedure if exists pareto.i_domain_object;
+drop procedure if exists pareto.u_domain_object;
+drop procedure if exists pareto.d_domain_object;
+drop procedure if exists pareto.deact_domain_object;
+drop procedure if exists pareto.react_domain_object;
 
-create procedure pareto.i_ref_tables(
-  in in_id_tenant         uuid,
-  in in_id_ref_table_type uuid,
-  in in_name              varchar,
-  in in_description       text,
-  in in_value             text,
-  in in_sort_seq          int,
-  in in_created_by        varchar,
-  out response pareto.response
+create procedure pareto.i_domain_object(
+  in in_id_domain   uuid,
+  in in_name        varchar,
+  in in_description text,
+  in in_created_by  varchar,
+  out response      pareto.response
 )
 language plpgsql
 as $$
 declare
  
-  c_service_name constant varchar := 'pareto.i_ref_tables';
+  c_service_name constant varchar := 'pareto.i_domain_object';
   v_id uuid;
   v_updated_at timestamp;
   v_metadata   jsonb;
   
 begin
 
-  raise notice 'Test ref_tables Persist Completed';
-
   v_metadata := jsonb_build_object(
-    'id_tenant'        , in_id_tenant,
-    'id_ref_table_type', in_id_ref_table_type,
-    'name'             , in_name,
-    'description'      , in_description,
-    'value'            , in_value,
-    'sort_seq'         , in_sort_seq
+    'id_domain'  , in_id_domain,
+    'name'       , in_name,
+    'description', in_description
   );
 
-  insert into pareto.ref_tables (
-    id_tenant,
-    id_ref_table_type,
+  insert into pareto.domain_object (
+    id_domain,
     name,
     description,
-    value,
-    sort_seq,
     created_by,
 	updated_by
   )
   values (
-    in_id_tenant,
-    in_id_ref_table_type,
+    in_id_domain,
     in_name,
     in_description,
-    in_value,
-    in_sort_seq,
     in_created_by,
-	in_created_by
+	  in_created_by
   )
   returning id, updated_at into v_id, v_updated_at;
-  
+
   response.success := true;
   response.id := v_id;
   response.updated := v_updated_at;
@@ -74,7 +60,7 @@ exception
     response.success := false;
     response.id := null;
     response.updated := null;
-    response.message := 'Error: Table Value Already Exists.';
+    response.message := 'Error: Domain Object Already Exists';
     call pareto.i_logs('ERROR', response.message, c_service_name, in_created_by, v_metadata);
 	
   when others then
@@ -91,12 +77,10 @@ $$;
 -- Update
 -- ----------------------------------------------------------------------------
 
-create procedure pareto.u_ref_tables(
+create procedure pareto.u_domain_object(
   in in_id          uuid,
   in in_name        varchar,
   in in_description text,
-  in in_value       text,
-  in in_sort_seq    int,
   in in_updated_by  varchar,
   out response      pareto.response
 )
@@ -104,7 +88,7 @@ language plpgsql
 as $$
 declare
  
-  c_service_name constant varchar := 'pareto.u_ref_tables';
+  c_service_name constant varchar := 'pareto.u_domain_object';
   v_updated_at timestamp;
   v_metadata   jsonb;
   
@@ -113,16 +97,12 @@ begin
   v_metadata := jsonb_build_object(
     'id'         , in_id,
     'name'       , in_name,
-    'description', in_description,
-    'value'      , in_value,
-    'sort_seq'   , in_sort_seq
+    'description', in_description
   );
 
-  update pareto.ref_tables set 
+  update pareto.domain_object set 
     name        = in_name,
     description = in_description,
-    value       = in_value,
-    sort_seq    = in_sort_seq,
 	  updated_by  = in_updated_by
   where id = in_id
   returning updated_at into v_updated_at;
@@ -131,7 +111,7 @@ begin
     response.success := false;
     response.id := null;
     response.updated := null;
-    response.message := 'Error: ref_tables not Found for Primary Key: ' || in_uuid;
+    response.message := 'Error: Domain Object not Found for Primary Key: ' || in_uuid;
     call pareto.i_logs('ERROR', response.message, c_service_name, in_updated_by, v_metadata);
   else
     response.success := true;
@@ -152,10 +132,10 @@ end;
 $$;
 
 -- ----------------------------------------------------------------------------
--- Delete by Primary Key
+-- Delete
 -- ----------------------------------------------------------------------------
 
-create procedure pareto.d_ref_tables(
+create procedure pareto.d_domain_object(
   in in_id          uuid,
   in in_deleted_by  varchar,
   out response      pareto.response
@@ -164,7 +144,7 @@ language plpgsql
 as $$
 declare
  
-  c_service_name constant varchar := 'pareto.d_pri_ref_tables';
+  c_service_name constant varchar := 'pareto.d_domain_object';
   v_metadata   jsonb;
   
 begin
@@ -173,14 +153,14 @@ begin
     'id', in_id
   );
 
-  delete from pareto.ref_tables 
+  delete from pareto.domain_object 
    where id = in_id;
 
   if not found then
     response.success := false;
     response.id := null;
     response.updated := null;
-    response.message := 'Error: ref_tables not Found for Primary Key: ' || in_uuid;
+    response.message := 'Error: Domain Object does not exist for Primary Key: ' || in_id;
     call pareto.i_logs('ERROR', response.message, c_service_name, in_deleted_by, v_metadata);
   else
     response.success := true;
@@ -205,7 +185,7 @@ $$;
 -- Set to Deactivate Status (hide)
 -- ----------------------------------------------------------------------------
 
-create procedure pareto.deact_ref_tables(
+create procedure pareto.deact_domain_object(
   in in_id          uuid,
   in in_deact_by    varchar,
   out response      pareto.response
@@ -214,7 +194,7 @@ language plpgsql
 as $$
 declare
  
-  c_service_name constant varchar := 'pareto.deact_ref_tables';
+  c_service_name constant varchar := 'pareto.deact_domain_object';
   v_metadata   jsonb;
   v_updated_at timestamp;
 
@@ -224,7 +204,7 @@ begin
     'id', in_id
   );
 
-  update pareto.ref_tables set is_active = false
+  update pareto.domain_object set is_active = false
    where id = in_id
   returning updated_at into v_updated_at;
 
@@ -232,7 +212,7 @@ begin
     response.success := false;
     response.id := null;
     response.updated := null;
-    response.message := 'Error: ref_tables not Found for Primary Key: ' || in_uuid;
+    response.message := 'Error: Domain Object does not exist for id: ' || in_id;
     call pareto.i_logs('ERROR', response.message, c_service_name, in_deact_by, v_metadata);
   else
     response.success := true;
@@ -256,7 +236,7 @@ $$;
 -- Set to Active Status
 -- ----------------------------------------------------------------------------
 
-create procedure pareto.react_ref_tables(
+create procedure pareto.react_domain_object(
   in in_id          uuid,
   in in_react_by    varchar,  
   out response      pareto.response
@@ -265,7 +245,7 @@ language plpgsql
 as $$
 declare
  
-  c_service_name constant varchar := 'pareto.react_ref_tables';
+  c_service_name constant varchar := 'pareto.react_domain_object';
   v_metadata   jsonb;
   v_updated_at timestamp;
 
@@ -275,7 +255,7 @@ begin
     'id', in_id
   );
 
-  update pareto.ref_tables set is_active = true
+  update pareto.domain_object set is_active = true
    where id = in_id
   returning updated_at into v_updated_at;
 
@@ -283,7 +263,7 @@ begin
     response.success := false;
     response.id := null;
     response.updated := null;
-    response.message := 'Error: ref_tables not Found for Primary Key: ' || in_uuid;
+    response.message := 'Error: Domain Object does not exist for id: ' || in_id;
     call pareto.i_logs('ERROR', response.message, c_service_name, in_react_by, v_metadata);
   else
     response.success := true;

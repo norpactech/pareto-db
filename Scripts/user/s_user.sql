@@ -6,8 +6,7 @@
 
 drop procedure if exists pareto.i_user;
 drop procedure if exists pareto.u_user;
-drop procedure if exists pareto.d_pri_user;
-drop procedure if exists pareto.d_alt_user;
+drop procedure if exists pareto.d_user;
 drop procedure if exists pareto.deact_user;
 drop procedure if exists pareto.react_user;
 

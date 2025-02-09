@@ -6,8 +6,7 @@
 
 drop procedure if exists pareto.i_tenant;
 drop procedure if exists pareto.u_tenant;
-drop procedure if exists pareto.d_pri_tenant;
-drop procedure if exists pareto.d_alt_tenant;
+drop procedure if exists pareto.d_tenant;
 drop procedure if exists pareto.deact_tenant;
 drop procedure if exists pareto.react_tenant;
 

@@ -6,8 +6,7 @@
 
 drop procedure if exists pareto.i_schema;
 drop procedure if exists pareto.u_schema;
-drop procedure if exists pareto.d_pri_schema;
-drop procedure if exists pareto.d_alt_schema;
+drop procedure if exists pareto.d_schema;
 drop procedure if exists pareto.deact_schema;
 drop procedure if exists pareto.react_schema;
 

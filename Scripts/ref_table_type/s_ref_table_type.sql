@@ -6,8 +6,7 @@
 
 drop procedure if exists pareto.i_ref_table_type;
 drop procedure if exists pareto.u_ref_table_type;
-drop procedure if exists pareto.d_pri_ref_table_type;
-drop procedure if exists pareto.d_alt_ref_table_type;
+drop procedure if exists pareto.d_ref_table_type;
 drop procedure if exists pareto.deact_ref_table_type;
 drop procedure if exists pareto.react_ref_table_type;
 

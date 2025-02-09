@@ -6,8 +6,7 @@
 
 drop procedure if exists pareto.i_domain;
 drop procedure if exists pareto.u_domain;
-drop procedure if exists pareto.d_pri_domain;
-drop procedure if exists pareto.d_alt_domain;
+drop procedure if exists pareto.d_domain;
 drop procedure if exists pareto.deact_domain;
 drop procedure if exists pareto.react_domain;
 

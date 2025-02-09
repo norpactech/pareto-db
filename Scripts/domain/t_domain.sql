@@ -13,8 +13,8 @@ declare
   c_tenant_name constant varchar := 'system';
   c_schema_name constant varchar := 'system';
   
-  c_test_name   constant varchar := 't_schema';
-  c_name        constant varchar := 't_schema';
+  c_test_name   constant varchar := 't_domain';
+  c_name        constant varchar := 't_domain';
   c_description constant varchar := 't_description';
   c_username    constant varchar := 't_username';
   
@@ -25,7 +25,7 @@ declare
   
 begin
 
-  raise notice 'Test domain Persist Beginning';
+  raise notice 'Test Domain Persist Beginning';
 
   -- ----------------------------------
   -- Get the 'system' tenant id
@@ -87,13 +87,19 @@ begin
   assert v_response.success = true, 'Test failed: react_domain was not successful. See logs for details.';
   
   -- ----------------------------------
+  -- Search Domain by Alt Keys
+  -- ----------------------------------
+  select pareto.g_id_domain_alt_keys(c_tenant_name, c_schema_name, c_name) into v_id;
+  assert v_id is not null, 'Test failed: g_id_domain_alt_keys failed to find the domain.';
+  
+  -- ----------------------------------
   -- Delete
   -- ----------------------------------
   call pareto.d_domain(v_response.id, c_username, v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   assert v_response.success = true, 'Test failed: d_domain was not successful. See logs for details.';
-
-  raise notice 'Test domain Persist Completed';
+    
+  raise notice 'Test Domain Completed';
 
 end;
 $$;
