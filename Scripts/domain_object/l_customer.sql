@@ -31,7 +31,7 @@ begin
   -- ----------------------------------
   -- Build System Commons Objects
   -- ----------------------------------
-  call pareto.i_domain_object(v_id_domain, 'customer', 'Customer Object', 'scott', v_response);
+  call pareto.i_domain_object(v_id_domain, 'customer', 'Customer Object',  true, 'scott', v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   assert v_response.success = true;
   

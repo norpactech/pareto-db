@@ -31,27 +31,27 @@ begin
   -- ----------------------------------
   -- Build System Commons Objects
   -- ----------------------------------
-  call pareto.i_domain_object(v_id_domain, 'schema', 'Schema', 'scott', v_response);
+  call pareto.i_domain_object(v_id_domain, 'schema', 'Schema',  true, 'scott', v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   assert v_response.success = true;
 
-  call pareto.i_domain_object(v_id_domain, 'domain', 'Domain', 'scott', v_response);
+  call pareto.i_domain_object(v_id_domain, 'domain', 'Domain',  true, 'scott', v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   assert v_response.success = true;
   
-  call pareto.i_domain_object(v_id_domain, 'domain_object', 'Domain', 'scott', v_response);
+  call pareto.i_domain_object(v_id_domain, 'domain_object', 'Domain',  true, 'scott', v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   assert v_response.success = true;
   
-  call pareto.i_domain_object(v_id_domain, 'attribute', 'Attribute', 'scott', v_response);
+  call pareto.i_domain_object(v_id_domain, 'attribute', 'Attribute',  true, 'scott', v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   assert v_response.success = true;
 
-  call pareto.i_domain_object(v_id_domain, 'index', 'Index', 'scott', v_response);
+  call pareto.i_domain_object(v_id_domain, 'index', 'Index', 'scott',  true, v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   assert v_response.success = true;
 
-  call pareto.i_domain_object(v_id_domain, 'constraint', 'Constraint', 'scott', v_response);
+  call pareto.i_domain_object(v_id_domain, 'constraint', 'Constraint',  true, 'scott', v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   assert v_response.success = true;
   

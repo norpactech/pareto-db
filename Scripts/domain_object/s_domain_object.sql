@@ -14,6 +14,7 @@ create procedure pareto.i_domain_object(
   in in_id_domain   uuid,
   in in_name        varchar,
   in in_description text,
+  in in_has_audit   boolean,
   in in_created_by  varchar,
   out response      pareto.response
 )
@@ -38,6 +39,7 @@ begin
     id_domain,
     name,
     description,
+    has_audit,
     created_by,
 	  updated_by
   )
@@ -45,6 +47,7 @@ begin
     in_id_domain,
     in_name,
     in_description,
+    in_has_audit,
     in_created_by,
 	  in_created_by
   )
@@ -81,6 +84,7 @@ create procedure pareto.u_domain_object(
   in in_id          uuid,
   in in_name        varchar,
   in in_description text,
+  in in_has_audit   boolean,
   in in_updated_by  varchar,
   out response      pareto.response
 )
@@ -97,13 +101,15 @@ begin
   v_metadata := jsonb_build_object(
     'id'         , in_id,
     'name'       , in_name,
-    'description', in_description
+    'description', in_description,
+    'has_audit'  , in_has_audit
   );
 
   update pareto.domain_object set 
     name        = in_name,
     description = in_description,
-	  updated_by  = in_updated_by
+    has_audit   = in_has_audit,
+    updated_by  = in_updated_by
   where id = in_id
   returning updated_at into v_updated_at;
 

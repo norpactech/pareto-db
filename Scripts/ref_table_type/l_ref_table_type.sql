@@ -10,10 +10,12 @@ language plpgsql
 as $$
 declare 
 
-  response pareto.response;
+  v_response pareto.response;
 
 begin
-
+  
+  call pareto.i_ref_table_type('datatype', 'Data Types', true, 'scott', v_response);
+  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
 
 end;
 $$;

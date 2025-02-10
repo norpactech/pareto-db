@@ -10,6 +10,7 @@ create table pareto.domain_object (
   id_domain             uuid        not null,
   name                  varchar(50) not null,
   description           text,
+  has_audit             boolean     not null  default true,
   created_at            timestamptz not null  default current_timestamp,
   created_by            varchar(50) not null,
   updated_at            timestamptz not null  default current_timestamp,

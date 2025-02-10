@@ -52,14 +52,14 @@ begin
   -- ----------------------------------
   -- Insert
   -- ----------------------------------
-  call pareto.i_domain_object(v_id_domain, c_name, c_description, 'scott1', v_response);
+  call pareto.i_domain_object(v_id_domain, c_name, c_description,  true, 'scott1', v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   assert v_response.success = true, 'Test failed: i_domain_object was not successful. See logs for details.';
 
   -- ----------------------------------
   -- Update
   -- ----------------------------------
-  call pareto.u_domain_object(v_response.id, c_name, c_description, 'scott2', v_response);
+  call pareto.u_domain_object(v_response.id, c_name, c_description,  true, 'scott2', v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   assert v_response.success = true, 'Test failed: u_domain_object was not successful. See logs for details.';
 

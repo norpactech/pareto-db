@@ -38,14 +38,14 @@ begin
   -- ----------------------------------
   -- Insert
   -- ----------------------------------
-  call pareto.i_tenant(c_name, c_description, c_copyright, 'Scott1', v_response);
+  call pareto.i_tenant(c_name, c_description, c_copyright, 'scott1', v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   assert v_response.success = true, 'Test failed: i_tenant was not successful. See logs for details.';
   
   -- ----------------------------------
   -- Update
   -- ----------------------------------
-  call pareto.u_tenant(v_response.id, c_name, c_description, c_copyright, 'Scott2', v_response);
+  call pareto.u_tenant(v_response.id, c_name, c_description, c_copyright, 'scott2', v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   assert v_response.success = true, 'Test failed: u_tenant was not successful. See logs for details.';
 
@@ -68,7 +68,7 @@ begin
   -- ----------------------------------
   call pareto.d_tenant(v_response.id, c_username, v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
-  assert v_response.success = true, 'Test failed: d_alt_tenant was not successful. See logs for details.';
+  assert v_response.success = true, 'Test failed: d_tenant was not successful. See logs for details.';
 
   raise notice 'Test tenant Persist Completed';
 

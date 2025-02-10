@@ -8,8 +8,13 @@ create table pareto.object_attribute (
   
   id                    uuid        default gen_random_uuid(),
   id_domain_object      uuid        not null,
+  id_rt_data_type       uuid        not null,
   name                  varchar(50) not null,
   description           text,
+  length                int,
+  precision             int,
+  is_nullable           boolean     not null  default false,
+  is_unique             boolean     not null  default false,
   created_at            timestamptz not null  default current_timestamp,
   created_by            varchar(50) not null,
   updated_at            timestamptz not null  default current_timestamp,

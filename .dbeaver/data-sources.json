@@ -21,23 +21,6 @@
 				},
 				"auth-model": "native"
 			}
-		},
-		"mysql8-194e237537f-64c0c8da5975c629": {
-			"provider": "mysql",
-			"driver": "mysql8",
-			"name": "pareto-mysql",
-			"save-password": true,
-			"configuration": {
-				"host": "localhost",
-				"port": "3306",
-				"database": "pareto-mysql",
-				"url": "jdbc:mysql://localhost:3306/pareto-mysql",
-				"configurationType": "MANUAL",
-				"home": "C:\\Program Files\\MySQL\\MySQL Server 8.0",
-				"type": "dev",
-				"closeIdleConnection": true,
-				"auth-model": "native"
-			}
 		}
 	},
 	"connection-types": {

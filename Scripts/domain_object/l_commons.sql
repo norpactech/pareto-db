@@ -31,19 +31,19 @@ begin
   -- ----------------------------------
   -- Build System Commons Objects
   -- ----------------------------------
-  call pareto.i_domain_object(v_id_domain, 'tenant', 'Tenant Object', 'scott', v_response);
+  call pareto.i_domain_object(v_id_domain, 'tenant', 'Tenant Object', true, 'scott', v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   assert v_response.success = true;
 
-  call pareto.i_domain_object(v_id_domain, 'ref_table_type', 'Reference Table Types', 'scott', v_response);
+  call pareto.i_domain_object(v_id_domain, 'ref_table_type', 'Reference Table Types',  true, 'scott', v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   assert v_response.success = true;
   
-  call pareto.i_domain_object(v_id_domain, 'ref_tables', 'Reference Table Type Values', 'scott', v_response);
+  call pareto.i_domain_object(v_id_domain, 'ref_tables', 'Reference Table Type Values',  true, 'scott', v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   assert v_response.success = true;
   
-  call pareto.i_domain_object(v_id_domain, 'user', 'User Tables', 'scott', v_response);
+  call pareto.i_domain_object(v_id_domain, 'user', 'User Tables', 'scott',  true, v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   assert v_response.success = true;
   
