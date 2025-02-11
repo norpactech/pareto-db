@@ -45,20 +45,6 @@ begin
   assert v_id_schema is not null, 'Test failed: System Schema not found.';
   
   -- ----------------------------------
-  -- Clean if necessary
-  -- ----------------------------------
-  select id into v_id 
-    from pareto.domain 
-   where id_schema = v_id_schema
-     and name = c_schema_name;
-   
-  if (v_id is not null) then
-    raise notice 'WARNING: domain value "%" existed from a previous test. Deleting...', c_name;
-    call pareto.d_domain(v_id, c_username, v_response);
-    raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
-  end if;
-
-  -- ----------------------------------
   -- Insert
   -- ----------------------------------
   call pareto.i_domain(v_id_schema, c_name, c_description, 'scott1', v_response);
@@ -100,6 +86,7 @@ begin
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   assert v_response.success = true, 'Test failed: d_domain was not successful. See logs for details.';
     
+  rollback;
   raise notice 'Test Domain Completed';
 
 end;

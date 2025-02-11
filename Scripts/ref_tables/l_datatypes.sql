@@ -44,7 +44,7 @@ begin
     'Character Varying String', 
     'varchar', 
     v_seq, 
-    'system', 
+    'loader', 
     v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
 
@@ -56,7 +56,7 @@ begin
     'Unlimted String', 
     'text', 
     v_seq, 
-    'system', 
+    'loader', 
     v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   
@@ -68,7 +68,7 @@ begin
     'Fixed Length String', 
     'char', 
     v_seq, 
-    'system', 
+    'loader', 
     v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
 
@@ -84,7 +84,7 @@ begin
     'Integer', 
     'int', 
     v_seq, 
-    'system', 
+    'loader', 
     v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   
@@ -96,7 +96,7 @@ begin
     'Big Integer', 
     'bigint', 
     v_seq, 
-    'system', 
+    'loader', 
     v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   
@@ -108,7 +108,7 @@ begin
     'Single-Precision Floating-Point.', 
     'float', 
     v_seq, 
-    'system', 
+    'loader', 
     v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   
@@ -120,7 +120,7 @@ begin
     'Double-Precision Floating-Point.', 
     'double', 
     v_seq, 
-    'system', 
+    'loader', 
     v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
 
@@ -132,10 +132,74 @@ begin
     'Precision for Financial and High-precision calculations. i.e. numeric(10,2)', 
     'numeric', 
     v_seq, 
-    'system', 
+    'loader', 
     v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
+  
+  -- -----------------------------------
+  -- Date/Time Data
+  -- -----------------------------------
     
+  v_seq := v_seq + 1;
+  call pareto.i_ref_tables(
+    v_id_tenant, 
+    v_id_ref_table_type, 
+    'timestamptz',  
+    'Timestamp with Time Zone', 
+    'timestamptz', 
+    v_seq, 
+    'loader', 
+    v_response);
+  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
+  
+  v_seq := v_seq + 1;
+  call pareto.i_ref_tables(
+    v_id_tenant, 
+    v_id_ref_table_type, 
+    'timestamp',  
+    'Timestamp without Time Zone', 
+    'timestamp', 
+    v_seq, 
+    'loader', 
+    v_response);
+  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
+
+  v_seq := v_seq + 1;
+  call pareto.i_ref_tables(
+    v_id_tenant, 
+    v_id_ref_table_type, 
+    'date',  
+    'Date without Time', 
+    'date', 
+    v_seq, 
+    'loader', 
+    v_response);
+  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
+  
+  v_seq := v_seq + 1;
+  call pareto.i_ref_tables(
+    v_id_tenant, 
+    v_id_ref_table_type, 
+    'time',  
+    'Time without Timezone', 
+    'time', 
+    v_seq, 
+    'loader', 
+    v_response);
+  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
+  
+  v_seq := v_seq + 1;
+  call pareto.i_ref_tables(
+    v_id_tenant, 
+    v_id_ref_table_type, 
+    'timetz',  
+    'Time with Timezone', 
+    'timetz', 
+    v_seq, 
+    'loader', 
+    v_response);
+  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
+  
   -- -----------------------------------
   -- Various Data Types
   -- -----------------------------------
@@ -144,11 +208,11 @@ begin
   call pareto.i_ref_tables(
     v_id_tenant, 
     v_id_ref_table_type, 
-    'bool',  
+    'boolean',  
     'True/False', 
-    'bool', 
+    'boolean', 
     v_seq, 
-    'system', 
+    'loader', 
     v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   
@@ -160,7 +224,7 @@ begin
     'Unique Identifier', 
     'uuid', 
     v_seq, 
-    'system', 
+    'loader', 
     v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
 
@@ -172,7 +236,7 @@ begin
     'Unstructured JSON Data',
     'json', 
     v_seq, 
-    'system', 
+    'loader', 
     v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   

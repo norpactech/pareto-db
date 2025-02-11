@@ -9,6 +9,7 @@ drop procedure if exists pareto.u_object_attribute;
 drop procedure if exists pareto.d_object_attribute;
 drop procedure if exists pareto.deact_object_attribute;
 drop procedure if exists pareto.react_object_attribute;
+drop procedure if exists pareto.common_attributes;
 
 create procedure pareto.i_object_attribute(
   in in_id_domain_object uuid,
@@ -18,6 +19,8 @@ create procedure pareto.i_object_attribute(
   in in_length           int,
   in in_precision        int,
   in in_is_nullable      boolean,
+  in in_default_value    varchar,
+  in in_seq              int,
   in in_created_by       varchar,
   out response           pareto.response
 )
@@ -40,6 +43,8 @@ begin
     'length'          , in_length,
     'precision'       , in_precision,
     'is_nullable'     , in_is_nullable,
+    'default_value'   , in_default_value,
+    'seq'             , in_seq,
     'created_by'      , in_created_by
   );
 
@@ -51,6 +56,8 @@ begin
     length,
     precision,
     is_nullable,
+    default_value,
+    seq,
     created_by,
 	  updated_by
   )
@@ -62,6 +69,8 @@ begin
     in_length,
     in_precision,
     in_is_nullable,
+    in_default_value,
+    in_seq,
     in_created_by,
 	  in_created_by
   )
@@ -102,6 +111,8 @@ create procedure pareto.u_object_attribute(
   in in_length          int,
   in in_precision       int,
   in in_is_nullable     boolean,
+  in in_default_value   varchar,
+  in in_seq             int,
   in in_updated_by      varchar,
   out response          pareto.response
 )
@@ -122,6 +133,8 @@ begin
     'length'         , in_length,
     'precision'      , in_precision,
     'is_nullable'    , in_is_nullable,
+    'default_value'  , in_default_value,
+    'seq'            , in_seq,
     'updated_by'     , in_updated_by
   );
 
@@ -132,7 +145,9 @@ begin
     length          = in_length,
     precision       = in_precision,
     is_nullable     = in_is_nullable,
-	  updated_by  = in_updated_by
+    default_value   = in_default_value,
+    seq             = in_seq,
+	  updated_by      = in_updated_by
   where id = in_id
   returning updated_at into v_updated_at;
 
@@ -309,5 +324,139 @@ exception
     response.message := 'Exception: ' || sqlerrm;
     call pareto.i_logs('ERROR', response.message, c_service_name, in_react_by, v_metadata);
   
+end;
+$$;
+
+-- ----------------------------------------------------------------------------
+-- Common Attributes
+-- ----------------------------------------------------------------------------
+
+create procedure pareto.common_attributes(
+  in in_tenant_name      varchar,
+  in in_id_domain_object uuid,
+  in in_username         varchar,
+  in in_seq              int
+)
+language plpgsql
+as $$
+declare
+ 
+  c_table_type_name constant varchar := 'datatype';
+  
+  v_id_rt_data_type uuid;
+  v_seq             int := 1;
+  v_response pareto.response;
+  
+begin
+
+  raise notice 'Beginning Common Attributes Load';
+  v_seq := in_seq;
+  
+  select pareto.g_id_ref_tables_alt_keys(in_tenant_name, c_table_type_name, 'uuid') into v_id_rt_data_type;
+  assert v_id_rt_data_type is not null, 'Test failed: g_id_ref_tables_alt_keys failed to find data type.';
+  call pareto.i_object_attribute(
+    in_id_domain_object,
+    v_id_rt_data_type,
+    'id',                -- name
+    'Primary Key',       -- description
+    null,                -- length
+    null,                -- precision
+    false,               -- is_nullable
+    'generated uuid',    -- default_value    
+    1,
+    in_username,
+    v_response);
+  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
+  assert v_response.success = true, 'Test failed: i_object_attribute was not successful. See logs for details.';
+
+  v_seq := v_seq + 1;
+  select pareto.g_id_ref_tables_alt_keys(in_tenant_name, c_table_type_name, 'timestamptz') into v_id_rt_data_type;
+  assert v_id_rt_data_type is not null, 'Test failed: g_id_ref_tables_alt_keys failed to find data type <timestamptz>.';
+  call pareto.i_object_attribute(
+    in_id_domain_object,
+    v_id_rt_data_type,
+    'created_at',        -- name
+    'Created Timestamp', -- description
+    null,                -- length
+    null,                -- precision
+    false,               -- is_nullable
+    'timestamp',         -- default_value    
+    v_seq,               -- sequence
+    in_username,
+    v_response);
+  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
+  assert v_response.success = true, 'Test failed: i_object_attribute was not successful. See logs for details.';
+  
+  v_seq := v_seq + 1;
+  select pareto.g_id_ref_tables_alt_keys(in_tenant_name, c_table_type_name, 'varchar') into v_id_rt_data_type;
+  assert v_id_rt_data_type is not null, 'Test failed: g_id_ref_tables_alt_keys failed to find data type <varchar>.';
+  call pareto.i_object_attribute(
+    in_id_domain_object,
+    v_id_rt_data_type,
+    'created_by',        -- name
+    'Created By tenant',   -- description
+    50,                  -- length
+    null,                -- precision
+    false,               -- is_nullable
+    null,                -- default_value    
+    v_seq,               -- sequence
+    in_username,
+    v_response);
+  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
+  assert v_response.success = true, 'Test failed: i_object_attribute was not successful. See logs for details.';
+  
+  v_seq := v_seq + 1;
+  select pareto.g_id_ref_tables_alt_keys(in_tenant_name, c_table_type_name, 'timestamptz') into v_id_rt_data_type;
+  assert v_id_rt_data_type is not null, 'Test failed: g_id_ref_tables_alt_keys failed to find data type <timestamptz>.';
+  call pareto.i_object_attribute(
+    in_id_domain_object,
+    v_id_rt_data_type,
+    'updated_at',        -- name
+    'Updated Timestamp', -- description
+    null,                -- length
+    null,                -- precision
+    false,               -- is_nullable
+    'timestamp',         -- default_value    
+    v_seq,               -- sequence
+    in_username,
+    v_response);
+  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
+  assert v_response.success = true, 'Test failed: i_object_attribute was not successful. See logs for details.';
+  
+  v_seq := v_seq + 1;
+  select pareto.g_id_ref_tables_alt_keys(in_tenant_name, c_table_type_name, 'varchar') into v_id_rt_data_type;
+  assert v_id_rt_data_type is not null, 'Test failed: g_id_ref_tables_alt_keys failed to find data type <varchar>.';
+  call pareto.i_object_attribute(
+    in_id_domain_object,
+    v_id_rt_data_type,
+    'updated_by',        -- name
+    'Updated By tenant',   -- description
+    50,                  -- length
+    null,                -- precision
+    false,               -- is_nullable
+    null,                -- default_value    
+    v_seq,               -- sequence
+    in_username,
+    v_response);
+  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
+  assert v_response.success = true, 'Test failed: i_object_attribute was not successful. See logs for details.';
+
+  v_seq := v_seq + 1;
+  select pareto.g_id_ref_tables_alt_keys(in_tenant_name, c_table_type_name, 'boolean') into v_id_rt_data_type;
+  assert v_id_rt_data_type is not null, 'Test failed: g_id_ref_tables_alt_keys failed to find data type <boolean>.';
+  call pareto.i_object_attribute(
+    in_id_domain_object,
+    v_id_rt_data_type,
+    'is_active',         -- name
+    'Soft Delete',       -- description
+    null,                -- length
+    null,                -- precision
+    false,               -- is_nullable
+    'true',              -- default_value    
+    v_seq,               -- sequence
+    in_username,
+    v_response);
+  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
+  assert v_response.success = true, 'Test failed: i_object_attribute was not successful. See logs for details.';  
 end;
 $$;

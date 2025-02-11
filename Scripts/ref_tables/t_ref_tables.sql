@@ -36,28 +36,6 @@ begin
    where name = c_tenant_name;
 
   -- ----------------------------------
-  -- Clean if necessary
-  -- ----------------------------------
-  select id into v_id_ref_table_type
-    from pareto.ref_table_type 
-   where name = c_name;
-   
-  if (v_id_ref_table_type is not null) then
-    raise notice 'WARNING: ref_table_type value "%" existed from a previous test. Deleting...', c_name;
-    call pareto.d_ref_table_type(v_id_ref_table_type, c_username, v_response);
-    raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
-
-    -- Table Values (ref_tables)
-    select id into v_id
-      from pareto.ref_tables
-     where id_ref_table_type = v_id_ref_table_type;
-
-    if (v_id is not null) then
-      raise exception 'Orphaned Values Exist. Check ref_tables Cascade Delete';
-    end if;
-  end if;
- 
-  -- ----------------------------------
   -- Create the Reference Table Type
   -- ----------------------------------
   call pareto.i_ref_table_type(c_name, c_description, true, 'scott', v_response);
@@ -130,6 +108,7 @@ begin
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   assert v_response.success = true, 'Test failed: d_tables was not successful. See logs for details.';
 
+  rollback;
   raise notice 'Test ref_tables Persist Completed';
 
 end;

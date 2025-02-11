@@ -36,20 +36,6 @@ begin
   assert v_id_domain is not null, 'Test failed: g_id_domain_alt_keys failed to find the domain.';
   
   -- ----------------------------------
-  -- Clean if necessary
-  -- ----------------------------------
-  select id into v_id 
-    from pareto.domain_object 
-   where id_domain = v_id_domain
-     and name = c_name;
-   
-  if (v_id is not null) then
-    raise notice 'WARNING: domain_object value "%" existed from a previous test. Deleting...', c_name;
-    call pareto.d_domain_object(v_id, c_username, v_response);
-    raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
-  end if;
-
-  -- ----------------------------------
   -- Insert
   -- ----------------------------------
   call pareto.i_domain_object(v_id_domain, c_name, c_description,  true, 'scott1', v_response);
@@ -91,6 +77,7 @@ begin
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   assert v_response.success = true, 'Test failed: d_domain_object was not successful. See logs for details.';
     
+  rollback;
   raise notice 'Test domain_object Completed';
 
 end;

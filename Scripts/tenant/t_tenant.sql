@@ -23,19 +23,6 @@ begin
   raise notice 'Test tenant Persist Beginning';
 
   -- ----------------------------------
-  -- Clean if necessary
-  -- ----------------------------------
-  select id into v_id 
-    from pareto.tenant 
-   where name = c_name;
-   
-  if (v_id is not null) then
-    raise notice 'WARNING: tenant value "%" existed from a previous test. Deleting...', c_name;
-    call pareto.d_tenant(v_id, c_username, v_response);
-    raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
-  end if;
-
-  -- ----------------------------------
   -- Insert
   -- ----------------------------------
   call pareto.i_tenant(c_name, c_description, c_copyright, 'scott1', v_response);
@@ -70,6 +57,7 @@ begin
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   assert v_response.success = true, 'Test failed: d_tenant was not successful. See logs for details.';
 
+  rollback;
   raise notice 'Test tenant Persist Completed';
 
 end;

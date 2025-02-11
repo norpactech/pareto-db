@@ -24,19 +24,6 @@ begin
   raise notice 'Test ref_table_type Persist Beginning';
 
   -- ----------------------------------
-  -- Clean if necessary
-  -- ----------------------------------
-  select id into v_id 
-    from pareto.ref_table_type 
-   where name = c_name;
-   
-  if (v_id is not null) then
-    raise notice 'WARNING: ref_table_type value "%" existed from a previous test. Deleting...', c_name;
-    call pareto.d_ref_table_type_by_alt_key(c_name, c_username, v_response);
-    raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
-  end if;
-
-  -- ----------------------------------
   -- Insert
   -- ----------------------------------
   call pareto.i_ref_table_type(c_name, c_description, v_is_global, 'scott', v_response);
@@ -71,6 +58,7 @@ begin
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   assert v_response.success = true, 'Test failed: d_alt_ref_table_type was not successful. See logs for details.';
 
+  rollback;
   raise notice 'Test ref_table_type Persist Completed';
 
 end;

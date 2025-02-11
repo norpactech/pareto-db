@@ -16,7 +16,7 @@ create procedure pareto.i_ref_tables(
   in in_name              varchar,
   in in_description       text,
   in in_value             text,
-  in in_sort_seq          int,
+  in in_seq               int,
   in in_created_by        varchar,
   out response pareto.response
 )
@@ -37,7 +37,7 @@ begin
     'name'             , in_name,
     'description'      , in_description,
     'value'            , in_value,
-    'sort_seq'         , in_sort_seq
+    'seq'              , in_seq
   );
 
   insert into pareto.ref_tables (
@@ -46,7 +46,7 @@ begin
     name,
     description,
     value,
-    sort_seq,
+    seq,
     created_by,
 	updated_by
   )
@@ -56,7 +56,7 @@ begin
     in_name,
     in_description,
     in_value,
-    in_sort_seq,
+    in_seq,
     in_created_by,
 	in_created_by
   )
@@ -94,7 +94,7 @@ create procedure pareto.u_ref_tables(
   in in_name        varchar,
   in in_description text,
   in in_value       text,
-  in in_sort_seq    int,
+  in in_seq         int,
   in in_updated_by  varchar,
   out response      pareto.response
 )
@@ -113,14 +113,14 @@ begin
     'name'       , in_name,
     'description', in_description,
     'value'      , in_value,
-    'sort_seq'   , in_sort_seq
+    'seq'        , in_seq
   );
 
   update pareto.ref_tables set 
     name        = in_name,
     description = in_description,
     value       = in_value,
-    sort_seq    = in_sort_seq,
+    seq         = in_seq,
 	  updated_by  = in_updated_by
   where id = in_id
   returning updated_at into v_updated_at;

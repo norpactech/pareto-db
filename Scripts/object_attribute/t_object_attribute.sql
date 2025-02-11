@@ -21,6 +21,8 @@ declare
   c_length         constant int     := 10;
   c_precision      constant int     := 2;  
   c_is_nullable    constant boolean := true;
+  c_default_value  constant varchar := 't_default';
+  c_seq            constant int     := 1;
   c_username       constant varchar := 't_username';
   
   v_id_domain        uuid;
@@ -63,6 +65,8 @@ begin
     c_length ,
     c_precision,
     c_is_nullable,
+    c_default_value,
+    c_seq,
     c_username,
     v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
@@ -79,6 +83,8 @@ begin
     c_length,
     c_precision,
     c_is_nullable,
+    c_default_value,
+    c_seq,
     c_username,
     v_response);
   raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;

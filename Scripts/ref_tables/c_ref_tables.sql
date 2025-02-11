@@ -12,7 +12,7 @@ create table pareto.ref_tables (
   name                  varchar(50) not null,
   description           text,
   value                 text        not null,
-  sort_seq              int         not null  default 0,
+  seq                   int         not null  default 0,
   created_at            timestamptz not null  default current_timestamp,
   created_by            varchar(50) not null,
   updated_at            timestamptz not null  default current_timestamp,

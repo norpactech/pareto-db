@@ -50,6 +50,7 @@ begin
   delete from pareto.logs where service_name = c_service_name; 
   raise notice 'INFO: log Deleted';
   
+  rollback;
   raise notice 'Test logs Persist Completed';
 
 end;
