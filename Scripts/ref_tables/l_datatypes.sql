@@ -13,7 +13,7 @@ declare
   c_tenant         constant varchar := 'system';
   c_ref_table_type constant varchar := 'datatype';
 
-  v_seq               int;
+  v_seq               int   := 0;
   v_id_tenant         uuid;
   v_id_ref_table_type uuid;
   v_response          pareto.response;
@@ -29,134 +29,152 @@ begin
    where name = c_tenant;
   assert v_id_tenant is not null, 'Load failed: tenant ' || c_tenant || ' not found.';
   
-  select id into v_id_ref_table_type 
-    from pareto.ref_table_type 
-   where name = c_ref_table_type;
-  assert v_id_ref_table_type is not null, 'Load failed: ref_table_type ' || c_ref_table_type || ' not found.';
-
-  v_seq := 0;
+  call pareto.i_ref_table_type(c_ref_table_type, 'Data Types', true, 'scott', v_response);
+  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
+  v_id_ref_table_type := v_response.id;
 
   -- -----------------------------------
   -- String Data
   -- -----------------------------------
-  
+  v_seq := v_seq + 1;
   call pareto.i_ref_tables(
     v_id_tenant, 
     v_id_ref_table_type, 
     'varchar',  
     'Character Varying String', 
     'varchar', 
-    (set v_seq := v_seq + 1), 
+    v_seq, 
     'system', 
     v_response);
-    
+  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
+
+  v_seq := v_seq + 1;
   call pareto.i_ref_tables(
     v_id_tenant, 
     v_id_ref_table_type, 
     'text',  
     'Unlimted String', 
     'text', 
-    (set v_seq := v_seq + 1), 
+    v_seq, 
     'system', 
     v_response);
+  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   
+  v_seq := v_seq + 1;
   call pareto.i_ref_tables(
     v_id_tenant, 
     v_id_ref_table_type, 
     'char',  
     'Fixed Length String', 
     'char', 
-    (set v_seq := v_seq + 1), 
+    v_seq, 
     'system', 
     v_response);
+  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
 
   -- -----------------------------------
   -- Numeric Data
   -- -----------------------------------
     
+  v_seq := v_seq + 1;
   call pareto.i_ref_tables(
     v_id_tenant, 
     v_id_ref_table_type, 
     'int',  
     'Integer', 
     'int', 
-    (set v_seq := v_seq + 1), 
+    v_seq, 
     'system', 
     v_response);
+  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   
+  v_seq := v_seq + 1;
   call pareto.i_ref_tables(
     v_id_tenant, 
     v_id_ref_table_type, 
     'bigint',  
     'Big Integer', 
     'bigint', 
-    (set v_seq := v_seq + 1), 
+    v_seq, 
     'system', 
     v_response);
+  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   
+  v_seq := v_seq + 1;
   call pareto.i_ref_tables(
     v_id_tenant, 
     v_id_ref_table_type, 
     'float',  
     'Single-Precision Floating-Point.', 
     'float', 
-    (set v_seq := v_seq + 1), 
+    v_seq, 
     'system', 
     v_response);
+  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   
+  v_seq := v_seq + 1;
   call pareto.i_ref_tables(
     v_id_tenant, 
     v_id_ref_table_type, 
     'double',  
     'Double-Precision Floating-Point.', 
     'double', 
-    (set v_seq := v_seq + 1), 
+    v_seq, 
     'system', 
     v_response);
+  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
 
+  v_seq := v_seq + 1;
   call pareto.i_ref_tables(
     v_id_tenant, 
     v_id_ref_table_type, 
     'numeric',  
     'Precision for Financial and High-precision calculations. i.e. numeric(10,2)', 
     'numeric', 
-    (set v_seq := v_seq + 1), 
+    v_seq, 
     'system', 
     v_response);
+  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
     
   -- -----------------------------------
   -- Various Data Types
   -- -----------------------------------
     
+  v_seq := v_seq + 1;
   call pareto.i_ref_tables(
     v_id_tenant, 
     v_id_ref_table_type, 
     'bool',  
     'True/False', 
     'bool', 
-    (set v_seq := v_seq + 1), 
+    v_seq, 
     'system', 
     v_response);
+  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   
+  v_seq := v_seq + 1;
   call pareto.i_ref_tables(
     v_id_tenant, 
     v_id_ref_table_type, 
     'uuid',  
     'Unique Identifier', 
     'uuid', 
-    (set v_seq := v_seq + 1), 
+    v_seq, 
     'system', 
     v_response);
+  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
 
+  v_seq := v_seq + 1;
   call pareto.i_ref_tables(
     v_id_tenant, 
     v_id_ref_table_type, 
     'json',  
     'Unstructured JSON Data',
     'json', 
-    (set v_seq := v_seq + 1), 
+    v_seq, 
     'system', 
     v_response);
+  raise notice '%, %, %, %', v_response.success, v_response.id, v_response.updated, v_response.message;
   
 end;
 $$;

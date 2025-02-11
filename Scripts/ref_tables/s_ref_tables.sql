@@ -31,8 +31,6 @@ declare
   
 begin
 
-  raise notice 'Test ref_tables Persist Completed';
-
   v_metadata := jsonb_build_object(
     'id_tenant'        , in_id_tenant,
     'id_ref_table_type', in_id_ref_table_type,

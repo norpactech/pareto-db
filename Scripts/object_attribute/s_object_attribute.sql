@@ -12,8 +12,12 @@ drop procedure if exists pareto.react_object_attribute;
 
 create procedure pareto.i_object_attribute(
   in in_id_domain_object uuid,
+  in in_id_rt_data_type  uuid,
   in in_name             varchar,
   in in_description      text,
+  in in_length           int,
+  in in_precision        int,
+  in in_is_nullable      boolean,
   in in_created_by       varchar,
   out response           pareto.response
 )
@@ -22,7 +26,7 @@ as $$
 declare
  
   c_service_name constant varchar := 'pareto.i_object_attribute';
-  v_id uuid;
+  v_id         uuid;
   v_updated_at timestamp;
   v_metadata   jsonb;
   
@@ -30,21 +34,34 @@ begin
 
   v_metadata := jsonb_build_object(
     'id_domain_object', in_id_domain_object,
+    'id_rt_data_type' , in_id_rt_data_type,
     'name'            , in_name,
-    'description'     , in_description
+    'description'     , in_description,
+    'length'          , in_length,
+    'precision'       , in_precision,
+    'is_nullable'     , in_is_nullable,
+    'created_by'      , in_created_by
   );
 
   insert into pareto.object_attribute (
     id_domain_object,
+    id_rt_data_type,
     name,
     description,
+    length,
+    precision,
+    is_nullable,
     created_by,
 	  updated_by
   )
   values (
     in_id_domain_object,
+    in_id_rt_data_type,
     in_name,
     in_description,
+    in_length,
+    in_precision,
+    in_is_nullable,
     in_created_by,
 	  in_created_by
   )
@@ -78,11 +95,15 @@ $$;
 -- ----------------------------------------------------------------------------
 
 create procedure pareto.u_object_attribute(
-  in in_id          uuid,
-  in in_name        varchar,
-  in in_description text,
-  in in_updated_by  varchar,
-  out response      pareto.response
+  in in_id              uuid,
+  in in_id_rt_data_type uuid,
+  in in_name            varchar,
+  in in_description     text,
+  in in_length          int,
+  in in_precision       int,
+  in in_is_nullable     boolean,
+  in in_updated_by      varchar,
+  out response          pareto.response
 )
 language plpgsql
 as $$
@@ -95,14 +116,22 @@ declare
 begin
 
   v_metadata := jsonb_build_object(
-    'id'         , in_id,
-    'name'       , in_name,
-    'description', in_description
+    'id'             , in_id,
+    'id_rt_data_type', in_id_rt_data_type,
+    'name'           , in_name,
+    'length'         , in_length,
+    'precision'      , in_precision,
+    'is_nullable'    , in_is_nullable,
+    'updated_by'     , in_updated_by
   );
 
   update pareto.object_attribute set 
-    name        = in_name,
-    description = in_description,
+    id_rt_data_type = in_id_rt_data_type,
+    name            = in_name,
+    description     = in_description,
+    length          = in_length,
+    precision       = in_precision,
+    is_nullable     = in_is_nullable,
 	  updated_by  = in_updated_by
   where id = in_id
   returning updated_at into v_updated_at;

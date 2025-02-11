@@ -14,7 +14,6 @@ create table pareto.object_attribute (
   length                int,
   precision             int,
   is_nullable           boolean     not null  default false,
-  is_unique             boolean     not null  default false,
   created_at            timestamptz not null  default current_timestamp,
   created_by            varchar(50) not null,
   updated_at            timestamptz not null  default current_timestamp,

@@ -16,7 +16,7 @@ if not defined PGHOST (
 echo Beginning Tester
 rem  Comment the following line to run all tests 
 rem    ... or uncomment and copy specific tests under :tester
-goto tester
+rem goto tester
 
 rem Commons Domain
 
@@ -35,7 +35,6 @@ psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\object_attribute\t
 
 rem Place Test to be run here
 :tester
-psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\object_attribute\t_object_attribute.sql" || goto exception
 
 echo Tester Completed Successfully
 exit /b 0

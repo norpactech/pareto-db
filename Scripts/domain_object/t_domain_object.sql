@@ -11,7 +11,7 @@ as $$
 declare
  
   c_tenant_name constant varchar := 'system';
-  c_schema_name constant varchar := 'system';
+  c_schema_name constant varchar := 'pareto';
   c_domain_name constant varchar := 'commons';
   
   c_test_name   constant varchar := 't_domain_object';
