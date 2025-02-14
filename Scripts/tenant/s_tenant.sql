@@ -194,7 +194,7 @@ $$;
 -- ----------------------------------------------------------------------------
 
 create function pareto.deact_tenant(
-  _id         varchar,
+  id          varchar,
   deact_by    varchar
 )
 returns json as $$
@@ -203,8 +203,8 @@ declare
   c_service_name constant varchar := 'pareto.deact_tenant';
   v_metadata   jsonb;
   v_updated_at timestamp;
-  
-  v_id     uuid := _id::UUID;
+
+  v_id     uuid := id::uuid;
   response json := '{}';
 
 begin
@@ -213,8 +213,8 @@ begin
     'id', v_id
   );
 
-  update pareto.tenant set is_active = false
-   where id = v_id
+  update pareto.tenant t set is_active = false
+   where t.id = v_id
   returning updated_at into v_updated_at;
 
   response := jsonb_build_object(

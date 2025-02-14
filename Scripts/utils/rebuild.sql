@@ -33,28 +33,3 @@ create type pareto.response AS (
   updated timestamp,
   message text
 );
-
--- ----------------------------------------------------------------------------
--- PostgREST Users
--- ----------------------------------------------------------------------------
-
-do $$ 
-begin
-  if not exists(select 1 from pg_roles where rolname = 'web_anon') then
-    create role web_anon nologin;
-  end if;
-
-  if not exists(select 1 from pg_roles where rolname = 'web_update') then
-    create role web_update nologin;
-  end if;
-
-end $$;
-
--- web_anon
-grant usage on schema pareto to web_anon;
-grant select on all tables in schema pareto to web_anon;
-
--- web_update
-grant usage on schema pareto TO web_update;
-grant all privileges on all tables in schema pareto to web_update;
-grant all privileges on all functions in schema pareto to web_update;
