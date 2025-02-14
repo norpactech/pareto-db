@@ -5,9 +5,9 @@
 -- ----------------------------------------------------------------------------
 
 drop procedure if exists pareto.i_tenant;
-drop procedure if exists pareto.u_tenant;
+drop function if exists pareto.u_tenant;
 drop procedure if exists pareto.d_tenant;
-drop procedure if exists pareto.deact_tenant;
+drop function if exists pareto.deact_tenant;
 drop procedure if exists pareto.react_tenant;
 
 create procedure pareto.i_tenant(
@@ -77,21 +77,21 @@ $$;
 -- Update
 -- ----------------------------------------------------------------------------
 
-create procedure pareto.u_tenant(
+create function pareto.u_tenant(
   in in_id          uuid,
   in in_name        varchar,
   in in_description text,
   in in_copyright   varchar,
-  in in_updated_by  varchar,
-  out response      pareto.response
+  in in_updated_by  varchar
 )
-language plpgsql
-as $$
+returns pareto.response as $$
 declare
  
   c_service_name constant varchar := 'pareto.u_tenant';
   v_updated_at timestamp;
   v_metadata   jsonb;
+
+  response pareto.response;
   
 begin
 
@@ -123,6 +123,8 @@ begin
     response.message := 'Update Successful';
   end if;
 
+  return response;
+
 exception
   when others then
     response.success := false;
@@ -130,9 +132,12 @@ exception
     response.updated := null;
     response.message := 'Exception: ' || sqlerrm;
     call pareto.i_logs('ERROR', response.message, c_service_name, in_updated_by, v_metadata);
-	
+
+  return response;
+
 end;
-$$;
+$$ language plpgsql volatile;
+
 
 -- ----------------------------------------------------------------------------
 -- Delete
@@ -188,52 +193,38 @@ $$;
 -- Set to Deactivate Status (hide)
 -- ----------------------------------------------------------------------------
 
-create procedure pareto.deact_tenant(
-  in in_id          uuid,
-  in in_deact_by    varchar,
-  out response      pareto.response
+create function pareto.deact_tenant(
+  _id         varchar,
+  deact_by    varchar
 )
-language plpgsql
-as $$
+returns json as $$
 declare
  
   c_service_name constant varchar := 'pareto.deact_tenant';
   v_metadata   jsonb;
   v_updated_at timestamp;
+  
+  v_id     uuid := _id::UUID;
+  response json := '{}';
 
 begin
 
   v_metadata := jsonb_build_object(
-    'id', in_id
+    'id', v_id
   );
 
   update pareto.tenant set is_active = false
-   where id = in_id
+   where id = v_id
   returning updated_at into v_updated_at;
 
-  if not found then
-    response.success := false;
-    response.id := null;
-    response.updated := null;
-    response.message := 'Error: Tenant does not exist for id: ' || coalesce(in_id::text, 'NULL');
-    call pareto.i_logs('ERROR', response.message, c_service_name, in_deact_by, v_metadata);
-  else
-    response.success := true;
-    response.id := in_id;
-    response.updated := v_updated_at;
-    response.message := 'Deactivate Successful';
-  end if;
-
-exception
-  when others then
-    response.success := false;
-    response.id := null;
-    response.updated := null;
-    response.message := 'Exception: ' || sqlerrm;
-    call pareto.i_logs('ERROR', response.message, c_service_name, in_deact_by, v_metadata);
+  response := jsonb_build_object(
+    'id', v_id,
+    'updated_at', v_updated_at
+  );
   
+  return response;
 end;
-$$;
+$$ language plpgsql volatile;
 
 -- ----------------------------------------------------------------------------
 -- Set to Active Status

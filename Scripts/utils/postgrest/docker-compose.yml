@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # Important Note: 
+  #
+  #  Using the jwks.json URL didn't work as suggested by ChatGPT. Instead, as 
+  #  per the PostgREST Auth0 documentation, the public key needs to be 
+  #  called using the appropriate URL, downloaded and stored in a file. 
+  #  This file is then mounted as a volume as illustrated below.
+  # ---------------------------------------------------------------------------
+  
+  server:    
+    image: postgrest/postgrest
+    container_name: postgrest
+    ports:
+      - "8090:3000"
+    environment:
+      PGRST_DB_URI: postgres://norpac:password@host.docker.internal:5432/norpac
+      PGRST_DB_SCHEMA: pareto
+      PGRST_DB_ANON_ROLE: web_update
+      PGRST_JWT_SECRET: "@/opt/config/rsa.jwk.pub"
+      PGRST_JWT_AUD: ${PGRST_JWT_AUD}
+      PGRST_ROLE_CLAIM_KEY: '."cognito:groups"[0]'
+    volumes:
+      - "./certs/rsa.jwk.pub:/opt/config/rsa.jwk.pub"
+    
+  swagger:
+    image: swaggerapi/swagger-ui
+    container_name: swagger
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    environment:
+      API_URL: http://localhost:8090/
+                 
+# PostgREST Configuration Options
+# Database Connection
+# PGRST_DB_URI: postgres://user:password@host:port/dbname  # Database connection URI
+# PGRST_DB_SCHEMA: public                                  # Schema exposed via API
+# PGRST_DB_ANON_ROLE: web_anon                             # Role used for anonymous requests
+
+# Authentication & Authorization
+# PGRST_JWT_SECRET: your-secret-key                        # Secret key for JWT authentication
+# PGRST_JWT_AUD: your-audience                             # Expected audience claim in JWTs
+# PGRST_ROLE_CLAIM_KEY: .role                              # JSON path to the role claim in JWT
+
+# Server Configuration
+# PGRST_SERVER_PORT: 3000                                  # Port to run the API on
+# PGRST_SERVER_HOST: 0.0.0.0                               # Bind to specific interface
+# PGRST_LOG_LEVEL: info                                    # Logging level (error, warn, info, debug)
+# PGRST_OPENAPI_SERVER_PROXY_URI: http://api.example.com   # Proxy for OpenAPI spec
+
+# Performance & Caching
+# PGRST_MAX_ROWS: 1000                                     # Max rows returned per request
+# PGRST_PRE_REQUEST:                                       # PL/pgSQL function to run before each request
+# PGRST_APP_SETTINGS_JWT_SECRET: secret-key                # Load secret from db settings
+# PGRST_DB_POOL: 10                                        # Number of database connections
+# PGRST_DB_POOL_ACQUISITION_TIMEOUT: 10                    # Timeout for acquiring a db connection
+
+# Debugging & Development
+# PGRST_DB_CONFIG: true                                    # Load config from PostgreSQL settings
+# PGRST_ADMIN_SERVER_PORT: 3001                            # Separate admin server port
+      

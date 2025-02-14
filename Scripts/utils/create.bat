@@ -46,6 +46,10 @@ psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\domain_object\f_do
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\domain_object\s_domain_object.sql" || goto exception
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\object_attribute\s_object_attribute.sql" || goto exception
 
+
+rem Add PostgREST users
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f ".\postgrest.sql" || goto exception
+
 echo Completed Create Stored Procedures 
 echo Create Completed Successfully
 exit /b 0
