@@ -19,7 +19,7 @@ services:
     environment:
       PGRST_DB_URI: postgres://norpac:password@host.docker.internal:5432/norpac
       PGRST_DB_SCHEMA: pareto
-      PGRST_DB_ANON_ROLE: web_anon
+      PGRST_DB_ANON_ROLE: norpac
       PGRST_JWT_SECRET: "@/opt/config/rsa.jwk.pub"
       PGRST_JWT_AUD: ${PGRST_JWT_AUD}
       PGRST_ROLE_CLAIM_KEY: '."cognito:groups"[0]'

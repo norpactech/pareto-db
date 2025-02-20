@@ -5,8 +5,11 @@
 -- ----------------------------------------------------------------------------
 
 -- ----------------------------------------------------------------------------
--- Drop all dependent objects and recreate the schema
+-- Drop all dependent objects and recreate the schemas
 -- ----------------------------------------------------------------------------
+
+drop schema if exists public cascade;
+create schema public authorization norpac;
 
 drop schema if exists pareto cascade;
 create schema pareto authorization norpac;
@@ -15,7 +18,7 @@ create schema pareto authorization norpac;
 -- Trigger function(s)
 -- ----------------------------------------------------------------------------
 
-create function pareto.update_at()
+create function update_at()
 returns trigger as $$
 begin
   new.updated_at = now();
@@ -27,9 +30,20 @@ $$ language plpgsql;
 -- Type(s)
 -- ----------------------------------------------------------------------------
 
-create type pareto.response AS (
-  success boolean,
-  id uuid,
-  updated timestamp,
-  message text
+CREATE TYPE pg_resp AS (
+  status     TEXT,
+  data       JSONB,
+  errors     JSONB,
+  error_code TEXT,
+  message    TEXT,
+  hint       TEXT,
+  detail     TEXT
 );
+
+CREATE TYPE pg_val AS (
+  passed  BOOLEAN,
+  field   TEXT,
+  message TEXT
+);
+
+

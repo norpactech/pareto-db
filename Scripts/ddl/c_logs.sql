@@ -5,12 +5,12 @@
 -- ----------------------------------------------------------------------------
 
 create table pareto.logs (  
-  id                    uuid         not null default gen_random_uuid(),
-  created_at            timestamptz  not null default current_timestamp,
-  level                 varchar(10)  not null check (level in ('DEBUG','INFO','WARNING','ERROR','CRITICAL')),
-  message               text         not null,
-  service_name          varchar(255) not null,
-  created_by            varchar(50),
+  id                    pk,
+  created_at            timestamp_at,
+  level                 text          not null check (level in ('DEBUG','INFO','WARNING','ERROR','CRITICAL')),
+  message               text          not null,
+  service_name          text          not null,
+  created_by            text          not null  default 'unavailable',
   metadata JSONB default '{}'::JSONB
 );
 

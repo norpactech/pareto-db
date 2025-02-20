@@ -1,26 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<diagram version="1" name="pareto.erd">
-	<entities>
-		<data-source id="postgres-jdbc-194e2280f2f-701dd16c2becdd66">
-			<entity id="1" name="logs" fq-name="pareto.logs" order="0" x="40" y="280">
-				<path name="pareto"/>
-				<path name="norpac"/>
-			</entity>
-			<entity id="2" name="ref_table_type" fq-name="pareto.ref_table_type" order="1" x="260" y="60">
-				<path name="pareto"/>
-				<path name="norpac"/>
-			</entity>
-			<entity id="3" name="ref_tables" fq-name="pareto.ref_tables" order="2" border-width="3" x="40" y="60">
-				<path name="pareto"/>
-				<path name="norpac"/>
-			</entity>
-			<entity id="4" name="tenant" fq-name="pareto.tenant" order="3" x="260" y="280">
-				<path name="pareto"/>
-				<path name="norpac"/>
-			</entity>
-		</data-source>
-	</entities>
-	<relations>
-		<relation name="ref_tables_ref_table_type" fq-name="pareto.ref_tables.ref_tables_ref_table_type" type="fk" pk-ref="2" fk-ref="3"/>
-	</relations>
+<diagram version="1" name="pareto">
+	<entities/>
+	<relations/>
 </diagram>

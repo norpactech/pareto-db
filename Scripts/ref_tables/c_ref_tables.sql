@@ -9,14 +9,14 @@ create table pareto.ref_tables (
   id uuid                                     default gen_random_uuid(),
   id_tenant             uuid        not null,
   id_ref_table_type     uuid        not null,
-  name                  varchar(50) not null,
+  name                  text        not null,
   description           text,
   value                 text        not null,
   seq                   int         not null  default 0,
   created_at            timestamptz not null  default current_timestamp,
-  created_by            varchar(50) not null,
+  created_by            text        not null,
   updated_at            timestamptz not null  default current_timestamp,
-  updated_by            varchar(50) not null,
+  updated_by            text        not null,
   is_active             boolean     not null  default true
 );
 
