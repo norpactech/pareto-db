@@ -4,11 +4,12 @@
 -- See LICENSE file in the project root for full license information.
 -- ----------------------------------------------------------------------------
 
-CREATE TABLE pareto.ref_table_type (
+CREATE TABLE pareto.domain_object (
   id                    pk,
-  name                  generic_name not null,
+  id_domain             fk           NOT NULL,
+  name                  generic_name NOT NULL,
   description           description,
-  is_global             boolean      not null,
+  has_audit             BOOLEAN      NOT NULL DEFAULT TRUE,
   created_at            timestamp_at,
   created_by            username,
   updated_at            timestamp_at,
@@ -16,12 +17,20 @@ CREATE TABLE pareto.ref_table_type (
   is_active             active
 );
 
-ALTER TABLE pareto.ref_table_type
+ALTER TABLE pareto.domain_object
   ADD PRIMARY KEY (id);
 
-CREATE UNIQUE INDEX ref_table_type_alt_key on pareto.ref_table_type(LOWER(name));
+CREATE UNIQUE INDEX domain_object_alt_key 
+  ON pareto.domain_object(id_domain, lower(name));
+
+ALTER TABLE pareto.domain_object
+  ADD CONSTRAINT domain_object_domain
+  FOREIGN KEY (id_domain)
+  REFERENCES pareto.domain(id)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE;
 
 CREATE TRIGGER update_at
-  BEFORE UPDATE ON pareto.ref_table_type
+  BEFORE UPDATE ON pareto.domain_object
     FOR EACH ROW
       EXECUTE FUNCTION update_at();

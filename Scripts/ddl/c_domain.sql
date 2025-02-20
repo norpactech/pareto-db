@@ -4,11 +4,11 @@
 -- See LICENSE file in the project root for full license information.
 -- ----------------------------------------------------------------------------
 
-CREATE TABLE pareto.user (  
+CREATE TABLE pareto.domain (  
   id                    pk,
-  username              username,
-  email                 email         not null,
-  full_name             generic_name  not null,
+  id_schema             fk           NOT NULL,
+  name                  generic_name NOT NULL,
+  description           description,
   created_at            timestamp_at,
   created_by            username,
   updated_at            timestamp_at,
@@ -16,13 +16,20 @@ CREATE TABLE pareto.user (
   is_active             active
 );
 
-ALTER TABLE pareto.user
+ALTER TABLE pareto.domain
   ADD PRIMARY KEY (id);
 
-CREATE UNIQUE INDEX user_alt_key on pareto.user(LOWER(username));
-CREATE UNIQUE INDEX user_email on pareto.user(LOWER(email));
+CREATE UNIQUE INDEX domain_alt_key 
+  ON pareto.schema(id_tenant, LOWER(name));
 
-CREATE TRIGGER update_at
-  BEFORE UPDATE ON pareto.user
+ALTER TABLE pareto.domain
+  ADD CONSTRAINT domain_schema
+  FOREIGN KEY (id_schema)
+  REFERENCES pareto.schema(id)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE;
+
+CREATE TRIGGER domain_update_at
+  BEFORE UPDATE ON pareto.domain
     FOR EACH ROW
       EXECUTE FUNCTION update_at();

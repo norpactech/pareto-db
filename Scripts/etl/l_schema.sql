@@ -7,9 +7,15 @@
 DO $$ 
 DECLARE
 
+  v_id_tenant fk;
+
 BEGIN
 
-  INSERT INTO pareto.tenant (name, description, copyright, created_by, updated_by)
-    VALUES ('system', 'Global System Tenant', 'Northern Pacific Technologies', 'loader', 'loader');
+  SELECT id INTO v_id_tenant FROM pareto.tenant WHERE name = 'system';
   
+  INSERT INTO pareto.schema (id_tenant, name, description, created_by, updated_by)
+    VALUES (v_id_tenant, 'system', 'Pareto System Schema', 'loader', 'loader');
+
 END $$;
+
+  

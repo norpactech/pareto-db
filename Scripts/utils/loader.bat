@@ -14,8 +14,11 @@ if not defined PGHOST (
 rem Commons Domain
 rem goto start
 
-psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\etl\l_user.sql" || goto exception
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\etl\l_user.sql"   || goto exception
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\etl\l_tenant.sql" || goto exception
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\etl\l_schema.sql" || goto exception
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\etl\l_domain.sql" || goto exception
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\etl\domain_objects\l_user.sql" || goto exception
 
 rem Load Table Values
 rem psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ref_tables\l_datatypes.sql" || goto exception

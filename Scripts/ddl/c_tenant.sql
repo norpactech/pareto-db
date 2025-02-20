@@ -4,7 +4,7 @@
 -- See LICENSE file in the project root for full license information.
 -- ----------------------------------------------------------------------------
 
-create table pareto.tenant (
+CREATE TABLE pareto.tenant (
   id                    pk,
   name                  generic_name not null,
   description           description,
@@ -16,12 +16,12 @@ create table pareto.tenant (
   is_active             active
 );
 
-alter table pareto.tenant
-  add primary key (id);
+ALTER TABLE pareto.tenant
+  ADD PRIMARY KEY (id);
 
-create unique index tenant_alt_key on pareto.tenant(lower(name));
+CREATE UNIQUE INDEX tenant_alt_key on pareto.tenant(LOWER(name));
 
-create trigger update_at
-  before update on pareto.tenant
-    for each row
-      execute function update_at();
+CREATE TRIGGER update_at
+  BEFORE UPDATE ON pareto.tenant
+    FOR EACH ROW
+      EXECUTE FUNCTION update_at();
