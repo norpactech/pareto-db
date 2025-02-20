@@ -7,8 +7,9 @@
 CREATE TABLE pareto.domain_object (
   id                    pk,
   id_domain             fk           NOT NULL,
-  name                  generic_name NOT NULL,
+  name                  TEXT         NOT NULL,
   description           description,
+  has_identifier        BOOLEAN      NOT NULL DEFAULT TRUE,
   has_audit             BOOLEAN      NOT NULL DEFAULT TRUE,
   created_at            timestamp_at,
   created_by            username,
@@ -21,7 +22,7 @@ ALTER TABLE pareto.domain_object
   ADD PRIMARY KEY (id);
 
 CREATE UNIQUE INDEX domain_object_alt_key 
-  ON pareto.domain_object(id_domain, lower(name));
+  ON pareto.domain_object(id_domain, LOWER(name));
 
 ALTER TABLE pareto.domain_object
   ADD CONSTRAINT domain_object_domain

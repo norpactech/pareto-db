@@ -7,10 +7,10 @@
 create table pareto.logs (  
   id                    pk,
   created_at            timestamp_at,
+  created_by            text          not null default 'unavailable',
   level                 text          not null check (level in ('DEBUG','INFO','WARNING','ERROR','CRITICAL')),
   message               text          not null,
   service_name          text          not null,
-  created_by            text          not null  default 'unavailable',
   metadata JSONB default '{}'::JSONB
 );
 

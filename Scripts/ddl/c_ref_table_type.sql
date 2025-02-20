@@ -6,9 +6,9 @@
 
 CREATE TABLE pareto.ref_table_type (
   id                    pk,
-  name                  generic_name not null,
+  name                  TEXT         NOT NULL,
   description           description,
-  is_global             boolean      not null,
+  is_global             BOOLEAN      NOT NULL,
   created_at            timestamp_at,
   created_by            username,
   updated_at            timestamp_at,

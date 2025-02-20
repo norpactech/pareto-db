@@ -19,16 +19,17 @@ BEGIN
   SELECT id INTO v_id_domain FROM pareto.domain WHERE id_schema = v_id_schema and name = 'pareto';
 
   INSERT INTO pareto.domain_object (id_domain, name, description, has_audit, created_by, updated_by)
-    VALUES (v_id_domain, 'user', 'User Structure', true, 'loader', 'loader')
+    VALUES (v_id_domain, 'ref_table_type', 'Reference Table Types', true, 'loader', 'loader')
       RETURNING id INTO v_id_domain_object;
-
-  INSERT INTO pareto.object_attribute (id_domain_object, name, is_nullable, seq, created_by, updated_by)
-    VALUES (v_id_domain_object, 'username', false, 1, 'loader', 'loader');
   
   INSERT INTO pareto.object_attribute (id_domain_object, name, is_nullable, seq, created_by, updated_by)
-    VALUES (v_id_domain_object, 'email', false, 2, 'loader', 'loader');
+    VALUES (v_id_domain_object, 'name', false, 1, 'loader', 'loader');
+  
+  INSERT INTO pareto.object_attribute (id_domain_object, name, is_nullable, seq, created_by, updated_by)
+    VALUES (v_id_domain_object, 'description', false, 2, 'loader', 'loader');
 
   INSERT INTO pareto.object_attribute (id_domain_object, name, is_nullable, seq, created_by, updated_by)
-    VALUES (v_id_domain_object, 'full_name', false, 3, 'loader', 'loader');
+    VALUES (v_id_domain_object, 'is_global', false, 3, 'loader', 'loader');
+
   
 END $$;
