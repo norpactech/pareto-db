@@ -14,6 +14,8 @@ CREATE SCHEMA public AUTHORIZATION norpac;
 DROP schema IF EXISTS pareto cascade;
 CREATE schema pareto AUTHORIZATION norpac;
 
+CREATE EXTENSION pldbgapi; -- Debugging
+
 -- ----------------------------------------------------------------------------
 -- Trigger function(s) in the Public Schema
 -- ----------------------------------------------------------------------------
@@ -73,16 +75,16 @@ CREATE INDEX logs_service_name ON pareto.logs (service_name);
 -- Insert Logs
 
 CREATE PROCEDURE pareto.i_logs(
-  in in_level         text,
-  in in_message       text,
-  in in_service_name  text,
-  in in_created_by    text,
-  in in_metadata      jsonb
+  IN in_level         TEXT,
+  IN in_message       TEXT,
+  IN in_service_name  TEXT,
+  IN in_created_by    TEXT,
+  IN in_metadata      JSONB
 )
 LANGUAGE plpgsql
 AS $$
 DECLARE
-begin
+BEGIN
 
   INSERT INTO pareto.logs (
     level,

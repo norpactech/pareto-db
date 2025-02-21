@@ -4,9 +4,15 @@
 -- See LICENSE file in the project root for full license information.
 -- ----------------------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION is_email(
-  col   TEXT,
-  email TEXT
+-- --------------------------------------------------------
+-- Validate generic_name
+-- --------------------------------------------------------
+-- --------------------------------------------------------
+-- Validate generic_name
+-- --------------------------------------------------------
+CREATE OR REPLACE FUNCTION is_generic_name(
+  IN in_attribute TEXT,
+  IN in_value     TEXT
 ) 
 RETURNS pg_val
 AS $$
@@ -16,10 +22,10 @@ DECLARE
 
 BEGIN
     
-  IF email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$' THEN
-    v_result := (TRUE, col, NULL);  -- Passed validation
+  IF in_value ~* '^[A-Za-z]+(['' -][A-Za-z]+)*$' THEN
+    v_result := (TRUE, in_attribute, NULL);
   ELSE
-    v_result := (FALSE, col, 'Invalid email format');
+    v_result := (FALSE, in_attribute, 'Invalid generic_name format');
   END IF;
 
   RETURN v_result;
