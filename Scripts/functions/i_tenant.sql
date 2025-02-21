@@ -13,13 +13,19 @@ DECLARE
 
   c_service_name TEXT := 'i_tenant';
 
-  v_val_resp     pg_val;
-  v_errors       JSONB := '[]'::JSONB;
-  v_response     pg_resp;
   v_metadata     JSONB := '{}'::JSONB;
+  v_errors       JSONB := '[]'::JSONB;
+  v_val_resp     pg_val;
+  v_response     pg_resp;
 
   v_id           UUID;
   v_updated_at   TIMESTAMPTZ;
+
+  -- Set variables to avoid ambiguous column names
+  v_name TEXT := name;
+  v_description TEXT := description;
+  v_copyright TEXT := copyright;
+  v_created_by TEXT := created_by;
 
 BEGIN
 
@@ -69,11 +75,11 @@ BEGIN
     updated_by
   )
   VALUES (
-    name, 
-    description, 
-    copyright, 
-    created_by,
-    created_by
+    v_name, 
+    v_description, 
+    v_copyright, 
+    v_created_by,
+    v_created_by
   )
   RETURNING tenant.id, tenant.updated_at INTO v_id, v_updated_at;  
 
@@ -100,6 +106,7 @@ BEGIN
         'Check the provided data and try again'
       );
       CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, created_by, v_metadata);
+      RETURN v_response;
   
     WHEN OTHERS THEN
       v_response := (
@@ -112,8 +119,7 @@ BEGIN
         SQLERRM
       );
       CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, created_by, v_metadata);
-
-    RETURN v_response;
+      RETURN v_response;
   
 END;
 $$ LANGUAGE plpgsql;
