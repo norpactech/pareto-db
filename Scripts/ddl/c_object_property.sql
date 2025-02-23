@@ -4,10 +4,10 @@
 -- See LICENSE file in the project root for full license information.
 -- ----------------------------------------------------------------------------
 
-CREATE TABLE pareto.object_attribute (  
+CREATE TABLE pareto.object_property (  
   id                    pk,
   id_domain_object      fk            NOT NULL,
-  id_attribute_type     fk,
+  id_property_type      fk,
   name                  TEXT          NOT NULL,
   description           description,
   validation            TEXT,
@@ -23,20 +23,20 @@ CREATE TABLE pareto.object_attribute (
   is_active             active
 );
 
-ALTER TABLE pareto.object_attribute
+ALTER TABLE pareto.object_property
   ADD PRIMARY KEY (id);
 
-CREATE UNIQUE INDEX object_attribute_alt_key 
-  ON pareto.object_attribute(id_domain_object, LOWER(name));
+CREATE UNIQUE INDEX object_property_alt_key 
+  ON pareto.object_property(id_domain_object, LOWER(name));
 
-ALTER TABLE pareto.object_attribute
-  ADD CONSTRAINT object_attribute_domain_object
+ALTER TABLE pareto.object_property
+  ADD CONSTRAINT object_property_domain_object
   FOREIGN KEY (id_domain_object)
   REFERENCES pareto.domain_object(id)
   ON UPDATE CASCADE
   ON DELETE CASCADE;
 
 CREATE TRIGGER update_at
-  BEFORE UPDATE ON pareto.object_attribute
+  BEFORE UPDATE ON pareto.object_property
     FOR EACH ROW
       EXECUTE FUNCTION update_at();
