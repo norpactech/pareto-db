@@ -16,7 +16,7 @@ BEGIN
 
   SELECT id INTO v_id_tenant FROM pareto.tenant WHERE name = 'system';
   SELECT id INTO v_id_schema FROM pareto.schema WHERE id_tenant = v_id_tenant and name = 'system';
-  SELECT id INTO v_id_domain FROM pareto.domain WHERE id_schema = v_id_schema and name = 'pareto';
+  SELECT id INTO v_id_domain FROM pareto.domain WHERE id_schema = v_id_schema and name = 'system';
 
   INSERT INTO pareto.domain_object (id_domain, name, description, has_audit, created_by, updated_by)
     VALUES (v_id_domain, 'ref_tables', 'Reference Tables', true, 'loader', 'loader')

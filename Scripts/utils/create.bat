@@ -16,8 +16,7 @@ if not defined PGHOST (
 echo Beginning Global Definitions
 rem goto start
 psql -d norpac -h %PGHOST% -p 5432 -f ".\bootstrap.sql" || goto exception
-psql -d norpac -h %PGHOST% -p 5432 -f ".\domains.sql" || goto exception
-psql -d norpac -h %PGHOST% -p 5432 -f ".\validations.sql" || goto exception
+rem psql -d norpac -h %PGHOST% -p 5432 -f ".\validations.sql" || goto exception
 
 echo Completed Global Definitions
 
@@ -34,21 +33,13 @@ psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ddl\c_tenant.sql" 
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ddl\c_ref_table_type.sql" || goto exception
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ddl\c_ref_tables.sql" || goto exception
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ddl\c_schema.sql" || goto exception
-psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ddl\c_domain.sql" || goto exception
-psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ddl\c_domain_object.sql" || goto exception
-psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ddl\c_object_property.sql" || goto exception
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ddl\c_object.sql" || goto exception
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ddl\c_property.sql" || goto exception
 
 echo Completed Create Tables 
 :start
 
 echo Beginning Create Persist Functions
-
-psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\functions\i_tenant.sql" || goto exception
-psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\functions\u_tenant.sql" || goto exception
-psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\functions\d_tenant.sql" || goto exception
-psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\functions\a_tenant.sql" || goto exception
-
-
  
 echo Completed Create Persist Functions 
 

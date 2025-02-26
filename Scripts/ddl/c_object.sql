@@ -4,34 +4,34 @@
 -- See LICENSE file in the project root for full license information.
 -- ----------------------------------------------------------------------------
 
-CREATE TABLE pareto.domain_object (
-  id                    pk,
-  id_domain             fk           NOT NULL,
+CREATE TABLE pareto.object (
+  id                    UUID         NOT NULL DEFAULT gen_random_uuid(),
+  id_schema             UUID         NOT NULL,
   name                  TEXT         NOT NULL,
-  description           description,
+  description           TEXT,
   has_identifier        BOOLEAN      NOT NULL DEFAULT TRUE,
   has_audit             BOOLEAN      NOT NULL DEFAULT TRUE,
-  created_at            timestamp_at,
-  created_by            username,
-  updated_at            timestamp_at,
-  updated_by            username,
-  is_active             active
+  created_at            TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  created_by            TEXT,
+  updated_at            TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_by            TEXT,
+  is_active             BOOLEAN      NOT NULL DEFAULT TRUE
 );
 
-ALTER TABLE pareto.domain_object
+ALTER TABLE pareto.object
   ADD PRIMARY KEY (id);
 
-CREATE UNIQUE INDEX domain_object_alt_key 
-  ON pareto.domain_object(id_domain, LOWER(name));
+CREATE UNIQUE INDEX object_alt_key 
+  ON pareto.object(id_schema, LOWER(name));
 
-ALTER TABLE pareto.domain_object
-  ADD CONSTRAINT domain_object_domain
-  FOREIGN KEY (id_domain)
-  REFERENCES pareto.domain(id)
+ALTER TABLE pareto.object
+  ADD CONSTRAINT object_schema
+  FOREIGN KEY (id_schema)
+  REFERENCES pareto.schema(id)
   ON UPDATE CASCADE
   ON DELETE CASCADE;
 
 CREATE TRIGGER update_at
-  BEFORE UPDATE ON pareto.domain_object
+  BEFORE UPDATE ON pareto.object
     FOR EACH ROW
       EXECUTE FUNCTION update_at();

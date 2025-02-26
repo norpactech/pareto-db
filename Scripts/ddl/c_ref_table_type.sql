@@ -5,15 +5,15 @@
 -- ----------------------------------------------------------------------------
 
 CREATE TABLE pareto.ref_table_type (
-  id                    pk,
+  id                    UUID         NOT NULL DEFAULT gen_random_uuid(),
   name                  TEXT         NOT NULL,
-  description           description,
+  description           TEXT,
   is_global             BOOLEAN      NOT NULL,
-  created_at            timestamp_at,
-  created_by            username,
-  updated_at            timestamp_at,
-  updated_by            username,
-  is_active             active
+  created_at            TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  created_by            TEXT,
+  updated_at            TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_by            TEXT,
+  is_active             BOOLEAN      NOT NULL DEFAULT TRUE
 );
 
 ALTER TABLE pareto.ref_table_type

@@ -5,18 +5,18 @@
 -- ----------------------------------------------------------------------------
 
 CREATE TABLE pareto.ref_tables (  
-  id                    pk,
-  id_tenant             fk           not null,
-  id_ref_table_type     fk           not null,
-  name                  generic_name not null,
-  description           description,
-  value                 text         not null,
-  seq                   int          not null  default 0,
-  created_at            timestamp_at,
-  created_by            username,
-  updated_at            timestamp_at,
-  updated_by            username,
-  is_active             active
+  id                    UUID         NOT NULL DEFAULT gen_random_uuid(),
+  id_tenant             UUID         NOT NULL,
+  id_ref_table_type     UUID         NOT NULL,
+  name                  TEXT         NOT NULL,
+  description           TEXT,
+  value                 TEXT         NOT NULL,
+  sequence              INT          NOT NULL DEFAULT 0,
+  created_at            TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  created_by            TEXT,
+  updated_at            TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_by            TEXT,
+  is_active             BOOLEAN      NOT NULL DEFAULT TRUE
 );
 
 ALTER TABLE pareto.ref_tables

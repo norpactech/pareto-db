@@ -10,7 +10,7 @@ DECLARE
 BEGIN
 
   INSERT INTO pareto.user (username, email, full_name, created_by, updated_by)
-    VALUES ('admin', 'norpac@email.com', 'Northern Pacific Technologies', 'loader', 'loader');
+    VALUES ('system', 'system@email.com', 'Northern Pacific Technologies', 'loader', 'loader');
 
   INSERT INTO pareto.user (username, email, full_name, created_by, updated_by)
     VALUES ('user', 'user@email.com', 'Test User', 'loader', 'loader');
