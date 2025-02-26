@@ -5,16 +5,16 @@
 -- ----------------------------------------------------------------------------
 
 CREATE TABLE pareto.object (
-  id                    UUID         NOT NULL DEFAULT gen_random_uuid(),
+  id                    UUID         NOT NULL DEFAULT GEN_RANDOM_UUID(),
   id_schema             UUID         NOT NULL,
   name                  TEXT         NOT NULL,
   description           TEXT,
   has_identifier        BOOLEAN      NOT NULL DEFAULT TRUE,
   has_audit             BOOLEAN      NOT NULL DEFAULT TRUE,
   created_at            TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  created_by            TEXT,
+  created_by            TEXT         NOT NULL,
   updated_at            TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_by            TEXT,
+  updated_by            TEXT         NOT NULL,
   is_active             BOOLEAN      NOT NULL DEFAULT TRUE
 );
 

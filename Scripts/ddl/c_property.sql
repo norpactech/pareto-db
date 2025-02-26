@@ -5,7 +5,7 @@
 -- ----------------------------------------------------------------------------
 
 CREATE TABLE pareto.property (  
-  id                    UUID         NOT NULL DEFAULT gen_random_uuid(),
+  id                    UUID         NOT NULL DEFAULT GEN_RANDOM_UUID(),
   id_object             UUID         NOT NULL,
   id_property_type      UUID         NOT NULL,
   name                  TEXT         NOT NULL,
@@ -13,14 +13,14 @@ CREATE TABLE pareto.property (
   validation            TEXT,
   length                INT,
   precision             INT,
-  is_nullable           BOOLEAN       NOT NULL  DEFAULT FALSE,
+  is_nullable           BOOLEAN      NOT NULL  DEFAULT FALSE,
   default_value         TEXT,
-  sequence              INT           NOT NULL,
-  created_at            TIMESTAMPTZ   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  created_by            TEXT,
-  updated_at            TIMESTAMPTZ   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_by            TEXT,
-  is_active             BOOLEAN       NOT NULL DEFAULT TRUE
+  sequence              INT          NOT NULL,
+  created_at            TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  created_by            TEXT         NOT NULL,
+  updated_at            TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_by            TEXT         NOT NULL,
+  is_active             BOOLEAN      NOT NULL DEFAULT TRUE
 );
 
 ALTER TABLE pareto.property

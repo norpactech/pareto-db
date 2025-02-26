@@ -5,14 +5,14 @@
 -- ----------------------------------------------------------------------------
 
 CREATE TABLE pareto.schema (  
-  id                    UUID         NOT NULL DEFAULT gen_random_uuid(),
+  id                    UUID         NOT NULL DEFAULT GEN_RANDOM_UUID(),
   id_tenant             UUID         NOT NULL,
   name                  TEXT         NOT NULL,
   description           TEXT,
   created_at            TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  created_by            TEXT,
+  created_by            TEXT         NOT NULL,
   updated_at            TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_by            TEXT,
+  updated_by            TEXT         NOT NULL,
   is_active             BOOLEAN      NOT NULL DEFAULT TRUE
 );
 

@@ -5,15 +5,15 @@
 -- ----------------------------------------------------------------------------
 
 CREATE TABLE pareto.user (  
-  id                    UUID          NOT NULL DEFAULT gen_random_uuid(),
-  username              TEXT          NOT NULL,
-  email                 TEXT          NOT NULL,
-  full_name             TEXT          NOT NULL,
-  created_at            TIMESTAMPTZ   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  created_by            TEXT,
-  updated_at            TIMESTAMPTZ   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_by            TEXT,
-  is_active             BOOLEAN       NOT NULL DEFAULT TRUE
+  id                    UUID         NOT NULL DEFAULT GEN_RANDOM_UUID(),
+  username              TEXT         NOT NULL,
+  email                 TEXT         NOT NULL,
+  full_name             TEXT         NOT NULL,
+  created_at            TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  created_by            TEXT         NOT NULL,
+  updated_at            TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_by            TEXT         NOT NULL,
+  is_active             BOOLEAN      NOT NULL DEFAULT TRUE
 );
 
 ALTER TABLE pareto.user
