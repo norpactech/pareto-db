@@ -26,7 +26,7 @@ ALTER TABLE pareto.property_type
   ADD PRIMARY KEY (id);
 
 CREATE UNIQUE INDEX property_type_alt_key 
-  ON pareto.property_type(id_rt_data_type, LOWER(name));
+  ON pareto.property_type(id_tenant, LOWER(name));
 
 ALTER TABLE pareto.property_type
   ADD CONSTRAINT property_type_tenant
