@@ -32,6 +32,7 @@ psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ddl\c_user.sql" ||
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ddl\c_tenant.sql" || goto exception
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ddl\c_ref_table_type.sql" || goto exception
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ddl\c_ref_tables.sql" || goto exception
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ddl\c_property_type.sql" || goto exception
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ddl\c_schema.sql" || goto exception
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ddl\c_object.sql" || goto exception
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ddl\c_property.sql" || goto exception
