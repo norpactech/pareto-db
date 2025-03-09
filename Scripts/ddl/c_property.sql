@@ -8,6 +8,7 @@ CREATE TABLE pareto.property (
   id                    UUID         NOT NULL DEFAULT GEN_RANDOM_UUID(),
   id_object             UUID         NOT NULL,
   sequence              INT          NOT NULL,
+  alt_key_sequence      INT,
   name                  TEXT         NOT NULL,
   description           TEXT,
   data_type             TEXT,

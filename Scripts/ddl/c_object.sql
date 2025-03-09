@@ -11,6 +11,7 @@ CREATE TABLE pareto.object (
   description           TEXT,
   has_identifier        BOOLEAN      NOT NULL DEFAULT TRUE,
   has_audit             BOOLEAN      NOT NULL DEFAULT TRUE,
+  has_active            BOOLEAN      NOT NULL DEFAULT TRUE,
   created_at            TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by            TEXT         NOT NULL,
   updated_at            TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
