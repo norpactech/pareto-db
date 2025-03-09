@@ -10,7 +10,7 @@ CREATE TABLE pareto.cardinality (
   id_object_reference        UUID         NOT NULL,
   id_rt_cardinality          UUID         NOT NULL,
   id_rt_cardinality_strength UUID         NOT NULL,
-  cascade_delete             BOOLEAN      NOT NULL DEFAULT FALSE,
+  referencial_action         BOOLEAN      NOT NULL DEFAULT FALSE,
   created_at                 TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by                 TEXT         NOT NULL,
   updated_at                 TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
