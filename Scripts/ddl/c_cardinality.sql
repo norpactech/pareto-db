@@ -35,7 +35,7 @@ ALTER TABLE pareto.cardinality
 ALTER TABLE pareto.cardinality
   ADD CONSTRAINT cardinality_object_reference
   FOREIGN KEY (id_object_reference)
-  REFERENCES pareto.object(id);
+  REFERENCES pareto.data_object(id);
 
 ALTER TABLE pareto.cardinality
   ADD CONSTRAINT cardinality_rt_cardinality

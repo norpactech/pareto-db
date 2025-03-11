@@ -6,7 +6,7 @@
 
 CREATE TABLE pareto.index (
   id                    UUID         NOT NULL DEFAULT GEN_RANDOM_UUID(),
-  id_object	            UUID         NOT NULL,
+  id_data_object	      UUID         NOT NULL,
   id_rt_index_type      UUID         NOT NULL,
   name                  TEXT         NOT NULL,
   is_unique             BOOLEAN      NOT NULL DEFAULT FALSE,
@@ -21,12 +21,12 @@ ALTER TABLE pareto.index
   ADD PRIMARY KEY (id);
 
 CREATE UNIQUE INDEX index_alt_key 
-  ON pareto.index(id_object, LOWER(name));
+  ON pareto.index(id_data_object, LOWER(name));
 
 ALTER TABLE pareto.index
-  ADD CONSTRAINT index_object
-  FOREIGN KEY (id_object)
-  REFERENCES pareto.object(id)
+  ADD CONSTRAINT index_data_object
+  FOREIGN KEY (id_data_object)
+  REFERENCES pareto.data_object(id)
   ON DELETE CASCADE;
 
 CREATE TRIGGER update_at

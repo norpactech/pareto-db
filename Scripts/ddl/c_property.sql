@@ -6,7 +6,7 @@
 
 CREATE TABLE pareto.property (  
   id                    UUID         NOT NULL DEFAULT GEN_RANDOM_UUID(),
-  id_object             UUID         NOT NULL,
+  id_data_object        UUID         NOT NULL,
   sequence              INT          NOT NULL,
   alt_key_sequence      INT,
   name                  TEXT         NOT NULL,
@@ -28,13 +28,12 @@ ALTER TABLE pareto.property
   ADD PRIMARY KEY (id);
 
 CREATE UNIQUE INDEX property_alt_key 
-  ON pareto.property(id_object, LOWER(name));
+  ON pareto.property(id_data_object, LOWER(name));
 
 ALTER TABLE pareto.property
-  ADD CONSTRAINT property_object
-  FOREIGN KEY (id_object)
-  REFERENCES pareto.object(id)
-  ON UPDATE CASCADE
+  ADD CONSTRAINT property_data_object
+  FOREIGN KEY (id_data_object)
+  REFERENCES pareto.data_object(id)
   ON DELETE CASCADE;
 
 CREATE TRIGGER update_at

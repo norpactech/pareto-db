@@ -4,7 +4,7 @@
 -- See LICENSE file in the project root for full license information.
 -- ----------------------------------------------------------------------------
 
-CREATE TABLE pareto.object (
+CREATE TABLE pareto.data_object (
   id                    UUID         NOT NULL DEFAULT GEN_RANDOM_UUID(),
   id_schema             UUID         NOT NULL,
   name                  TEXT         NOT NULL,
@@ -19,20 +19,19 @@ CREATE TABLE pareto.object (
   is_active             BOOLEAN      NOT NULL DEFAULT TRUE
 );
 
-ALTER TABLE pareto.object
+ALTER TABLE pareto.data_object
   ADD PRIMARY KEY (id);
 
-CREATE UNIQUE INDEX object_alt_key 
-  ON pareto.object(id_schema, LOWER(name));
+CREATE UNIQUE INDEX data_object_alt_key 
+  ON pareto.data_object(id_schema, LOWER(name));
 
-ALTER TABLE pareto.object
-  ADD CONSTRAINT object_schema
+ALTER TABLE pareto.data_object
+  ADD CONSTRAINT data_object_schema
   FOREIGN KEY (id_schema)
   REFERENCES pareto.schema(id)
-  ON UPDATE CASCADE
   ON DELETE CASCADE;
 
 CREATE TRIGGER update_at
-  BEFORE UPDATE ON pareto.object
+  BEFORE UPDATE ON pareto.data_object
     FOR EACH ROW
       EXECUTE FUNCTION update_at();
