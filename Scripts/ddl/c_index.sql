@@ -4,13 +4,12 @@
 -- See LICENSE file in the project root for full license information.
 -- ----------------------------------------------------------------------------
 
-CREATE TABLE pareto.ref_tables (  
+CREATE TABLE pareto.index (
   id                    UUID         NOT NULL DEFAULT GEN_RANDOM_UUID(),
-  id_ref_table_type     UUID         NOT NULL,
+  id_object	            UUID         NOT NULL,
+  id_rt_index_type      UUID         NOT NULL,
   name                  TEXT         NOT NULL,
-  description           TEXT,
-  value                 TEXT         NOT NULL,
-  sequence              INT          NOT NULL DEFAULT 0,
+  is_unique             BOOLEAN      NOT NULL DEFAULT FALSE,
   created_at            TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by            TEXT         NOT NULL,
   updated_at            TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -18,21 +17,19 @@ CREATE TABLE pareto.ref_tables (
   is_active             BOOLEAN      NOT NULL DEFAULT TRUE
 );
 
-ALTER TABLE pareto.ref_tables
+ALTER TABLE pareto.index
   ADD PRIMARY KEY (id);
 
-CREATE UNIQUE INDEX ref_tables_alt_key 
-    on pareto.ref_tables(id_ref_table_type, LOWER(name));
+CREATE UNIQUE INDEX index_alt_key 
+  ON pareto.index(id_object, LOWER(name));
 
-ALTER TABLE pareto.ref_tables
-  ADD CONSTRAINT ref_tables_ref_table_type
-  FOREIGN KEY (id_ref_table_type)
-  REFERENCES pareto.ref_table_type(id)
-  ON UPDATE CASCADE
+ALTER TABLE pareto.index
+  ADD CONSTRAINT index_object
+  FOREIGN KEY (id_object)
+  REFERENCES pareto.object(id)
   ON DELETE CASCADE;
-  
+
 CREATE TRIGGER update_at
-  BEFORE UPDATE ON pareto.ref_tables
+  BEFORE UPDATE ON pareto.index
     FOR EACH ROW
       EXECUTE FUNCTION update_at();
-

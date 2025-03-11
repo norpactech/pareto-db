@@ -6,11 +6,11 @@
 
 CREATE TABLE pareto.cardinality (  
   id                         UUID         NOT NULL DEFAULT GEN_RANDOM_UUID(),
-  id_object                  UUID         NOT NULL,
+  id_property                UUID         NOT NULL,
   id_object_reference        UUID         NOT NULL,
   id_rt_cardinality          UUID         NOT NULL,
   id_rt_cardinality_strength UUID         NOT NULL,
-  referencial_action         BOOLEAN      NOT NULL DEFAULT FALSE,
+  has_referencial_action     BOOLEAN      NOT NULL DEFAULT FALSE,
   created_at                 TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by                 TEXT         NOT NULL,
   updated_at                 TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -23,21 +23,19 @@ ALTER TABLE pareto.cardinality
 
 CREATE UNIQUE INDEX cardinality_alt_key 
   ON pareto.cardinality(
-    id_object,
-    id_object_reference,
-    id_rt_cardinality);
+    id_property,
+    id_object_reference);
 
 ALTER TABLE pareto.cardinality
-  ADD CONSTRAINT cardinality_object
-  FOREIGN KEY (id_object)
-  REFERENCES pareto.object(id)
+  ADD CONSTRAINT cardinality_property
+  FOREIGN KEY (id_property)
+  REFERENCES pareto.property(id)
   ON DELETE CASCADE;
 
 ALTER TABLE pareto.cardinality
   ADD CONSTRAINT cardinality_object_reference
   FOREIGN KEY (id_object_reference)
-  REFERENCES pareto.object(id)
-  ON DELETE CASCADE;
+  REFERENCES pareto.object(id);
 
 ALTER TABLE pareto.cardinality
   ADD CONSTRAINT cardinality_rt_cardinality
