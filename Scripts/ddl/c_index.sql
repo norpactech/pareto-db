@@ -6,7 +6,7 @@
 
 CREATE TABLE pareto.index (
   id                    UUID         NOT NULL DEFAULT GEN_RANDOM_UUID(),
-  id_data_object	      UUID         NOT NULL,
+  id_data_object	    UUID         NOT NULL,
   id_rt_index_type      UUID         NOT NULL,
   name                  TEXT         NOT NULL,
   is_unique             BOOLEAN      NOT NULL DEFAULT FALSE,

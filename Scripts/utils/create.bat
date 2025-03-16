@@ -41,6 +41,9 @@ psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ddl\c_index.sql" |
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ddl\c_index_property.sql" || goto exception
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ddl\c_validation.sql" || goto exception
 
+psql -d norpac -h %PGHOST% -p 5432 -f ".\views.sql" || goto exception
+
+
 echo Completed Create Tables 
 :start
 
