@@ -7,11 +7,11 @@
 CREATE TABLE pareto.property (  
   id                    UUID         NOT NULL DEFAULT GEN_RANDOM_UUID(),
   id_data_object        UUID         NOT NULL,
+  id_validation         UUID,
   sequence              INT          NOT NULL,
   name                  TEXT         NOT NULL,
   description           TEXT,
   data_type             TEXT         NOT NULL,
-  validation            TEXT,
   length                INT,
   precision             INT,
   is_nullable           BOOLEAN      NOT NULL  DEFAULT FALSE,
