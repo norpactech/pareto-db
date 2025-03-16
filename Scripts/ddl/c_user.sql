@@ -7,7 +7,7 @@ CREATE TABLE pareto.user (
   id                               UUID             NOT NULL  DEFAULT GEN_RANDOM_UUID(), 
   username                         VARCHAR(32)      NOT NULL  CHECK ( username ~ '^[a-zA-Z][a-zA-Z0-9_-]{2,31}$'), 
   email                            VARCHAR(126)     NOT NULL  CHECK ( email ~ '^[A-Za-z0-9]+([._%+-][A-Za-z0-9]+)*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'), 
-  full_name                        VARCHAR(32)      NOT NULL, 
+  full_name                        VARCHAR(32)      NOT NULL  CHECK ( full_name ~ '^[A-Za-z]{1,32}([-\'' ][A-Za-z]{1,32})*$'), 
   created_at                       TIMESTAMP        NOT NULL  DEFAULT CURRENT_TIMESTAMP, 
   created_by                       VARCHAR(32)      NOT NULL, 
   updated_at                       TIMESTAMP        NOT NULL  DEFAULT CURRENT_TIMESTAMP, 
