@@ -3,8 +3,11 @@
 -- -----------------------------------------------------------------------------
 CREATE TABLE pareto.generic_data_type (
   id                               UUID             NOT NULL  DEFAULT GEN_RANDOM_UUID(), 
+  id_schema                        UUID             NOT NULL,
+  sequence                         INT              NOT NULL,
   name                             VARCHAR(32)      NOT NULL  CHECK (name ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
   description                      TEXT, 
+  alias                            VARCHAR(32)      NOT NULL,
   created_at                       TIMESTAMP        NOT NULL  DEFAULT CURRENT_TIMESTAMP, 
   created_by                       VARCHAR(32)      NOT NULL, 
   updated_at                       TIMESTAMP        NOT NULL  DEFAULT CURRENT_TIMESTAMP, 
@@ -15,7 +18,12 @@ CREATE TABLE pareto.generic_data_type (
 ALTER TABLE pareto.generic_data_type ADD PRIMARY KEY (id);
 
 CREATE UNIQUE INDEX generic_data_type_alt_key 
-    ON pareto.generic_data_type(LOWER(name));
+    ON pareto.generic_data_type(id_schema, LOWER(name));
+
+ALTER TABLE pareto.generic_data_type
+  ADD CONSTRAINT generic_data_type_id_schema
+  FOREIGN KEY (id_schema)
+  REFERENCES pareto.schema(id);
 
 CREATE TRIGGER update_at
   BEFORE UPDATE ON pareto.generic_data_type 
