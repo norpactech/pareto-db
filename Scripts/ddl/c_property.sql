@@ -3,12 +3,13 @@
 -- -----------------------------------------------------------------------------
 CREATE TABLE pareto.property (
   id                               UUID             NOT NULL  DEFAULT GEN_RANDOM_UUID(), 
-  id_data_object                   UUID             NOT NULL, 
+  id_data_object                   UUID             NOT NULL,
+  id_generic_data_type             UUID             NOT NULL,
+  id_generic_property_type         UUID,
   id_validation                    UUID, 
   sequence                         INT              NOT NULL, 
   name                             VARCHAR(32)      NOT NULL  CHECK (name ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
   description                      TEXT, 
-  data_type                        VARCHAR(32)      NOT NULL, 
   length                           INT, 
   precision                        INT, 
   is_nullable                      BOOLEAN          NOT NULL  DEFAULT FALSE, 
