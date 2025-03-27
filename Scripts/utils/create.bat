@@ -52,6 +52,7 @@ psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ddl\c_cardinality.
 
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ddl\c_project.sql" || goto exception
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ddl\c_project_component.sql" || goto exception
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\ddl\c_project_component_data_object.sql" || goto exception
 
 psql -d norpac -h %PGHOST% -p 5432 -f ".\views.sql" || goto exception
 
