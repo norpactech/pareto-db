@@ -8,7 +8,7 @@ CREATE TABLE pareto.project_component (
   id_plugin                        UUID             NOT NULL   , 
   name                             VARCHAR(32)      NOT NULL   CHECK (name ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
   description                      TEXT             NULL       , 
-  structure                        VARCHAR(32)      NOT NULL   CHECK (structure ~ '^[a-z0-9]+(\.[a-z0-9]+)*$'), 
+  sub_package                      VARCHAR(32)      NOT NULL   CHECK (sub_package ~ '^[a-z0-9]+(\.[a-z0-9]+)*$'), 
   created_at                       TIMESTAMPTZ      NOT NULL   DEFAULT CURRENT_TIMESTAMP, 
   created_by                       VARCHAR(32)      NOT NULL   , 
   updated_at                       TIMESTAMPTZ      NOT NULL   DEFAULT CURRENT_TIMESTAMP, 

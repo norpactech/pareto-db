@@ -6,7 +6,7 @@ CREATE TABLE pareto.tenant (
   id                               UUID             NOT NULL  DEFAULT GEN_RANDOM_UUID(), 
   name                             VARCHAR(32)      NOT NULL  CHECK ( name ~ '^[A-Za-z0-9][A-Za-z0-9\s\-,\.&''()*]{0,30}[A-Za-z0-9]$'), 
   description                      TEXT             NULL, 
-  copyright                        VARCHAR(32)      NOT NULL, 
+  copyright                        TEXT             NOT NULL, 
   created_at                       TIMESTAMP        NOT NULL  DEFAULT CURRENT_TIMESTAMP, 
   created_by                       VARCHAR(32)      NOT NULL, 
   updated_at                       TIMESTAMP        NOT NULL  DEFAULT CURRENT_TIMESTAMP, 
