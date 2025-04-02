@@ -18,12 +18,10 @@ DECLARE
 
 BEGIN
 
--- Enum
-
   IF LOWER(in_value) IN ('true', 'false') THEN
     v_result := (TRUE, in_attribute, NULL);
   ELSE
-    v_result := (FALSE, in_attribute, 'Invalid boolean format');
+    v_result := (FALSE, in_attribute, 'Only True and False is Valid');
   END IF;
 
   RETURN v_result;

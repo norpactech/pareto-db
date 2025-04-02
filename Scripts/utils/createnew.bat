@@ -16,7 +16,6 @@ if not defined PGHOST (
 echo Beginning Global Definitions
 rem goto start
 psql -d norpac -h %PGHOST% -p 5432 -f ".\bootstrap.sql" || goto exception
-rem psql -d norpac -h %PGHOST% -p 5432 -f ".\validations.sql" || goto exception
 
 echo Completed Global Definitions
 
@@ -26,17 +25,6 @@ psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f ".\users.sql" || goto 
 
 echo Completed PostgREST Users
 
-echo Beginning Create Tables 
-rem goto start
-psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f "..\tables\create.sql" || goto exception
-
-
-echo Completed Create Tables 
-:start
-
-echo Beginning Create Persist Functions
- 
-echo Completed Create Persist Functions 
 
 echo Create Completed Successfully
 exit /b 0

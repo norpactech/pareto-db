@@ -18,12 +18,10 @@ DECLARE
 
 BEGIN
 
--- RegExp
-
-  IF in_value ~ '^[a-z0-9]+(\.[a-z0-9]+)*$' THEN
+  IF (in_value ~ '^[a-z0-9]+(\.[a-z0-9]+)*$') THEN
     v_result := (TRUE, in_attribute, NULL);
   ELSE
-    v_result := (FALSE, in_attribute, 'Invalid package format');
+    v_result := (FALSE, in_attribute, 'Only [lower-case, number, and .] are valid');
   END IF;
 
   RETURN v_result;

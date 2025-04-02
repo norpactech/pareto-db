@@ -18,12 +18,10 @@ DECLARE
 
 BEGIN
 
--- Enum
-
-  IF LOWER(in_value) IN ('fixed', 'varying') THEN
+  IF (LOWER(in_value) IN ('fixed', 'varying')) THEN
     v_result := (TRUE, in_attribute, NULL);
   ELSE
-    v_result := (FALSE, in_attribute, 'Invalid fixed_varying format');
+    v_result := (FALSE, in_attribute, 'The value must be either 'Fixed' or 'Varying'');
   END IF;
 
   RETURN v_result;

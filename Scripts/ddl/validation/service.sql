@@ -18,12 +18,10 @@ DECLARE
 
 BEGIN
 
--- RegExp
-
-  IF in_value ~ '^[a-z][a-zA-Z0-9_]*$' THEN
+  IF (in_value ~ '^[a-z][a-zA-Z0-9_]*$') THEN
     v_result := (TRUE, in_attribute, NULL);
   ELSE
-    v_result := (FALSE, in_attribute, 'Invalid service format');
+    v_result := (FALSE, in_attribute, 'Must start with a lowercase letter and contain only letters, digits, and underscores');
   END IF;
 
   RETURN v_result;

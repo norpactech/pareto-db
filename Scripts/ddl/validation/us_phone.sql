@@ -18,12 +18,10 @@ DECLARE
 
 BEGIN
 
--- RegExp
-
-  IF in_value ~ '^\d{3}-\d{3}-\d{4}$' THEN
+  IF (in_value ~ '^\d{3}-\d{3}-\d{4}$') THEN
     v_result := (TRUE, in_attribute, NULL);
   ELSE
-    v_result := (FALSE, in_attribute, 'Invalid us_phone format');
+    v_result := (FALSE, in_attribute, 'Invalid US Phone. Only ###-###-#### is Valid');
   END IF;
 
   RETURN v_result;

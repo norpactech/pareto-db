@@ -18,12 +18,10 @@ DECLARE
 
 BEGIN
 
--- RegExp
-
-  IF in_value ~ '^[A-Za-z0-9]+([._%+-][A-Za-z0-9]+)*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$' THEN
+  IF (in_value ~ '^[A-Za-z0-9]+([._%+-][A-Za-z0-9]+)*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$') THEN
     v_result := (TRUE, in_attribute, NULL);
   ELSE
-    v_result := (FALSE, in_attribute, 'Invalid email format');
+    v_result := (FALSE, in_attribute, 'Invalid Email Format');
   END IF;
 
   RETURN v_result;

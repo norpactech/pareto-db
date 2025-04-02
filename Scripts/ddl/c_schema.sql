@@ -7,6 +7,7 @@ CREATE TABLE pareto.schema (
   id_tenant                        UUID             NOT NULL, 
   name                             VARCHAR(32)      NOT NULL  CHECK ( name ~ '^[A-Za-z0-9][A-Za-z0-9\s\-,\.&''()*]{0,30}[A-Za-z0-9]$'), 
   description                      TEXT             NULL, 
+  database                         TEXT             NOT NULL, 
   created_at                       TIMESTAMP        NOT NULL  DEFAULT CURRENT_TIMESTAMP, 
   created_by                       VARCHAR(32)      NOT NULL, 
   updated_at                       TIMESTAMP        NOT NULL  DEFAULT CURRENT_TIMESTAMP, 

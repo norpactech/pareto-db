@@ -18,12 +18,10 @@ DECLARE
 
 BEGIN
 
--- RegExp
-
-  IF in_value ~ '^[A-Za-z]{1,32}([-\'' ][A-Za-z]{1,32})*$' THEN
+  IF (in_value ~ '^[A-Za-z]{1,32}([-\'' ][A-Za-z]{1,32})*$') THEN
     v_result := (TRUE, in_attribute, NULL);
   ELSE
-    v_result := (FALSE, in_attribute, 'Invalid full_name format');
+    v_result := (FALSE, in_attribute, 'The name must only contain letters, spaces, apostrophes ('), or hyphens (-), with each part up to 32 characters long. Consecutive apostrophes or hyphens are not allowed.');
   END IF;
 
   RETURN v_result;

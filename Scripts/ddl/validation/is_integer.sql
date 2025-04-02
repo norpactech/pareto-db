@@ -18,12 +18,10 @@ DECLARE
 
 BEGIN
 
--- DataType
-
   IF LOWER(in_value) = 'pg_typeof(value) IN ('integer')' THEN
     v_result := (TRUE, in_attribute, NULL);
   ELSE
-    v_result := (FALSE, in_attribute, 'Invalid is_integer format');
+    v_result := (FALSE, in_attribute, 'Is the value an integer');
   END IF;
 
   RETURN v_result;
