@@ -6,7 +6,7 @@
 -- --------------------------------------------------------------------------------------
 -- Validate us_zip_code - United States Zip Codes
 -- --------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION is_us_zip_code(
+CREATE OR REPLACE FUNCTION pareto.is_us_zip_code(
   IN in_attribute TEXT,
   IN in_value     TEXT
 ) 

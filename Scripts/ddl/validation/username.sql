@@ -6,7 +6,7 @@
 -- --------------------------------------------------------------------------------------
 -- Validate username - System Username Validation
 -- --------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION is_username(
+CREATE OR REPLACE FUNCTION pareto.is_username(
   IN in_attribute TEXT,
   IN in_value     TEXT
 ) 

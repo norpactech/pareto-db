@@ -6,7 +6,7 @@
 -- --------------------------------------------------------------------------------------
 -- Validate service - Service Name
 -- --------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION is_service(
+CREATE OR REPLACE FUNCTION pareto.is_service(
   IN in_attribute TEXT,
   IN in_value     TEXT
 ) 

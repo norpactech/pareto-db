@@ -6,7 +6,7 @@
 -- --------------------------------------------------------------------------------------
 -- Validate package - Package Structure (i.e. com.norpactech.pareto)
 -- --------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION is_package(
+CREATE OR REPLACE FUNCTION pareto.is_package(
   IN in_attribute TEXT,
   IN in_value     TEXT
 ) 

@@ -6,7 +6,7 @@
 -- --------------------------------------------------------------------------------------
 -- Validate email - Email Address
 -- --------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION is_email(
+CREATE OR REPLACE FUNCTION pareto.is_email(
   IN in_attribute TEXT,
   IN in_value     TEXT
 ) 

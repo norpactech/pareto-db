@@ -6,7 +6,7 @@
 -- --------------------------------------------------------------------------------------
 -- Validate us_phone - United State Phone without Extension
 -- --------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION is_us_phone(
+CREATE OR REPLACE FUNCTION pareto.is_us_phone(
   IN in_attribute TEXT,
   IN in_value     TEXT
 ) 

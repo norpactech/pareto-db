@@ -6,7 +6,7 @@
 -- --------------------------------------------------------------------------------------
 -- Validate name - Generic Name with Few Special Characters
 -- --------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION is_name(
+CREATE OR REPLACE FUNCTION pareto.is_name(
   IN in_attribute TEXT,
   IN in_value     TEXT
 ) 

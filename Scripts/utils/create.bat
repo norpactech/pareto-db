@@ -13,19 +13,26 @@ if not defined PGHOST (
   set PGHOST=localhost
 )
 
+if not defined PGPORT (
+  set PGPORT=5432
+)
 echo Beginning Global Definitions
 rem goto start
-psql -d norpac -h %PGHOST% -p 5432 -f ".\bootstrap.sql" || goto exception
+psql -d norpac -h %PGHOST% -p %PGPORT% -f ".\bootstrap.sql" || goto exception
 
 echo Beginning PostgREST Users
-psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p 5432 -f ".\users.sql" || goto exception
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f ".\users.sql" || goto exception
 echo Completed PostgREST Users
 
 cd ..\ddl\table
 call create_table.bat || goto exception
 cd ..\..\utils
 
-psql -d norpac -h %PGHOST% -p 5432 -f ".\views.sql" || goto exception
+cd ..\ddl\validation
+call create_validation.bat || goto exception
+cd ..\..\utils
+
+psql -d norpac -h %PGHOST% -p %PGPORT% -f ".\views.sql" || goto exception
 
 echo Create Completed Successfully
 exit /b 0

@@ -6,7 +6,7 @@
 -- --------------------------------------------------------------------------------------
 -- Validate numeric_size - Small, Medium, Large
 -- --------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION is_numeric_size(
+CREATE OR REPLACE FUNCTION pareto.is_numeric_size(
   IN in_attribute TEXT,
   IN in_value     TEXT
 ) 

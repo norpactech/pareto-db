@@ -6,7 +6,7 @@
 -- --------------------------------------------------------------------------------------
 -- Validate us_state - United States 2 Char State Code
 -- --------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION is_us_state(
+CREATE OR REPLACE FUNCTION pareto.is_us_state(
   IN in_attribute TEXT,
   IN in_value     TEXT
 ) 
