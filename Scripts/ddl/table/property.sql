@@ -4,7 +4,7 @@
 DROP TABLE IF EXISTS pareto.property CASCADE;
 
 CREATE TABLE pareto.property (
-  id                               UUID             NOT NULL    DEFAULT GEN_RANDOM_UUID(), 
+  id                               UUID             NOT NULL, 
   id_data_object                   UUID             NOT NULL, 
   id_generic_data_type             UUID             NOT NULL, 
   id_generic_property_type         UUID             NULL, 
@@ -16,9 +16,9 @@ CREATE TABLE pareto.property (
   precision                        INTEGER          NULL, 
   is_nullable                      BOOLEAN          NOT NULL    DEFAULT FALSE, 
   default_value                    TEXT             NULL, 
-  created_at                       TIMESTAMPTZ      NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
+  created_at                       TIMESTAMPTZ      NOT NULL, 
   created_by                       VARCHAR(32)      NOT NULL, 
-  updated_at                       TIMESTAMPTZ      NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
+  updated_at                       TIMESTAMPTZ      NOT NULL, 
   updated_by                       VARCHAR(32)      NOT NULL, 
   is_active                        BOOLEAN          NOT NULL    DEFAULT TRUE
 );

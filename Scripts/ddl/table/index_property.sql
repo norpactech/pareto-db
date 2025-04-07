@@ -4,14 +4,14 @@
 DROP TABLE IF EXISTS pareto.index_property CASCADE;
 
 CREATE TABLE pareto.index_property (
-  id                               UUID             NOT NULL    DEFAULT GEN_RANDOM_UUID(), 
+  id                               UUID             NOT NULL, 
   id_index                         UUID             NOT NULL, 
   id_property                      UUID             NOT NULL, 
   id_rt_sort_order                 UUID             NOT NULL, 
   sequence                         INTEGER          NOT NULL, 
-  created_at                       TIMESTAMPTZ      NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
+  created_at                       TIMESTAMPTZ      NOT NULL, 
   created_by                       VARCHAR(32)      NOT NULL, 
-  updated_at                       TIMESTAMPTZ      NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
+  updated_at                       TIMESTAMPTZ      NOT NULL, 
   updated_by                       VARCHAR(32)      NOT NULL, 
   is_active                        BOOLEAN          NOT NULL    DEFAULT TRUE
 );
