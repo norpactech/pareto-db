@@ -1,6 +1,6 @@
 @echo off
 rem ----------------------------------------------------------------------------
-rem © 2025 Northern Pacific Technologies, LLC.
+rem © 2025 Northern Pacific Technologies, LLC. All Rights Reserved. 
 rem 
 rem See LICENSE file in the project root for full license information.
 rem
@@ -23,18 +23,18 @@ psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "context.sql" || g
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "user.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "tenant.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "plugin.sql" || goto exception  
-psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "project.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "schema.sql" || goto exception  
-psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "ref_table_type.sql" || goto exception  
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "project.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "generic_data_type.sql" || goto exception  
-psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "project_component.sql" || goto exception  
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "ref_table_type.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "data_object.sql" || goto exception  
-psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "ref_tables.sql" || goto exception  
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "project_component.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "context_data_type.sql" || goto exception  
-psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "project_component_data_object.sql" || goto exception  
-psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "generic_data_type_attribute.sql" || goto exception  
-psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "index.sql" || goto exception  
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "ref_tables.sql" || goto exception  
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "project_component_omit.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "validation.sql" || goto exception  
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "index.sql" || goto exception  
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "generic_data_type_attribute.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "generic_property_type.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "context_property_type.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "property.sql" || goto exception  

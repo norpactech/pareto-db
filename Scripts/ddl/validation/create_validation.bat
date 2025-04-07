@@ -1,6 +1,6 @@
 @echo off
 rem ----------------------------------------------------------------------------
-rem © 2025 Northern Pacific Technologies, LLC.
+rem © 2025 Northern Pacific Technologies, LLC. All Rights Reserved. 
 rem 
 rem See LICENSE file in the project root for full license information.
 rem
