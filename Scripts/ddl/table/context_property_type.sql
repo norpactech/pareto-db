@@ -9,7 +9,7 @@ CREATE TABLE pareto.context_property_type (
   id_schema                        UUID             NOT NULL, 
   id_generic_property_type         UUID             NOT NULL, 
   length                           INTEGER          NULL, 
-  precision                        INTEGER          NULL, 
+  SCALE                            INTEGER          NULL, 
   is_nullable                      BOOLEAN          NOT NULL, 
   default_value                    TEXT             NULL, 
   created_at                       TIMESTAMPTZ      NOT NULL    DEFAULT CURRENT_TIMESTAMP, 

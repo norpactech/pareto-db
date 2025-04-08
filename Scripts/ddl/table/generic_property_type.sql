@@ -11,7 +11,7 @@ CREATE TABLE pareto.generic_property_type (
   name                             VARCHAR(32)      NOT NULL    CHECK (name ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
   description                      TEXT             NULL, 
   length                           INTEGER          NULL, 
-  precision                        INTEGER          NULL, 
+  SCALE                            INTEGER          NULL, 
   is_nullable                      BOOLEAN          NOT NULL, 
   default_value                    TEXT             NULL, 
   created_at                       TIMESTAMPTZ      NOT NULL, 

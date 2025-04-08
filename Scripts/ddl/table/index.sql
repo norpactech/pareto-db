@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS pareto.index CASCADE;
 CREATE TABLE pareto.index (
   id                               UUID             NOT NULL, 
   id_data_object                   UUID             NOT NULL, 
-  id_rt_index_type                 UUID             NOT NULL, 
+  id_rt_index_type                 UUID             NULL, 
   name                             VARCHAR(32)      NOT NULL    CHECK (name ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
   created_at                       TIMESTAMPTZ      NOT NULL, 
   created_by                       VARCHAR(32)      NOT NULL, 
