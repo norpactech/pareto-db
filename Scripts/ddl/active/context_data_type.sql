@@ -39,9 +39,9 @@ BEGIN
 
   UPDATE pareto.context_data_type
      SET is_active = FALSE
-   WHERE context_data_type.id = v_id
-     AND context_data_type.updated_at = v_updated_at
-  RETURNING context_data_type.id, context_data_type.updated_at INTO v_id, v_updated_at;
+   WHERE id = v_id
+     AND updated_at = v_updated_at
+  RETURNING id, updated_at INTO v_id, v_updated_at;
 
   GET DIAGNOSTICS v_updates = ROW_COUNT;
 
@@ -62,7 +62,7 @@ BEGIN
     v_id := id;
     SELECT count(*) INTO v_count   
       FROM pareto.context_data_type 
-     WHERE context_data_type.id = v_id;
+     WHERE id = v_id;
           
     IF (v_count > 0) THEN
       -- Record does exists but the updated_at timestamp has changed
@@ -158,9 +158,9 @@ BEGIN
 
   UPDATE pareto.context_data_type
      SET is_active = TRUE
-   WHERE context_data_type.id = v_id
-     AND context_data_type.updated_at = v_updated_at
-  RETURNING context_data_type.id, context_data_type.updated_at INTO v_id, v_updated_at;
+   WHERE id = v_id
+     AND updated_at = v_updated_at
+  RETURNING id, updated_at INTO v_id, v_updated_at;
 
   GET DIAGNOSTICS v_updates = ROW_COUNT;
 
@@ -181,7 +181,7 @@ BEGIN
     v_id := id;
     SELECT count(*) INTO v_count   
       FROM pareto.context_data_type 
-     WHERE context_data_type.id = v_id;
+     WHERE id = v_id;
           
     IF (v_count > 0) THEN
       -- Record does exists but the updated_at timestamp has changed

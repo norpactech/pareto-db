@@ -18,6 +18,7 @@ CREATE TABLE pareto.cardinality (
 );
 
 ALTER TABLE pareto.cardinality ADD PRIMARY KEY (id);
+
 CREATE UNIQUE INDEX cardinality_alt_key
     ON pareto.cardinality(id_property, id_object_reference);
 

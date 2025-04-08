@@ -18,6 +18,7 @@ CREATE TABLE pareto.ref_tables (
 );
 
 ALTER TABLE pareto.ref_tables ADD PRIMARY KEY (id);
+
 CREATE UNIQUE INDEX ref_tables_alt_key
     ON pareto.ref_tables(id_ref_table_type, LOWER(name));
 

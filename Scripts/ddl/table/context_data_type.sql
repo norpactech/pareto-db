@@ -4,7 +4,7 @@
 DROP TABLE IF EXISTS pareto.context_data_type CASCADE;
 
 CREATE TABLE pareto.context_data_type (
-  id                               UUID             NOT NULL    DEFAULT GEN_RANDOM_UUID(), 
+  id                               UUID             NOT NULL, 
   id_context                       UUID             NOT NULL, 
   id_generic_data_type             UUID             NOT NULL, 
   sequence                         INTEGER          NOT NULL, 
@@ -12,14 +12,15 @@ CREATE TABLE pareto.context_data_type (
   description                      TEXT             NULL, 
   alias                            TEXT             NOT NULL, 
   context_value                    TEXT             NOT NULL, 
-  created_at                       TIMESTAMPTZ      NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
+  created_at                       TIMESTAMPTZ      NOT NULL, 
   created_by                       VARCHAR(32)      NOT NULL, 
-  updated_at                       TIMESTAMPTZ      NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
+  updated_at                       TIMESTAMPTZ      NOT NULL, 
   updated_by                       VARCHAR(32)      NOT NULL, 
   is_active                        BOOLEAN          NOT NULL    DEFAULT TRUE
 );
 
 ALTER TABLE pareto.context_data_type ADD PRIMARY KEY (id);
+
 CREATE UNIQUE INDEX context_data_type_alt_key
     ON pareto.context_data_type(id_context, LOWER(name));
 

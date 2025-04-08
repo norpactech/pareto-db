@@ -46,7 +46,7 @@ BEGIN
     v_id_project_component, 
     v_id_data_object
   )
-  RETURNING project_component_omit.id, project_component_omit.updated_at INTO v_id, v_updated_at;  
+  RETURNING id, updated_at INTO v_id, v_updated_at;  
 
   v_response := (
     'OK', 

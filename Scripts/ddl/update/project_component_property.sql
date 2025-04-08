@@ -9,6 +9,7 @@ CREATE OR REPLACE FUNCTION pareto.u_project_component_property(
   IN sequence Integer, 
   IN data_object_filter text, 
   IN property_filter text, 
+  IN updated_at timestamptz, 
   IN updated_by varchar
 )
 RETURNS pg_resp
@@ -32,6 +33,7 @@ DECLARE
   v_sequence Integer := sequence;
   v_data_object_filter text := data_object_filter;
   v_property_filter text := property_filter;
+  v_updated_at timestamptz := updated_at;
   v_updated_by varchar := updated_by;
 
 BEGIN
@@ -46,6 +48,7 @@ BEGIN
     'sequence', sequence, 
     'data_object_filter', data_object_filter, 
     'property_filter', property_filter, 
+    'updated_at', updated_at, 
     'updated_by', updated_by
   );
   
@@ -60,9 +63,9 @@ BEGIN
     property_filter = v_property_filter, 
     updated_by = v_updated_by, 
     updated_at = CURRENT_TIMESTAMP
-  WHERE project_component_property.id = v_id
-    AND project_component_property.updated_at = v_updated_at
-  RETURNING project_component_property.id, project_component_property.updated_at INTO v_id, v_updated_at;
+  WHERE id = v_id
+    AND updated_at = v_updated_at
+  RETURNING id, updated_at INTO v_id, v_updated_at;
 
   GET DIAGNOSTICS v_updates = ROW_COUNT;
 
@@ -82,7 +85,7 @@ BEGIN
     v_id := id;
     SELECT count(*) INTO v_count   
       FROM pareto.project_component_property 
-     WHERE project_component_property.id = v_id;
+     WHERE id = v_id;
           
     IF (v_count > 0) THEN
       -- Record does exists but the updated_at timestamp has changed

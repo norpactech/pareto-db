@@ -19,6 +19,7 @@ CREATE TABLE pareto.data_object (
 );
 
 ALTER TABLE pareto.data_object ADD PRIMARY KEY (id);
+
 CREATE UNIQUE INDEX data_object_alt_key
     ON pareto.data_object(id_schema, LOWER(name));
 

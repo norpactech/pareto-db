@@ -17,6 +17,7 @@ CREATE TABLE pareto.index_property (
 );
 
 ALTER TABLE pareto.index_property ADD PRIMARY KEY (id);
+
 CREATE UNIQUE INDEX index_property_alt_key
     ON pareto.index_property(id_index, id_property);
 

@@ -4,21 +4,22 @@
 DROP TABLE IF EXISTS pareto.project_component CASCADE;
 
 CREATE TABLE pareto.project_component (
-  id                               UUID             NOT NULL    DEFAULT GEN_RANDOM_UUID(), 
+  id                               UUID             NOT NULL, 
   id_project                       UUID             NOT NULL, 
   id_context                       UUID             NOT NULL, 
   id_plugin                        UUID             NOT NULL, 
   name                             VARCHAR(32)      NOT NULL    CHECK (name ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
   description                      TEXT             NULL, 
   sub_package                      VARCHAR(32)      NOT NULL    CHECK (sub_package ~ '^[a-z0-9]+(\.[a-z0-9]+)*$'), 
-  created_at                       TIMESTAMPTZ      NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
+  created_at                       TIMESTAMPTZ      NOT NULL, 
   created_by                       VARCHAR(32)      NOT NULL, 
-  updated_at                       TIMESTAMPTZ      NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
+  updated_at                       TIMESTAMPTZ      NOT NULL, 
   updated_by                       VARCHAR(32)      NOT NULL, 
   is_active                        BOOLEAN          NOT NULL    DEFAULT TRUE
 );
 
 ALTER TABLE pareto.project_component ADD PRIMARY KEY (id);
+
 CREATE UNIQUE INDEX project_component_alt_key
     ON pareto.project_component(id_project, LOWER(name));
 

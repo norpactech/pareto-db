@@ -16,6 +16,7 @@ CREATE TABLE pareto.index (
 );
 
 ALTER TABLE pareto.index ADD PRIMARY KEY (id);
+
 CREATE UNIQUE INDEX index_alt_key
     ON pareto.index(id_data_object, LOWER(name));
 
@@ -29,7 +30,7 @@ ALTER TABLE pareto.index
   ADD CONSTRAINT index_id_rt_index_type
   FOREIGN KEY (id_rt_index_type)
   REFERENCES pareto.ref_tables(id)
-  ON DELETE CASCADE;
+  ON DELETE SET NULL;
 
 CREATE TRIGGER update_at
   BEFORE UPDATE ON pareto.index 

@@ -4,22 +4,23 @@
 DROP TABLE IF EXISTS pareto.context_property_type CASCADE;
 
 CREATE TABLE pareto.context_property_type (
-  id                               UUID             NOT NULL    DEFAULT GEN_RANDOM_UUID(), 
+  id                               UUID             NOT NULL, 
   id_context                       UUID             NOT NULL, 
   id_schema                        UUID             NOT NULL, 
   id_generic_property_type         UUID             NOT NULL, 
   length                           INTEGER          NULL, 
-  SCALE                            INTEGER          NULL, 
+  scale                            INTEGER          NULL, 
   is_nullable                      BOOLEAN          NOT NULL, 
   default_value                    TEXT             NULL, 
-  created_at                       TIMESTAMPTZ      NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
+  created_at                       TIMESTAMPTZ      NOT NULL, 
   created_by                       VARCHAR(32)      NOT NULL, 
-  updated_at                       TIMESTAMPTZ      NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
+  updated_at                       TIMESTAMPTZ      NOT NULL, 
   updated_by                       VARCHAR(32)      NOT NULL, 
   is_active                        BOOLEAN          NOT NULL    DEFAULT TRUE
 );
 
 ALTER TABLE pareto.context_property_type ADD PRIMARY KEY (id);
+
 CREATE UNIQUE INDEX context_property_type_alt_key
     ON pareto.context_property_type(id_context, id_schema, id_generic_property_type);
 

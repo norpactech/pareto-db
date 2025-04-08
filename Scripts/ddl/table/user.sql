@@ -16,6 +16,7 @@ CREATE TABLE pareto.user (
 );
 
 ALTER TABLE pareto.user ADD PRIMARY KEY (id);
+
 CREATE UNIQUE INDEX user_alt_key
     ON pareto.user(LOWER(username));
     

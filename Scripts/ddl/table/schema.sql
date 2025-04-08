@@ -17,6 +17,7 @@ CREATE TABLE pareto.schema (
 );
 
 ALTER TABLE pareto.schema ADD PRIMARY KEY (id);
+
 CREATE UNIQUE INDEX schema_alt_key
     ON pareto.schema(id_tenant, LOWER(name));
 

@@ -32,6 +32,22 @@ cd ..\ddl\validation
 call create_validation.bat || goto exception
 cd ..\..\utils
 
+cd ..\ddl\insert
+rem call create_insert.bat || goto exception
+cd ..\..\utils
+
+cd ..\ddl\update
+rem call create_update.bat || goto exception
+cd ..\..\utils
+
+cd ..\ddl\delete
+rem call create_delete.bat || goto exception
+cd ..\..\utils
+
+cd ..\ddl\active
+call create_active.bat || goto exception
+cd ..\..\utils
+
 psql -d norpac -h %PGHOST% -p %PGPORT% -f ".\views.sql" || goto exception
 
 echo Create Completed Successfully

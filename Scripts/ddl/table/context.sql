@@ -15,6 +15,7 @@ CREATE TABLE pareto.context (
 );
 
 ALTER TABLE pareto.context ADD PRIMARY KEY (id);
+
 CREATE UNIQUE INDEX context_alt_key
     ON pareto.context(LOWER(name));
 

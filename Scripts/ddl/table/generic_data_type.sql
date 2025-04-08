@@ -4,20 +4,21 @@
 DROP TABLE IF EXISTS pareto.generic_data_type CASCADE;
 
 CREATE TABLE pareto.generic_data_type (
-  id                               UUID             NOT NULL    DEFAULT GEN_RANDOM_UUID(), 
+  id                               UUID             NOT NULL, 
   id_tenant                        UUID             NOT NULL, 
   sequence                         INTEGER          NOT NULL, 
   name                             VARCHAR(32)      NOT NULL    CHECK (name ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
   description                      TEXT             NULL, 
   alias                            TEXT             NOT NULL, 
-  created_at                       TIMESTAMPTZ      NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
+  created_at                       TIMESTAMPTZ      NOT NULL, 
   created_by                       VARCHAR(32)      NOT NULL, 
-  updated_at                       TIMESTAMPTZ      NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
+  updated_at                       TIMESTAMPTZ      NOT NULL, 
   updated_by                       VARCHAR(32)      NOT NULL, 
   is_active                        BOOLEAN          NOT NULL    DEFAULT TRUE
 );
 
 ALTER TABLE pareto.generic_data_type ADD PRIMARY KEY (id);
+
 CREATE UNIQUE INDEX generic_data_type_alt_key
     ON pareto.generic_data_type(id_tenant, LOWER(name));
 

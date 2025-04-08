@@ -38,8 +38,8 @@ BEGIN
   -- ------------------------------------------------------
 
   DELETE FROM pareto.index 
-   WHERE index.id = v_id
-     AND index.updated_at = v_updated_at;
+   WHERE id = v_id
+     AND updated_at = v_updated_at;
 
   GET DIAGNOSTICS v_updates = ROW_COUNT;
 
@@ -60,7 +60,7 @@ BEGIN
     v_id := id;
     SELECT count(*) INTO v_count   
       FROM pareto.index 
-     WHERE index.id = v_id;
+     WHERE id = v_id;
           
     IF (v_count > 0) THEN
       -- Record does exists but the updated_at timestamp has changed

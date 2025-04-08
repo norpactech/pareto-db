@@ -11,7 +11,7 @@ CREATE TABLE pareto.generic_property_type (
   name                             VARCHAR(32)      NOT NULL    CHECK (name ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
   description                      TEXT             NULL, 
   length                           INTEGER          NULL, 
-  SCALE                            INTEGER          NULL, 
+  scale                            INTEGER          NULL, 
   is_nullable                      BOOLEAN          NOT NULL, 
   default_value                    TEXT             NULL, 
   created_at                       TIMESTAMPTZ      NOT NULL, 
@@ -22,6 +22,7 @@ CREATE TABLE pareto.generic_property_type (
 );
 
 ALTER TABLE pareto.generic_property_type ADD PRIMARY KEY (id);
+
 CREATE UNIQUE INDEX generic_property_type_alt_key
     ON pareto.generic_property_type(id_tenant, LOWER(name));
 

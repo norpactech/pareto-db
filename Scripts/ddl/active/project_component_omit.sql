@@ -39,9 +39,9 @@ BEGIN
 
   UPDATE pareto.project_component_omit
      SET is_active = FALSE
-   WHERE project_component_omit.id = v_id
-     AND project_component_omit.updated_at = v_updated_at
-  RETURNING project_component_omit.id, project_component_omit.updated_at INTO v_id, v_updated_at;
+   WHERE id = v_id
+     AND updated_at = v_updated_at
+  RETURNING id, updated_at INTO v_id, v_updated_at;
 
   GET DIAGNOSTICS v_updates = ROW_COUNT;
 
@@ -62,7 +62,7 @@ BEGIN
     v_id := id;
     SELECT count(*) INTO v_count   
       FROM pareto.project_component_omit 
-     WHERE project_component_omit.id = v_id;
+     WHERE id = v_id;
           
     IF (v_count > 0) THEN
       -- Record does exists but the updated_at timestamp has changed
@@ -158,9 +158,9 @@ BEGIN
 
   UPDATE pareto.project_component_omit
      SET is_active = TRUE
-   WHERE project_component_omit.id = v_id
-     AND project_component_omit.updated_at = v_updated_at
-  RETURNING project_component_omit.id, project_component_omit.updated_at INTO v_id, v_updated_at;
+   WHERE id = v_id
+     AND updated_at = v_updated_at
+  RETURNING id, updated_at INTO v_id, v_updated_at;
 
   GET DIAGNOSTICS v_updates = ROW_COUNT;
 
@@ -181,7 +181,7 @@ BEGIN
     v_id := id;
     SELECT count(*) INTO v_count   
       FROM pareto.project_component_omit 
-     WHERE project_component_omit.id = v_id;
+     WHERE id = v_id;
           
     IF (v_count > 0) THEN
       -- Record does exists but the updated_at timestamp has changed

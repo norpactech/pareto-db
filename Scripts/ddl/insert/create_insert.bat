@@ -17,7 +17,7 @@ if not defined PGPORT (
   set PGPORT=5432
 )
 
-echo Beginning Validations Tables
+echo Beginning Create Insert Functions
 
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "cardinality.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "context.sql" || goto exception  
@@ -33,6 +33,7 @@ psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "plugin.sql" || go
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "project.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "project_component.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "project_component_omit.sql" || goto exception  
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "project_component_property.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "property.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "ref_table_type.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "ref_tables.sql" || goto exception  
@@ -41,12 +42,12 @@ psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "tenant.sql" || go
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "user.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "validation.sql" || goto exception  
 
-echo Completed Create Validations Successfully
+echo Completed Create Insert Functions Successfully
 exit /b 0
 
 rem ---------------------------------------------------------------------------
 rem Execution Failed - Stopping!
 rem ---------------------------------------------------------------------------
 :exception
-echo Create Validations Failed!
+echo Create Insert Functions Failed!
 exit /b 1

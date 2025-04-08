@@ -38,8 +38,8 @@ BEGIN
   -- ------------------------------------------------------
 
   DELETE FROM pareto.generic_data_type_attribute 
-   WHERE generic_data_type_attribute.id = v_id
-     AND generic_data_type_attribute.updated_at = v_updated_at;
+   WHERE id = v_id
+     AND updated_at = v_updated_at;
 
   GET DIAGNOSTICS v_updates = ROW_COUNT;
 
@@ -60,7 +60,7 @@ BEGIN
     v_id := id;
     SELECT count(*) INTO v_count   
       FROM pareto.generic_data_type_attribute 
-     WHERE generic_data_type_attribute.id = v_id;
+     WHERE id = v_id;
           
     IF (v_count > 0) THEN
       -- Record does exists but the updated_at timestamp has changed

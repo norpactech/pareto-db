@@ -63,7 +63,7 @@ BEGIN
     v_created_by,
     v_created_by
   )
-  RETURNING project_component_property.id, project_component_property.updated_at INTO v_id, v_updated_at;  
+  RETURNING id, updated_at INTO v_id, v_updated_at;  
 
   v_response := (
     'OK', 

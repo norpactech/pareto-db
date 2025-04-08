@@ -13,7 +13,7 @@ CREATE TABLE pareto.property (
   name                             VARCHAR(32)      NOT NULL    CHECK (name ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
   description                      TEXT             NULL, 
   length                           INTEGER          NULL, 
-  SCALE                            INTEGER          NULL, 
+  scale                            INTEGER          NULL, 
   is_nullable                      BOOLEAN          NOT NULL    DEFAULT FALSE, 
   default_value                    TEXT             NULL, 
   created_at                       TIMESTAMPTZ      NOT NULL, 
@@ -24,6 +24,7 @@ CREATE TABLE pareto.property (
 );
 
 ALTER TABLE pareto.property ADD PRIMARY KEY (id);
+
 CREATE UNIQUE INDEX property_alt_key
     ON pareto.property(id_data_object, LOWER(name));
 
