@@ -3,8 +3,8 @@
 -- ---------------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION pareto.i_context_property_type(
   IN id_context uuid, 
-  IN id_schema uuid, 
   IN id_generic_property_type uuid, 
+  IN id_schema uuid, 
   IN length Integer, 
   IN scale Integer, 
   IN is_nullable boolean, 
@@ -27,8 +27,8 @@ DECLARE
 
   -- Set variables to avoid ambiguous column names
   v_id_context uuid := id_context;
-  v_id_schema uuid := id_schema;
   v_id_generic_property_type uuid := id_generic_property_type;
+  v_id_schema uuid := id_schema;
   v_length Integer := length;
   v_scale Integer := scale;
   v_is_nullable boolean := is_nullable;
@@ -43,8 +43,8 @@ BEGIN
 
   v_metadata := jsonb_build_object(
     'id_context', id_context, 
-    'id_schema', id_schema, 
     'id_generic_property_type', id_generic_property_type, 
+    'id_schema', id_schema, 
     'length', length, 
     'scale', scale, 
     'is_nullable', is_nullable, 
@@ -58,8 +58,8 @@ BEGIN
 
   INSERT INTO pareto.context_property_type (
     id_context, 
-    id_schema, 
     id_generic_property_type, 
+    id_schema, 
     length, 
     scale, 
     is_nullable, 
@@ -69,8 +69,8 @@ BEGIN
   )
   VALUES (
     v_id_context, 
-    v_id_schema, 
     v_id_generic_property_type, 
+    v_id_schema, 
     v_length, 
     v_scale, 
     v_is_nullable, 

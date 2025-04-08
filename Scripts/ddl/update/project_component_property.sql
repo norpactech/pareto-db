@@ -63,10 +63,10 @@ BEGIN
     property_filter = v_property_filter, 
     updated_by = v_updated_by, 
     updated_at = CURRENT_TIMESTAMP
-  WHERE id = v_id
-    AND updated_at = v_updated_at
-  RETURNING id, updated_at INTO v_id, v_updated_at;
-
+    WHERE id = v_id
+      AND updated_at = v_updated_at
+    RETURNING id, updated_at INTO v_id, v_updated_at;
+  
   GET DIAGNOSTICS v_updates = ROW_COUNT;
 
   IF v_updates > 0 THEN

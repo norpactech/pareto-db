@@ -33,15 +33,15 @@ call create_validation.bat || goto exception
 cd ..\..\utils
 
 cd ..\ddl\insert
-rem call create_insert.bat || goto exception
+call create_insert.bat || goto exception
 cd ..\..\utils
 
 cd ..\ddl\update
-rem call create_update.bat || goto exception
+call create_update.bat || goto exception
 cd ..\..\utils
 
 cd ..\ddl\delete
-rem call create_delete.bat || goto exception
+call create_delete.bat || goto exception
 cd ..\..\utils
 
 cd ..\ddl\active

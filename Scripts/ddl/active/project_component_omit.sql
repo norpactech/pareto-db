@@ -39,9 +39,9 @@ BEGIN
 
   UPDATE pareto.project_component_omit
      SET is_active = FALSE
-   WHERE id = v_id
-     AND updated_at = v_updated_at
-  RETURNING id, updated_at INTO v_id, v_updated_at;
+    WHERE id_project_component = v_id_project_component
+      AND id_data_object = v_id_data_object
+    RETURNING id_project_component, id_data_object INTO v_id_project_component, v_id_data_object;
 
   GET DIAGNOSTICS v_updates = ROW_COUNT;
 
@@ -49,7 +49,7 @@ BEGIN
     -- Record was deleted
     v_response := (
       'OK', 
-      jsonb_build_object('id', v_id, 'updated_at', v_updated_at), 
+      jsonb_build_object('id_project_component', v_id_project_component, 'id_data_object', v_id_data_object), 
       NULL, 
       '00000',
       'Deactivate was successful', 
@@ -158,9 +158,9 @@ BEGIN
 
   UPDATE pareto.project_component_omit
      SET is_active = TRUE
-   WHERE id = v_id
-     AND updated_at = v_updated_at
-  RETURNING id, updated_at INTO v_id, v_updated_at;
+    WHERE id_project_component = v_id_project_component
+      AND id_data_object = v_id_data_object
+    RETURNING id_project_component, id_data_object INTO v_id_project_component, v_id_data_object;
 
   GET DIAGNOSTICS v_updates = ROW_COUNT;
 
@@ -168,7 +168,7 @@ BEGIN
     -- Record was deleted
     v_response := (
       'OK', 
-      jsonb_build_object('id', v_id, 'updated_at', v_updated_at), 
+      jsonb_build_object('id_project_component', v_id_project_component, 'id_data_object', v_id_data_object), 
       NULL, 
       '00000',
       'Reactivate was successful', 

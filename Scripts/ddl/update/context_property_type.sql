@@ -6,8 +6,8 @@
 CREATE OR REPLACE FUNCTION pareto.u_context_property_type(
   IN id uuid, 
   IN id_context uuid, 
-  IN id_schema uuid, 
   IN id_generic_property_type uuid, 
+  IN id_schema uuid, 
   IN length Integer, 
   IN scale Integer, 
   IN is_nullable boolean, 
@@ -33,8 +33,8 @@ DECLARE
   -- Set variables to avoid ambiguous column names
   v_id uuid := id;
   v_id_context uuid := id_context;
-  v_id_schema uuid := id_schema;
   v_id_generic_property_type uuid := id_generic_property_type;
+  v_id_schema uuid := id_schema;
   v_length Integer := length;
   v_scale Integer := scale;
   v_is_nullable boolean := is_nullable;
@@ -51,8 +51,8 @@ BEGIN
   v_metadata := jsonb_build_object(
     'id', id, 
     'id_context', id_context, 
-    'id_schema', id_schema, 
     'id_generic_property_type', id_generic_property_type, 
+    'id_schema', id_schema, 
     'length', length, 
     'scale', scale, 
     'is_nullable', is_nullable, 
@@ -67,18 +67,18 @@ BEGIN
 
   UPDATE pareto.context_property_type SET
     id_context = v_id_context, 
-    id_schema = v_id_schema, 
     id_generic_property_type = v_id_generic_property_type, 
+    id_schema = v_id_schema, 
     length = v_length, 
     scale = v_scale, 
     is_nullable = v_is_nullable, 
     default_value = v_default_value, 
     updated_by = v_updated_by, 
     updated_at = CURRENT_TIMESTAMP
-  WHERE id = v_id
-    AND updated_at = v_updated_at
-  RETURNING id, updated_at INTO v_id, v_updated_at;
-
+    WHERE id = v_id
+      AND updated_at = v_updated_at
+    RETURNING id, updated_at INTO v_id, v_updated_at;
+  
   GET DIAGNOSTICS v_updates = ROW_COUNT;
 
   IF v_updates > 0 THEN

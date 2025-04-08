@@ -42,7 +42,7 @@ psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "tenant.sql" || go
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "user.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "validation.sql" || goto exception  
 
-echo Completed Create Validations Successfully
+echo Completed Create Active Functions Successfully
 exit /b 0
 
 rem ---------------------------------------------------------------------------

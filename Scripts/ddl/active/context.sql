@@ -39,9 +39,9 @@ BEGIN
 
   UPDATE pareto.context
      SET is_active = FALSE
-   WHERE id = v_id
-     AND updated_at = v_updated_at
-  RETURNING id, updated_at INTO v_id, v_updated_at;
+    WHERE id = v_id
+      AND updated_at = v_updated_at
+    RETURNING id, updated_at INTO v_id, v_updated_at;
 
   GET DIAGNOSTICS v_updates = ROW_COUNT;
 
@@ -158,9 +158,9 @@ BEGIN
 
   UPDATE pareto.context
      SET is_active = TRUE
-   WHERE id = v_id
-     AND updated_at = v_updated_at
-  RETURNING id, updated_at INTO v_id, v_updated_at;
+    WHERE id = v_id
+      AND updated_at = v_updated_at
+    RETURNING id, updated_at INTO v_id, v_updated_at;
 
   GET DIAGNOSTICS v_updates = ROW_COUNT;
 
