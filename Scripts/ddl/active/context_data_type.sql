@@ -2,9 +2,9 @@
 -- Deactivate context_data_type (Soft Delete)
 -- ------------------------------------------------------
 CREATE OR REPLACE FUNCTION pareto.deact_context_data_type(
-  IN id UUID,
-  IN updated_at TIMESTAMPTZ,
-  IN updated_by TEXT
+  IN id uuid, 
+  IN updated_at timestamptz, 
+  IN updated_by varchar
 )
 RETURNS pg_resp
 AS $$
@@ -15,11 +15,14 @@ DECLARE
   v_metadata     JSONB := '{}'::JSONB;
   v_response     pg_resp;
   v_message      TEXT;
-  
-  v_id           UUID := id;
-  v_updated_at   TIMESTAMPTZ := updated_at;
+
   v_updates      INT;
   v_count        INT;
+  
+  -- Set variables to avoid ambiguous column names
+  v_id uuid := id;
+  v_updated_at timestamptz := updated_at;
+  v_updated_by varchar := updated_by;
   
 BEGIN
 
@@ -28,8 +31,8 @@ BEGIN
   -- ------------------------------------------------------
 
   v_metadata := jsonb_build_object(
-    'id', id,
-    'updated_at', updated_at,
+    'id', id, 
+    'updated_at', updated_at, 
     'updated_by', updated_by
   );
   
@@ -57,12 +60,13 @@ BEGIN
       NULL
     );
     CALL pareto.i_logs('INFO', v_response.message, c_service_name, updated_by, v_metadata);    
-  ELSE  
+  ELSE
+    
     -- Check for Optimistic Lock Error
     v_id := id;
     SELECT count(*) INTO v_count   
       FROM pareto.context_data_type 
-     WHERE id = v_id;
+    WHERE id = v_id;
           
     IF (v_count > 0) THEN
       -- Record does exists but the updated_at timestamp has changed
@@ -121,24 +125,27 @@ $$ LANGUAGE plpgsql;
 -- Reactivate context_data_type (Soft Undelete)
 -- ------------------------------------------------------
 CREATE OR REPLACE FUNCTION pareto.react_context_data_type(
-  IN id UUID,
-  IN updated_at TIMESTAMPTZ,
-  IN updated_by TEXT
+  IN id uuid, 
+  IN updated_at timestamptz, 
+  IN updated_by varchar
 )
 RETURNS pg_resp
 AS $$
 DECLARE
 
-  c_service_name TEXT := 'react_context_data_type';
+  c_service_name TEXT := 'deact_context_data_type';
 
   v_metadata     JSONB := '{}'::JSONB;
   v_response     pg_resp;
   v_message      TEXT;
-  
-  v_id           UUID := id;
-  v_updated_at   TIMESTAMPTZ := updated_at;
+
   v_updates      INT;
   v_count        INT;
+
+  -- Set variables to avoid ambiguous column names
+  v_id uuid := id;
+  v_updated_at timestamptz := updated_at;
+  v_updated_by varchar := updated_by;
   
 BEGIN
 
@@ -147,11 +154,11 @@ BEGIN
   -- ------------------------------------------------------
 
   v_metadata := jsonb_build_object(
-    'id', id,
-    'updated_at', updated_at,
+    'id', id, 
+    'updated_at', updated_at, 
     'updated_by', updated_by
   );
-  
+    
   -- ------------------------------------------------------
   -- Reactivate context_data_type
   -- ------------------------------------------------------
@@ -176,12 +183,13 @@ BEGIN
       NULL
     );
     CALL pareto.i_logs('INFO', v_response.message, c_service_name, updated_by, v_metadata);    
-  ELSE  
+  ELSE
+    
     -- Check for Optimistic Lock Error
     v_id := id;
     SELECT count(*) INTO v_count   
       FROM pareto.context_data_type 
-     WHERE id = v_id;
+    WHERE id = v_id;
           
     IF (v_count > 0) THEN
       -- Record does exists but the updated_at timestamp has changed

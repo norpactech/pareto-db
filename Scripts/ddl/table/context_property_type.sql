@@ -6,8 +6,8 @@ DROP TABLE IF EXISTS pareto.context_property_type CASCADE;
 CREATE TABLE pareto.context_property_type (
   id                               UUID             NOT NULL, 
   id_context                       UUID             NOT NULL, 
-  id_generic_property_type         UUID             NOT NULL, 
   id_schema                        UUID             NOT NULL, 
+  id_generic_property_type         UUID             NOT NULL, 
   length                           INTEGER          NULL, 
   scale                            INTEGER          NULL, 
   is_nullable                      BOOLEAN          NOT NULL, 
@@ -31,15 +31,15 @@ ALTER TABLE pareto.context_property_type
   ON DELETE CASCADE;
     
 ALTER TABLE pareto.context_property_type
-  ADD CONSTRAINT context_property_type_id_generic_property_type
-  FOREIGN KEY (id_generic_property_type)
-  REFERENCES pareto.generic_property_type(id)
-  ON DELETE CASCADE;
-    
-ALTER TABLE pareto.context_property_type
   ADD CONSTRAINT context_property_type_id_schema
   FOREIGN KEY (id_schema)
   REFERENCES pareto.schema(id)
+  ON DELETE CASCADE;
+    
+ALTER TABLE pareto.context_property_type
+  ADD CONSTRAINT context_property_type_id_generic_property_type
+  FOREIGN KEY (id_generic_property_type)
+  REFERENCES pareto.generic_property_type(id)
   ON DELETE CASCADE;
 
 CREATE TRIGGER update_at
