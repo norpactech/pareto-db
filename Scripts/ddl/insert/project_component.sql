@@ -18,8 +18,8 @@ DECLARE
 
   v_metadata     JSONB := '{}'::JSONB;
   v_errors       JSONB := '[]'::JSONB;
-  v_val_resp     pg_val;
-  v_response     pg_resp;
+  v_val_resp     pareto.pg_val;  
+  v_response     pareto.pg_resp;
 
   v_updated_at   TIMESTAMPTZ;
 
@@ -40,14 +40,13 @@ BEGIN
   -- ------------------------------------------------------
 
   v_metadata := jsonb_build_object(
-    'id_context', id_context, 
-    'name', name, 
-    'id', id, 
-    'created_by', created_by, 
-    'id_plugin', id_plugin, 
-    'sub_package', sub_package, 
     'id_project', id_project, 
-    'description', description
+    'id_context', id_context, 
+    'id_plugin', id_plugin, 
+    'name', name, 
+    'description', description, 
+    'sub_package', sub_package, 
+    'created_by', created_by
   );
   
   -- ------------------------------------------------------

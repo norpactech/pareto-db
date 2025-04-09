@@ -12,7 +12,7 @@ DECLARE
   c_service_name TEXT := 'd_context_property_type';
 
   v_metadata     JSONB := '{}'::JSONB;
-  v_response     pg_resp;
+  v_response     pareto.pg_resp;
   v_message      TEXT;
   
   v_updates      INT;

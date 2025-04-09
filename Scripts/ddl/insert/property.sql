@@ -23,8 +23,8 @@ DECLARE
 
   v_metadata     JSONB := '{}'::JSONB;
   v_errors       JSONB := '[]'::JSONB;
-  v_val_resp     pg_val;
-  v_response     pg_resp;
+  v_val_resp     pareto.pg_val;  
+  v_response     pareto.pg_resp;
 
   v_updated_at   TIMESTAMPTZ;
 
@@ -50,19 +50,18 @@ BEGIN
   -- ------------------------------------------------------
 
   v_metadata := jsonb_build_object(
-    'id', id, 
-    'length', length, 
-    'id_generic_property_type', id_generic_property_type, 
-    'default_value', default_value, 
-    'name', name, 
-    'created_by', created_by, 
-    'id_generic_data_type', id_generic_data_type, 
-    'sequence', sequence, 
     'id_data_object', id_data_object, 
+    'id_generic_data_type', id_generic_data_type, 
+    'id_generic_property_type', id_generic_property_type, 
     'id_validation', id_validation, 
-    'is_nullable', is_nullable, 
+    'sequence', sequence, 
+    'name', name, 
     'description', description, 
-    'scale', scale
+    'length', length, 
+    'scale', scale, 
+    'is_nullable', is_nullable, 
+    'default_value', default_value, 
+    'created_by', created_by
   );
   
   -- ------------------------------------------------------

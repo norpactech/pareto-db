@@ -4,15 +4,15 @@
 DROP TABLE IF EXISTS pareto.project CASCADE;
 
 CREATE TABLE pareto.project (
-  id                               UUID             NOT NULL, 
+  id                               UUID             NOT NULL    DEFAULT GEN_RANDOM_UUID(), 
   id_tenant                        UUID             NOT NULL, 
   name                             VARCHAR(32)      NOT NULL    CHECK (name ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
   description                      TEXT             NULL, 
   domain                           VARCHAR(32)      NOT NULL    CHECK (domain ~ '^[a-z0-9]+(\.[a-z0-9]+)*$'), 
   artifact                         VARCHAR(32)      NOT NULL    CHECK (artifact ~ '^[a-z0-9]+(\.[a-z0-9]+)*$'), 
-  created_at                       TIMESTAMPTZ      NOT NULL, 
+  created_at                       TIMESTAMPTZ      NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
   created_by                       VARCHAR(32)      NOT NULL, 
-  updated_at                       TIMESTAMPTZ      NOT NULL, 
+  updated_at                       TIMESTAMPTZ      NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
   updated_by                       VARCHAR(32)      NOT NULL, 
   is_active                        BOOLEAN          NOT NULL    DEFAULT TRUE
 );

@@ -10,11 +10,11 @@ CREATE OR REPLACE FUNCTION pareto.is_us_state(
   IN in_attribute TEXT,
   IN in_value     TEXT
 ) 
-RETURNS pg_val
+RETURNS pareto.pg_val
 AS $$
 DECLARE
 
-  v_result pg_val;
+  v_result pareto.pg_val;
 
 BEGIN
 

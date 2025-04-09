@@ -44,8 +44,26 @@ CREATE TYPE pg_resp AS (
   detail     TEXT
 );
 
+DROP TYPE IF EXISTS pareto.pg_resp CASCADE;
+CREATE TYPE pareto.pg_resp AS (
+  status     TEXT,
+  data       JSONB,
+  errors     JSONB,
+  error_code TEXT,
+  message    TEXT,
+  hint       TEXT,
+  detail     TEXT
+);
+
 DROP TYPE IF EXISTS pg_val CASCADE;
 CREATE TYPE pg_val AS (
+  passed  BOOLEAN,
+  field   TEXT,
+  message TEXT
+);
+
+DROP TYPE IF EXISTS pareto.pg_val CASCADE;
+CREATE TYPE pareto.pg_val AS (
   passed  BOOLEAN,
   field   TEXT,
   message TEXT

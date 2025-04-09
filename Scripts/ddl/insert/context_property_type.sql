@@ -19,8 +19,8 @@ DECLARE
 
   v_metadata     JSONB := '{}'::JSONB;
   v_errors       JSONB := '[]'::JSONB;
-  v_val_resp     pg_val;
-  v_response     pg_resp;
+  v_val_resp     pareto.pg_val;  
+  v_response     pareto.pg_resp;
 
   v_updated_at   TIMESTAMPTZ;
 
@@ -44,13 +44,12 @@ BEGIN
   v_metadata := jsonb_build_object(
     'id_context', id_context, 
     'id_schema', id_schema, 
-    'id', id, 
-    'created_by', created_by, 
-    'is_nullable', is_nullable, 
-    'length', length, 
     'id_generic_property_type', id_generic_property_type, 
+    'length', length, 
     'scale', scale, 
-    'default_value', default_value
+    'is_nullable', is_nullable, 
+    'default_value', default_value, 
+    'created_by', created_by
   );
   
   -- ------------------------------------------------------

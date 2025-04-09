@@ -4,14 +4,14 @@
 DROP TABLE IF EXISTS pareto.project_component_property CASCADE;
 
 CREATE TABLE pareto.project_component_property (
-  id                               UUID             NOT NULL, 
+  id                               UUID             NOT NULL    DEFAULT GEN_RANDOM_UUID(), 
   id_project_component             UUID             NOT NULL, 
   sequence                         INTEGER          NOT NULL, 
   data_object_filter               TEXT             NOT NULL, 
   property_filter                  TEXT             NOT NULL, 
-  created_at                       TIMESTAMPTZ      NOT NULL, 
+  created_at                       TIMESTAMPTZ      NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
   created_by                       VARCHAR(32)      NOT NULL, 
-  updated_at                       TIMESTAMPTZ      NOT NULL, 
+  updated_at                       TIMESTAMPTZ      NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
   updated_by                       VARCHAR(32)      NOT NULL, 
   is_active                        BOOLEAN          NOT NULL    DEFAULT TRUE
 );
