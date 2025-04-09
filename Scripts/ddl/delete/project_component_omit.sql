@@ -2,9 +2,8 @@
 -- Delete project_component_omit
 -- ------------------------------------------------------
 CREATE OR REPLACE FUNCTION pareto.d_project_component_omit(
-  IN id UUID,
-  IN updated_at TIMESTAMPTZ,
-  IN deleted_by TEXT
+  IN id_project_component UUID, 
+  IN id_data_object UUID
 )
 RETURNS pg_resp
 AS $$
@@ -16,11 +15,13 @@ DECLARE
   v_response     pg_resp;
   v_message      TEXT;
   
-  v_id           UUID := id;
-  v_updated_at   TIMESTAMPTZ := updated_at;
   v_updates      INT;
   v_count        INT;
-  
+
+  -- Set the Property Variables
+  v_id_project_component UUID := id_project_component;
+  v_id_data_object UUID := id_data_object;
+    
 BEGIN
 
   -- ------------------------------------------------------
@@ -28,9 +29,8 @@ BEGIN
   -- ------------------------------------------------------
 
   v_metadata := jsonb_build_object(
-    'id', id,
-    'updated_at', updated_at,
-    'deleted_by', deleted_by
+    'id_project_component', id_project_component, 
+    'id_data_object', id_data_object
   );
   
   -- ------------------------------------------------------
@@ -38,9 +38,9 @@ BEGIN
   -- ------------------------------------------------------
 
   DELETE FROM pareto.project_component_omit 
-   WHERE id = v_id
-     AND updated_at = v_updated_at;
-
+    WHERE id_project_component = v_id_project_component
+      AND id_data_object = v_id_data_object
+  ;
   GET DIAGNOSTICS v_updates = ROW_COUNT;
 
   IF v_updates > 0 THEN
@@ -54,30 +54,8 @@ BEGIN
       NULL, 
       NULL
     );
-    CALL pareto.i_logs('INFO', v_response.message, c_service_name, deleted_by, v_metadata);    
+    CALL pareto.i_logs('INFO', v_response.message, c_service_name, 'unknown', v_metadata);    
   ELSE  
-    -- Check for Optimistic Lock Error
-    v_id := id;
-    SELECT count(*) INTO v_count   
-      FROM pareto.project_component_omit 
-     WHERE id = v_id;
-          
-    IF (v_count > 0) THEN
-      -- Record does exists but the updated_at timestamp has changed
-      -- The id and updated_at values are not returned. The client must refresh the record.      
-      v_message := 'The record was updated by another transaction. Refresh and try again';
-      v_response := (
-        'ERROR', 
-        NULL, 
-        jsonb_build_object('type', 'optimistic_lock', 'field', 'updated_at', 'message', v_message), 
-        '00002',
-        'No records were found matching the query.',
-        'The UPDATED_AT query parameter does not match the current record.',
-        'Obtain the latest updated_at timestamp and try again.'          
-      );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, deleted_by, v_metadata);
-      RETURN v_response;
-    ELSE
       -- Record does not exist
       v_response := (
         'ERROR', 
@@ -88,8 +66,7 @@ BEGIN
         'Check the query parameters or ensure data exists.',
         'The requested resource does not exist in the database.'          
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, deleted_by, v_metadata);
-    END IF;
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, 'unknown', v_metadata);
   END IF;    
 
   RETURN v_response;
@@ -109,7 +86,7 @@ BEGIN
         'Check database logs for more details', 
         SQLERRM
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, deleted_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, 'unknown', v_metadata);
       RETURN v_response;
   
 END;

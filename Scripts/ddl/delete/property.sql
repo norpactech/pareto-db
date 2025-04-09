@@ -2,9 +2,8 @@
 -- Delete property
 -- ------------------------------------------------------
 CREATE OR REPLACE FUNCTION pareto.d_property(
-  IN id UUID,
-  IN updated_at TIMESTAMPTZ,
-  IN deleted_by TEXT
+  IN id UUID, 
+  IN updated_by VARCHAR
 )
 RETURNS pg_resp
 AS $$
@@ -16,11 +15,13 @@ DECLARE
   v_response     pg_resp;
   v_message      TEXT;
   
-  v_id           UUID := id;
-  v_updated_at   TIMESTAMPTZ := updated_at;
   v_updates      INT;
   v_count        INT;
-  
+
+  -- Set the Property Variables
+  v_id UUID := id;
+  v_updated_by VARCHAR := updated_by;
+    
 BEGIN
 
   -- ------------------------------------------------------
@@ -28,9 +29,8 @@ BEGIN
   -- ------------------------------------------------------
 
   v_metadata := jsonb_build_object(
-    'id', id,
-    'updated_at', updated_at,
-    'deleted_by', deleted_by
+    'id', id, 
+    'updated_by', updated_by
   );
   
   -- ------------------------------------------------------
@@ -38,9 +38,9 @@ BEGIN
   -- ------------------------------------------------------
 
   DELETE FROM pareto.property 
-   WHERE id = v_id
-     AND updated_at = v_updated_at;
-
+    WHERE id = v_id
+      AND updated_at = v_updated_at
+  ;
   GET DIAGNOSTICS v_updates = ROW_COUNT;
 
   IF v_updates > 0 THEN
@@ -54,13 +54,13 @@ BEGIN
       NULL, 
       NULL
     );
-    CALL pareto.i_logs('INFO', v_response.message, c_service_name, deleted_by, v_metadata);    
+    CALL pareto.i_logs('INFO', v_response.message, c_service_name, v_updated_by, v_metadata);    
   ELSE  
     -- Check for Optimistic Lock Error
     v_id := id;
     SELECT count(*) INTO v_count   
       FROM pareto.property 
-     WHERE id = v_id;
+    WHERE id = v_id;
           
     IF (v_count > 0) THEN
       -- Record does exists but the updated_at timestamp has changed
@@ -75,7 +75,7 @@ BEGIN
         'The UPDATED_AT query parameter does not match the current record.',
         'Obtain the latest updated_at timestamp and try again.'          
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, deleted_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_updated_by, v_metadata);
       RETURN v_response;
     ELSE
       -- Record does not exist
@@ -88,7 +88,7 @@ BEGIN
         'Check the query parameters or ensure data exists.',
         'The requested resource does not exist in the database.'          
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, deleted_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_updated_by, v_metadata);
     END IF;
   END IF;    
 
@@ -109,7 +109,7 @@ BEGIN
         'Check database logs for more details', 
         SQLERRM
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, deleted_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_updated_by, v_metadata);
       RETURN v_response;
   
 END;

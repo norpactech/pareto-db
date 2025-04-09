@@ -18,14 +18,14 @@ if not defined PGPORT (
 )
 echo Beginning Global Definitions
 rem goto start
-psql -d norpac -h %PGHOST% -p %PGPORT% -f ".\bootstrap.sql" || goto exception
+rem psql -d norpac -h %PGHOST% -p %PGPORT% -f ".\bootstrap.sql" || goto exception
 
 echo Beginning PostgREST Users
-psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f ".\users.sql" || goto exception
+rem psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f ".\users.sql" || goto exception
 echo Completed PostgREST Users
 
 cd ..\ddl\table
-call create_table.bat || goto exception
+rem call create_table.bat || goto exception
 cd ..\..\utils
 
 cd ..\ddl\validation

@@ -2,9 +2,9 @@
 -- Deactivate ref_table_type (Soft Delete)
 -- ------------------------------------------------------
 CREATE OR REPLACE FUNCTION pareto.deact_ref_table_type(
-  IN id uuid, 
-  IN updated_at timestamptz, 
-  IN updated_by varchar
+  IN id UUID, 
+  IN updated_at TIMESTAMPTZ, 
+  IN updated_by VARCHAR
 )
 RETURNS pg_resp
 AS $$
@@ -19,10 +19,10 @@ DECLARE
   v_updates      INT;
   v_count        INT;
   
-  -- Set variables to avoid ambiguous column names
-  v_id uuid := id;
-  v_updated_at timestamptz := updated_at;
-  v_updated_by varchar := updated_by;
+  -- Set the Property Variables
+  v_id UUID := id;
+  v_updated_at TIMESTAMPTZ := updated_at;
+  v_updated_by VARCHAR := updated_by;
   
 BEGIN
 
@@ -59,9 +59,8 @@ BEGIN
       NULL, 
       NULL
     );
-    CALL pareto.i_logs('INFO', v_response.message, c_service_name, updated_by, v_metadata);    
+    CALL pareto.i_logs('INFO', v_response.message, c_service_name, v_updated_by, v_metadata);    
   ELSE
-    
     -- Check for Optimistic Lock Error
     v_id := id;
     SELECT count(*) INTO v_count   
@@ -77,11 +76,11 @@ BEGIN
         NULL, 
         jsonb_build_object('type', 'optimistic_lock', 'field', 'updated_at', 'message', v_message), 
         '00002',
-        'Deactivate failed',
+        'No records were found matching the query.',
         'The UPDATED_AT query parameter does not match the current record.',
         'Obtain the latest updated_at timestamp and try again.'          
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, updated_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_updated_by, v_metadata);
       RETURN v_response;
     ELSE
       -- Record does not exist
@@ -90,11 +89,11 @@ BEGIN
         NULL, 
         NULL, 
         '00002',
-        'Deactivate failed',
-        'Check the query parameters or ensure data exists',
-        'The requested resource does not exist in the database'          
+        'No records were found matching the query.',
+        'Check the query parameters or ensure data exists.',
+        'The requested resource does not exist in the database.'          
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, updated_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_updated_by, v_metadata);
     END IF;
   END IF;    
 
@@ -115,7 +114,7 @@ BEGIN
         'Check database logs for more details', 
         SQLERRM
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, updated_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_updated_by, v_metadata);
       RETURN v_response;
   
 END;
@@ -125,9 +124,9 @@ $$ LANGUAGE plpgsql;
 -- Reactivate ref_table_type (Soft Undelete)
 -- ------------------------------------------------------
 CREATE OR REPLACE FUNCTION pareto.react_ref_table_type(
-  IN id uuid, 
-  IN updated_at timestamptz, 
-  IN updated_by varchar
+  IN id UUID, 
+  IN updated_at TIMESTAMPTZ, 
+  IN updated_by VARCHAR
 )
 RETURNS pg_resp
 AS $$
@@ -142,10 +141,10 @@ DECLARE
   v_updates      INT;
   v_count        INT;
 
-  -- Set variables to avoid ambiguous column names
-  v_id uuid := id;
-  v_updated_at timestamptz := updated_at;
-  v_updated_by varchar := updated_by;
+  -- Set the Property Variables
+  v_id UUID := id;
+  v_updated_at TIMESTAMPTZ := updated_at;
+  v_updated_by VARCHAR := updated_by;
   
 BEGIN
 
@@ -182,9 +181,8 @@ BEGIN
       NULL, 
       NULL
     );
-    CALL pareto.i_logs('INFO', v_response.message, c_service_name, updated_by, v_metadata);    
+    CALL pareto.i_logs('INFO', v_response.message, c_service_name, v_updated_by, v_metadata);    
   ELSE
-    
     -- Check for Optimistic Lock Error
     v_id := id;
     SELECT count(*) INTO v_count   
@@ -200,11 +198,11 @@ BEGIN
         NULL, 
         jsonb_build_object('type', 'optimistic_lock', 'field', 'updated_at', 'message', v_message), 
         '00002',
-        'Reactivate failed',
+        'No records were found matching the query.',
         'The UPDATED_AT query parameter does not match the current record.',
         'Obtain the latest updated_at timestamp and try again.'          
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, updated_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_updated_by, v_metadata);
       RETURN v_response;
     ELSE
       -- Record does not exist
@@ -213,11 +211,11 @@ BEGIN
         NULL, 
         NULL, 
         '00002',
-        'Reactivate failed',
-        'Check the query parameters or ensure data exists',
-        'The requested resource does not exist in the database'          
+        'No records were found matching the query.',
+        'Check the query parameters or ensure data exists.',
+        'The requested resource does not exist in the database.'          
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, updated_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_updated_by, v_metadata);
     END IF;
   END IF;    
 
@@ -238,7 +236,7 @@ BEGIN
         'Check database logs for more details', 
         SQLERRM
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, updated_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_updated_by, v_metadata);
       RETURN v_response;
   
 END;

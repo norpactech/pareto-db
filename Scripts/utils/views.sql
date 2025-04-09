@@ -4,6 +4,7 @@
 -- See LICENSE file in the project root for full license information.
 -- ----------------------------------------------------------------------------
 
+DROP VIEW IF EXISTS pareto.v_index;
 CREATE VIEW pareto.v_index AS
   SELECT o.name AS "object",
          i.name AS "index", 
@@ -17,6 +18,7 @@ CREATE VIEW pareto.v_index AS
 
 -- List all tables and order by least to most dependent 	
 
+DROP VIEW IF EXISTS pareto.v_table_dependencies;
 CREATE VIEW pareto.v_table_dependencies AS
   -- has dependencies
   SELECT t.id     AS id_tenant,
