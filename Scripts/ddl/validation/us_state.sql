@@ -1,12 +1,8 @@
 -- --------------------------------------------------------------------------------------
--- © 2025 Northern Pacific Technologies, LLC. All Rights Reserved. 
---  
--- For license details, see the LICENSE file in this project root.
---
--- --------------------------------------------------------------------------------------
 -- Validate us_state - United States 2 Char State Code
 -- --------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.is_us_state(
+DROP FUNCTION IF EXISTS pareto.is_us_state;
+CREATE FUNCTION pareto.is_us_state(
   IN in_attribute TEXT,
   IN in_value     TEXT
 ) 

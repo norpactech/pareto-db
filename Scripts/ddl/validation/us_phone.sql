@@ -1,12 +1,8 @@
 -- --------------------------------------------------------------------------------------
--- © 2025 Northern Pacific Technologies, LLC. All Rights Reserved. 
---  
--- For license details, see the LICENSE file in this project root.
---
--- --------------------------------------------------------------------------------------
 -- Validate us_phone - United State Phone without Extension
 -- --------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.is_us_phone(
+DROP FUNCTION IF EXISTS pareto.is_us_phone;
+CREATE FUNCTION pareto.is_us_phone(
   IN in_attribute TEXT,
   IN in_value     TEXT
 ) 

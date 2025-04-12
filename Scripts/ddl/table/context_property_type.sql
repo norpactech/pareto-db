@@ -12,9 +12,9 @@ CREATE TABLE pareto.context_property_type (
   scale                            INTEGER          NULL, 
   is_nullable                      BOOLEAN          NOT NULL, 
   default_value                    TEXT             NULL, 
-  created_at                       TIMESTAMPTZ      NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
+  created_at                       TIMESTAMP        NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
   created_by                       VARCHAR(32)      NOT NULL, 
-  updated_at                       TIMESTAMPTZ      NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
+  updated_at                       TIMESTAMP        NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
   updated_by                       VARCHAR(32)      NOT NULL, 
   is_active                        BOOLEAN          NOT NULL    DEFAULT TRUE
 );

@@ -1,7 +1,8 @@
 -- -------------------------------------------------------
 -- Delete context
 -- ------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.d_context(
+DROP FUNCTION IF EXISTS pareto.d_context;
+CREATE FUNCTION pareto.d_context(
   IN id UUID, 
   IN updated_by VARCHAR
 )

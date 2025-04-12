@@ -1,7 +1,8 @@
 -- -------------------------------------------------------
 -- Delete schema
 -- ------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.d_schema(
+DROP FUNCTION IF EXISTS pareto.d_schema;
+CREATE FUNCTION pareto.d_schema(
   IN id UUID, 
   IN updated_by VARCHAR
 )

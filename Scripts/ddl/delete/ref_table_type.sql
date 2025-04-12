@@ -1,7 +1,8 @@
 -- -------------------------------------------------------
 -- Delete ref_table_type
 -- ------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.d_ref_table_type(
+DROP FUNCTION IF EXISTS pareto.d_ref_table_type;
+CREATE FUNCTION pareto.d_ref_table_type(
   IN id UUID, 
   IN updated_by VARCHAR
 )

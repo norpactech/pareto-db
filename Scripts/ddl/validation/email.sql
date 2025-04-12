@@ -1,12 +1,8 @@
 -- --------------------------------------------------------------------------------------
--- © 2025 Northern Pacific Technologies, LLC. All Rights Reserved. 
---  
--- For license details, see the LICENSE file in this project root.
---
--- --------------------------------------------------------------------------------------
 -- Validate email - Email Address
 -- --------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.is_email(
+DROP FUNCTION IF EXISTS pareto.is_email;
+CREATE FUNCTION pareto.is_email(
   IN in_attribute TEXT,
   IN in_value     TEXT
 ) 

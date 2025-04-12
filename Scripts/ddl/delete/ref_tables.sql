@@ -1,7 +1,8 @@
 -- -------------------------------------------------------
 -- Delete ref_tables
 -- ------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.d_ref_tables(
+DROP FUNCTION IF EXISTS pareto.d_ref_tables;
+CREATE FUNCTION pareto.d_ref_tables(
   IN id UUID, 
   IN updated_by VARCHAR
 )

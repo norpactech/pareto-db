@@ -1,7 +1,8 @@
 -- -------------------------------------------------------
 -- Delete index
 -- ------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.d_index(
+DROP FUNCTION IF EXISTS pareto.d_index;
+CREATE FUNCTION pareto.d_index(
   IN id UUID, 
   IN updated_by VARCHAR
 )

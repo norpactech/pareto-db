@@ -1,12 +1,8 @@
 -- --------------------------------------------------------------------------------------
--- © 2025 Northern Pacific Technologies, LLC. All Rights Reserved. 
---  
--- For license details, see the LICENSE file in this project root.
---
--- --------------------------------------------------------------------------------------
 -- Validate full_name - Given, Middle, and Sir Name
 -- --------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.is_full_name(
+DROP FUNCTION IF EXISTS pareto.is_full_name;
+CREATE FUNCTION pareto.is_full_name(
   IN in_attribute TEXT,
   IN in_value     TEXT
 ) 

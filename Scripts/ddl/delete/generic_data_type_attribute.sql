@@ -1,7 +1,8 @@
 -- -------------------------------------------------------
 -- Delete generic_data_type_attribute
 -- ------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.d_generic_data_type_attribute(
+DROP FUNCTION IF EXISTS pareto.d_generic_data_type_attribute;
+CREATE FUNCTION pareto.d_generic_data_type_attribute(
   IN id UUID, 
   IN updated_by VARCHAR
 )

@@ -1,12 +1,8 @@
 -- --------------------------------------------------------------------------------------
--- © 2025 Northern Pacific Technologies, LLC. All Rights Reserved. 
---  
--- For license details, see the LICENSE file in this project root.
---
--- --------------------------------------------------------------------------------------
 -- Validate package - Package Structure (i.e. com.norpactech.pareto)
 -- --------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.is_package(
+DROP FUNCTION IF EXISTS pareto.is_package;
+CREATE FUNCTION pareto.is_package(
   IN in_attribute TEXT,
   IN in_value     TEXT
 ) 

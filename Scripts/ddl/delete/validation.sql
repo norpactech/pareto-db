@@ -1,7 +1,8 @@
 -- -------------------------------------------------------
 -- Delete validation
 -- ------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.d_validation(
+DROP FUNCTION IF EXISTS pareto.d_validation;
+CREATE FUNCTION pareto.d_validation(
   IN id UUID, 
   IN updated_by VARCHAR
 )

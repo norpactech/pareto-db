@@ -1,7 +1,8 @@
 -- -------------------------------------------------------
 -- Delete project
 -- ------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.d_project(
+DROP FUNCTION IF EXISTS pareto.d_project;
+CREATE FUNCTION pareto.d_project(
   IN id UUID, 
   IN updated_by VARCHAR
 )

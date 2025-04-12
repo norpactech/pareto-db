@@ -1,7 +1,8 @@
 -- -------------------------------------------------------
 -- Delete user
 -- ------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.d_user(
+DROP FUNCTION IF EXISTS pareto.d_user;
+CREATE FUNCTION pareto.d_user(
   IN id UUID, 
   IN updated_by VARCHAR
 )

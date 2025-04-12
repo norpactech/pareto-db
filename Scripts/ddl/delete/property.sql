@@ -1,7 +1,8 @@
 -- -------------------------------------------------------
 -- Delete property
 -- ------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.d_property(
+DROP FUNCTION IF EXISTS pareto.d_property;
+CREATE FUNCTION pareto.d_property(
   IN id UUID, 
   IN updated_by VARCHAR
 )

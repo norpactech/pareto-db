@@ -1,7 +1,8 @@
 -- -------------------------------------------------------
 -- Delete project_component
 -- ------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.d_project_component(
+DROP FUNCTION IF EXISTS pareto.d_project_component;
+CREATE FUNCTION pareto.d_project_component(
   IN id UUID, 
   IN updated_by VARCHAR
 )

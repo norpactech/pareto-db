@@ -1,12 +1,8 @@
 -- --------------------------------------------------------------------------------------
--- © 2025 Northern Pacific Technologies, LLC. All Rights Reserved. 
---  
--- For license details, see the LICENSE file in this project root.
---
--- --------------------------------------------------------------------------------------
 -- Validate numeric_size - Small, Medium, Large
 -- --------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.is_numeric_size(
+DROP FUNCTION IF EXISTS pareto.is_numeric_size;
+CREATE FUNCTION pareto.is_numeric_size(
   IN in_attribute TEXT,
   IN in_value     TEXT
 ) 

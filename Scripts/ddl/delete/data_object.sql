@@ -1,7 +1,8 @@
 -- -------------------------------------------------------
 -- Delete data_object
 -- ------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.d_data_object(
+DROP FUNCTION IF EXISTS pareto.d_data_object;
+CREATE FUNCTION pareto.d_data_object(
   IN id UUID, 
   IN updated_by VARCHAR
 )

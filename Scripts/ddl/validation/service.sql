@@ -1,12 +1,8 @@
 -- --------------------------------------------------------------------------------------
--- © 2025 Northern Pacific Technologies, LLC. All Rights Reserved. 
---  
--- For license details, see the LICENSE file in this project root.
---
--- --------------------------------------------------------------------------------------
 -- Validate service - Service Name
 -- --------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.is_service(
+DROP FUNCTION IF EXISTS pareto.is_service;
+CREATE FUNCTION pareto.is_service(
   IN in_attribute TEXT,
   IN in_value     TEXT
 ) 

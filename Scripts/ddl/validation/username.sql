@@ -1,12 +1,8 @@
 -- --------------------------------------------------------------------------------------
--- © 2025 Northern Pacific Technologies, LLC. All Rights Reserved. 
---  
--- For license details, see the LICENSE file in this project root.
---
--- --------------------------------------------------------------------------------------
 -- Validate username - System Username Validation
 -- --------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.is_username(
+DROP FUNCTION IF EXISTS pareto.is_username;
+CREATE FUNCTION pareto.is_username(
   IN in_attribute TEXT,
   IN in_value     TEXT
 ) 

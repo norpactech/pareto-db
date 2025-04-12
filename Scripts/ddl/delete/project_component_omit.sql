@@ -1,7 +1,8 @@
 -- -------------------------------------------------------
 -- Delete project_component_omit
 -- ------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.d_project_component_omit(
+DROP FUNCTION IF EXISTS pareto.d_project_component_omit;
+CREATE FUNCTION pareto.d_project_component_omit(
   IN id_project_component UUID, 
   IN id_data_object UUID
 )

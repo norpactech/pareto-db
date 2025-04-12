@@ -1,12 +1,8 @@
 -- --------------------------------------------------------------------------------------
--- © 2025 Northern Pacific Technologies, LLC. All Rights Reserved. 
---  
--- For license details, see the LICENSE file in this project root.
---
--- --------------------------------------------------------------------------------------
 -- Validate fixed_varying - Is the value Fixed or Varying
 -- --------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.is_fixed_varying(
+DROP FUNCTION IF EXISTS pareto.is_fixed_varying;
+CREATE FUNCTION pareto.is_fixed_varying(
   IN in_attribute TEXT,
   IN in_value     TEXT
 ) 

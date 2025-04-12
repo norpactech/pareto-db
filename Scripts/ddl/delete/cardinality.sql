@@ -1,7 +1,8 @@
 -- -------------------------------------------------------
 -- Delete cardinality
 -- ------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.d_cardinality(
+DROP FUNCTION IF EXISTS pareto.d_cardinality;
+CREATE FUNCTION pareto.d_cardinality(
   IN id UUID, 
   IN updated_by VARCHAR
 )

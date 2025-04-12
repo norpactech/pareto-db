@@ -1,9 +1,10 @@
 -- -------------------------------------------------------
 -- Deactivate plugin (Soft Delete)
 -- ------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.deact_plugin(
+DROP FUNCTION IF EXISTS pareto.deact_plugin;
+CREATE FUNCTION pareto.deact_plugin (
   IN id UUID, 
-  IN updated_at TIMESTAMPTZ, 
+  IN updated_at TIMESTAMP, 
   IN updated_by VARCHAR
 )
 RETURNS pg_resp
@@ -21,7 +22,7 @@ DECLARE
   
   -- Set the Property Variables
   v_id UUID := id;
-  v_updated_at TIMESTAMPTZ := updated_at;
+  v_updated_at TIMESTAMP := updated_at;
   v_updated_by VARCHAR := updated_by;
   
 BEGIN
@@ -123,9 +124,10 @@ $$ LANGUAGE plpgsql;
 -- -------------------------------------------------------
 -- Reactivate plugin (Soft Undelete)
 -- ------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.react_plugin(
+DROP FUNCTION IF EXISTS pareto.react_plugin;
+CREATE FUNCTION pareto.react_plugin(
   IN id UUID, 
-  IN updated_at TIMESTAMPTZ, 
+  IN updated_at TIMESTAMP, 
   IN updated_by VARCHAR
 )
 RETURNS pg_resp
@@ -143,7 +145,7 @@ DECLARE
 
   -- Set the Property Variables
   v_id UUID := id;
-  v_updated_at TIMESTAMPTZ := updated_at;
+  v_updated_at TIMESTAMP := updated_at;
   v_updated_by VARCHAR := updated_by;
   
 BEGIN

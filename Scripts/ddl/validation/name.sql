@@ -1,12 +1,8 @@
 -- --------------------------------------------------------------------------------------
--- © 2025 Northern Pacific Technologies, LLC. All Rights Reserved. 
---  
--- For license details, see the LICENSE file in this project root.
---
--- --------------------------------------------------------------------------------------
 -- Validate name - Generic Name with Few Special Characters
 -- --------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.is_name(
+DROP FUNCTION IF EXISTS pareto.is_name;
+CREATE FUNCTION pareto.is_name(
   IN in_attribute TEXT,
   IN in_value     TEXT
 ) 

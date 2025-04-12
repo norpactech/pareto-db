@@ -1,7 +1,8 @@
 -- -------------------------------------------------------
 -- Delete tenant
 -- ------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.d_tenant(
+DROP FUNCTION IF EXISTS pareto.d_tenant;
+CREATE FUNCTION pareto.d_tenant(
   IN id UUID, 
   IN updated_by VARCHAR
 )

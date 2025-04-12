@@ -1,12 +1,8 @@
 -- --------------------------------------------------------------------------------------
--- © 2025 Northern Pacific Technologies, LLC. All Rights Reserved. 
---  
--- For license details, see the LICENSE file in this project root.
---
--- --------------------------------------------------------------------------------------
 -- Validate us_zip_code - United States Zip Codes
 -- --------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.is_us_zip_code(
+DROP FUNCTION IF EXISTS pareto.is_us_zip_code;
+CREATE FUNCTION pareto.is_us_zip_code(
   IN in_attribute TEXT,
   IN in_value     TEXT
 ) 

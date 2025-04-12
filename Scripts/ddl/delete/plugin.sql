@@ -1,7 +1,8 @@
 -- -------------------------------------------------------
 -- Delete plugin
 -- ------------------------------------------------------
-CREATE OR REPLACE FUNCTION pareto.d_plugin(
+DROP FUNCTION IF EXISTS pareto.d_plugin;
+CREATE FUNCTION pareto.d_plugin(
   IN id UUID, 
   IN updated_by VARCHAR
 )
