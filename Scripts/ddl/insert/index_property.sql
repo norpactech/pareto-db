@@ -4,11 +4,11 @@
 
 DROP FUNCTION IF EXISTS pareto.i_index_property;
 CREATE FUNCTION pareto.i_index_property(
-  IN id_index UUID, 
-  IN id_property UUID, 
-  IN id_rt_sort_order UUID, 
-  IN sequence INTEGER, 
-  IN created_by VARCHAR
+  IN p_id_index UUID, 
+  IN p_id_property UUID, 
+  IN p_id_rt_sort_order UUID, 
+  IN p_sequence INTEGER, 
+  IN p_created_by VARCHAR
 )
 RETURNS pg_resp
 AS $$
@@ -20,16 +20,10 @@ DECLARE
   v_errors       JSONB := '[]'::JSONB;
   v_val_resp     pareto.pg_val;  
   v_response     pareto.pg_resp;
-
   v_updated_at   TIMESTAMPTZ;
-
-  -- Set the Property Variables
-  v_id UUID := NULL;
-  v_id_index UUID := id_index;
-  v_created_by VARCHAR := created_by;
-  v_sequence INTEGER := sequence;
-  v_id_property UUID := id_property;
-  v_id_rt_sort_order UUID := id_rt_sort_order;
+  
+  -- Primary Key Field(s)
+  v_id uuid := NULL;
 
 BEGIN
 
@@ -38,17 +32,17 @@ BEGIN
   -- ------------------------------------------------------
 
   v_metadata := jsonb_build_object(
-    'id_index', id_index, 
-    'id_property', id_property, 
-    'id_rt_sort_order', id_rt_sort_order, 
-    'sequence', sequence, 
-    'created_by', created_by
+    'id_index', p_id_index, 
+    'id_property', p_id_property, 
+    'id_rt_sort_order', p_id_rt_sort_order, 
+    'sequence', p_sequence, 
+    'created_by', p_created_by
   );
   
   -- ------------------------------------------------------
   -- Persist
   -- ------------------------------------------------------
-
+ 
   INSERT INTO pareto.index_property (
     id_index, 
     id_property, 
@@ -58,12 +52,12 @@ BEGIN
     updated_by
   )
   VALUES (
-    v_id_index, 
-    v_id_property, 
-    v_id_rt_sort_order, 
-    v_sequence, 
-    v_created_by,
-    v_created_by
+    p_id_index, 
+    p_id_property, 
+    p_id_rt_sort_order, 
+    p_sequence, 
+    p_created_by,
+    p_created_by
   )
   RETURNING id, updated_at INTO v_id, v_updated_at;
 
@@ -93,7 +87,7 @@ BEGIN
         'A record already exists in the index_property table', 
         'Check the provided data and try again'
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_created_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, p_created_by, v_metadata);
       RETURN v_response;
   
     WHEN OTHERS THEN
@@ -106,7 +100,7 @@ BEGIN
         'Check database logs for more details', 
         SQLERRM
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_created_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, p_created_by, v_metadata);
       RETURN v_response;
   
 END;

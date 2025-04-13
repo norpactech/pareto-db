@@ -4,14 +4,14 @@
 
 DROP FUNCTION IF EXISTS pareto.i_context_property_type;
 CREATE FUNCTION pareto.i_context_property_type(
-  IN id_context UUID, 
-  IN id_schema UUID, 
-  IN id_generic_property_type UUID, 
-  IN length INTEGER, 
-  IN scale INTEGER, 
-  IN is_nullable BOOLEAN, 
-  IN default_value TEXT, 
-  IN created_by VARCHAR
+  IN p_id_context UUID, 
+  IN p_id_generic_property_type UUID, 
+  IN p_id_schema UUID, 
+  IN p_length INTEGER, 
+  IN p_scale INTEGER, 
+  IN p_is_nullable BOOLEAN, 
+  IN p_default_value TEXT, 
+  IN p_created_by VARCHAR
 )
 RETURNS pg_resp
 AS $$
@@ -23,19 +23,10 @@ DECLARE
   v_errors       JSONB := '[]'::JSONB;
   v_val_resp     pareto.pg_val;  
   v_response     pareto.pg_resp;
-
   v_updated_at   TIMESTAMPTZ;
-
-  -- Set the Property Variables
-  v_id_context UUID := id_context;
-  v_id_schema UUID := id_schema;
-  v_id UUID := NULL;
-  v_created_by VARCHAR := created_by;
-  v_is_nullable BOOLEAN := is_nullable;
-  v_length INTEGER := length;
-  v_id_generic_property_type UUID := id_generic_property_type;
-  v_scale INTEGER := scale;
-  v_default_value TEXT := default_value;
+  
+  -- Primary Key Field(s)
+  v_id uuid := NULL;
 
 BEGIN
 
@@ -44,24 +35,24 @@ BEGIN
   -- ------------------------------------------------------
 
   v_metadata := jsonb_build_object(
-    'id_context', id_context, 
-    'id_schema', id_schema, 
-    'id_generic_property_type', id_generic_property_type, 
-    'length', length, 
-    'scale', scale, 
-    'is_nullable', is_nullable, 
-    'default_value', default_value, 
-    'created_by', created_by
+    'id_context', p_id_context, 
+    'id_generic_property_type', p_id_generic_property_type, 
+    'id_schema', p_id_schema, 
+    'length', p_length, 
+    'scale', p_scale, 
+    'is_nullable', p_is_nullable, 
+    'default_value', p_default_value, 
+    'created_by', p_created_by
   );
   
   -- ------------------------------------------------------
   -- Persist
   -- ------------------------------------------------------
-
+ 
   INSERT INTO pareto.context_property_type (
     id_context, 
-    id_schema, 
     id_generic_property_type, 
+    id_schema, 
     length, 
     scale, 
     is_nullable, 
@@ -70,15 +61,15 @@ BEGIN
     updated_by
   )
   VALUES (
-    v_id_context, 
-    v_id_schema, 
-    v_id_generic_property_type, 
-    v_length, 
-    v_scale, 
-    v_is_nullable, 
-    v_default_value, 
-    v_created_by,
-    v_created_by
+    p_id_context, 
+    p_id_generic_property_type, 
+    p_id_schema, 
+    p_length, 
+    p_scale, 
+    p_is_nullable, 
+    p_default_value, 
+    p_created_by,
+    p_created_by
   )
   RETURNING id, updated_at INTO v_id, v_updated_at;
 
@@ -108,7 +99,7 @@ BEGIN
         'A record already exists in the context_property_type table', 
         'Check the provided data and try again'
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_created_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, p_created_by, v_metadata);
       RETURN v_response;
   
     WHEN OTHERS THEN
@@ -121,7 +112,7 @@ BEGIN
         'Check database logs for more details', 
         SQLERRM
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_created_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, p_created_by, v_metadata);
       RETURN v_response;
   
 END;

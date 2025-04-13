@@ -4,12 +4,12 @@
 
 DROP FUNCTION IF EXISTS pareto.i_cardinality;
 CREATE FUNCTION pareto.i_cardinality(
-  IN id_property UUID, 
-  IN id_object_reference UUID, 
-  IN id_rt_cardinality UUID, 
-  IN id_rt_cardinality_strength UUID, 
-  IN has_referencial_action BOOLEAN, 
-  IN created_by VARCHAR
+  IN p_id_property UUID, 
+  IN p_id_object_reference UUID, 
+  IN p_id_rt_cardinality UUID, 
+  IN p_id_rt_cardinality_strength UUID, 
+  IN p_has_referencial_action BOOLEAN, 
+  IN p_created_by VARCHAR
 )
 RETURNS pg_resp
 AS $$
@@ -21,17 +21,10 @@ DECLARE
   v_errors       JSONB := '[]'::JSONB;
   v_val_resp     pareto.pg_val;  
   v_response     pareto.pg_resp;
-
   v_updated_at   TIMESTAMPTZ;
-
-  -- Set the Property Variables
-  v_id UUID := NULL;
-  v_has_referencial_action BOOLEAN := has_referencial_action;
-  v_created_by VARCHAR := created_by;
-  v_id_object_reference UUID := id_object_reference;
-  v_id_rt_cardinality UUID := id_rt_cardinality;
-  v_id_rt_cardinality_strength UUID := id_rt_cardinality_strength;
-  v_id_property UUID := id_property;
+  
+  -- Primary Key Field(s)
+  v_id uuid := NULL;
 
 BEGIN
 
@@ -40,18 +33,18 @@ BEGIN
   -- ------------------------------------------------------
 
   v_metadata := jsonb_build_object(
-    'id_property', id_property, 
-    'id_object_reference', id_object_reference, 
-    'id_rt_cardinality', id_rt_cardinality, 
-    'id_rt_cardinality_strength', id_rt_cardinality_strength, 
-    'has_referencial_action', has_referencial_action, 
-    'created_by', created_by
+    'id_property', p_id_property, 
+    'id_object_reference', p_id_object_reference, 
+    'id_rt_cardinality', p_id_rt_cardinality, 
+    'id_rt_cardinality_strength', p_id_rt_cardinality_strength, 
+    'has_referencial_action', p_has_referencial_action, 
+    'created_by', p_created_by
   );
   
   -- ------------------------------------------------------
   -- Persist
   -- ------------------------------------------------------
-
+ 
   INSERT INTO pareto.cardinality (
     id_property, 
     id_object_reference, 
@@ -62,13 +55,13 @@ BEGIN
     updated_by
   )
   VALUES (
-    v_id_property, 
-    v_id_object_reference, 
-    v_id_rt_cardinality, 
-    v_id_rt_cardinality_strength, 
-    v_has_referencial_action, 
-    v_created_by,
-    v_created_by
+    p_id_property, 
+    p_id_object_reference, 
+    p_id_rt_cardinality, 
+    p_id_rt_cardinality_strength, 
+    p_has_referencial_action, 
+    p_created_by,
+    p_created_by
   )
   RETURNING id, updated_at INTO v_id, v_updated_at;
 
@@ -98,7 +91,7 @@ BEGIN
         'A record already exists in the cardinality table', 
         'Check the provided data and try again'
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_created_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, p_created_by, v_metadata);
       RETURN v_response;
   
     WHEN OTHERS THEN
@@ -111,7 +104,7 @@ BEGIN
         'Check database logs for more details', 
         SQLERRM
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_created_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, p_created_by, v_metadata);
       RETURN v_response;
   
 END;

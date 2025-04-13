@@ -3,8 +3,8 @@
 -- ------------------------------------------------------
 DROP FUNCTION IF EXISTS pareto.d_project_component_omit;
 CREATE FUNCTION pareto.d_project_component_omit(
-  IN id_project_component UUID, 
-  IN id_data_object UUID
+  IN p_id_project_component UUID, 
+  IN p_id_data_object UUID
 )
 RETURNS pg_resp
 AS $$
@@ -14,14 +14,13 @@ DECLARE
 
   v_metadata     JSONB := '{}'::JSONB;
   v_response     pareto.pg_resp;
-  v_message      TEXT;
-  
+  v_message      TEXT;  
   v_updates      INT;
   v_count        INT;
 
-  -- Set the Property Variables
-  v_id_project_component UUID := id_project_component;
-  v_id_data_object UUID := id_data_object;
+  -- Primary Key Field(s)
+  v_id_project_component uuid := p_id_project_component;
+  v_id_data_object uuid := p_id_data_object;
     
 BEGIN
 
@@ -30,8 +29,8 @@ BEGIN
   -- ------------------------------------------------------
 
   v_metadata := jsonb_build_object(
-    'id_project_component', id_project_component, 
-    'id_data_object', id_data_object
+    'id_project_component', p_id_project_component, 
+    'id_data_object', p_id_data_object
   );
   
   -- ------------------------------------------------------
@@ -48,7 +47,7 @@ BEGIN
     -- Record was deleted
     v_response := (
       'OK', 
-      NULL, 
+      jsonb_build_object('id_project_component', v_id_project_component, 'id_data_object', v_id_data_object), 
       NULL, 
       '00000',
       'Delete was successful', 
@@ -92,3 +91,4 @@ BEGIN
   
 END;
 $$ LANGUAGE plpgsql;
+

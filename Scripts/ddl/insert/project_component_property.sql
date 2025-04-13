@@ -4,11 +4,11 @@
 
 DROP FUNCTION IF EXISTS pareto.i_project_component_property;
 CREATE FUNCTION pareto.i_project_component_property(
-  IN id_project_component UUID, 
-  IN sequence INTEGER, 
-  IN data_object_filter TEXT, 
-  IN property_filter TEXT, 
-  IN created_by VARCHAR
+  IN p_id_project_component UUID, 
+  IN p_sequence INTEGER, 
+  IN p_data_object_filter TEXT, 
+  IN p_property_filter TEXT, 
+  IN p_created_by VARCHAR
 )
 RETURNS pg_resp
 AS $$
@@ -20,16 +20,10 @@ DECLARE
   v_errors       JSONB := '[]'::JSONB;
   v_val_resp     pareto.pg_val;  
   v_response     pareto.pg_resp;
-
   v_updated_at   TIMESTAMPTZ;
-
-  -- Set the Property Variables
-  v_property_filter TEXT := property_filter;
-  v_id UUID := NULL;
-  v_created_by VARCHAR := created_by;
-  v_data_object_filter TEXT := data_object_filter;
-  v_sequence INTEGER := sequence;
-  v_id_project_component UUID := id_project_component;
+  
+  -- Primary Key Field(s)
+  v_id uuid := NULL;
 
 BEGIN
 
@@ -38,17 +32,17 @@ BEGIN
   -- ------------------------------------------------------
 
   v_metadata := jsonb_build_object(
-    'id_project_component', id_project_component, 
-    'sequence', sequence, 
-    'data_object_filter', data_object_filter, 
-    'property_filter', property_filter, 
-    'created_by', created_by
+    'id_project_component', p_id_project_component, 
+    'sequence', p_sequence, 
+    'data_object_filter', p_data_object_filter, 
+    'property_filter', p_property_filter, 
+    'created_by', p_created_by
   );
   
   -- ------------------------------------------------------
   -- Persist
   -- ------------------------------------------------------
-
+ 
   INSERT INTO pareto.project_component_property (
     id_project_component, 
     sequence, 
@@ -58,12 +52,12 @@ BEGIN
     updated_by
   )
   VALUES (
-    v_id_project_component, 
-    v_sequence, 
-    v_data_object_filter, 
-    v_property_filter, 
-    v_created_by,
-    v_created_by
+    p_id_project_component, 
+    p_sequence, 
+    p_data_object_filter, 
+    p_property_filter, 
+    p_created_by,
+    p_created_by
   )
   RETURNING id, updated_at INTO v_id, v_updated_at;
 
@@ -93,7 +87,7 @@ BEGIN
         'A record already exists in the project_component_property table', 
         'Check the provided data and try again'
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_created_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, p_created_by, v_metadata);
       RETURN v_response;
   
     WHEN OTHERS THEN
@@ -106,7 +100,7 @@ BEGIN
         'Check database logs for more details', 
         SQLERRM
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_created_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, p_created_by, v_metadata);
       RETURN v_response;
   
 END;

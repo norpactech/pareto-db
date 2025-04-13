@@ -69,7 +69,7 @@ BEGIN
       'Ensure all fields in the ''errors'' array are correctly formatted', 
       'The provided data did not pass validation checks'
     );
-    CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_created_by, v_metadata);
+    CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, p_updated_by, v_metadata);
     RETURN v_response;
   END IF;
   

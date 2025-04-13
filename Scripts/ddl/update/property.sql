@@ -6,8 +6,8 @@ CREATE FUNCTION pareto.u_property(
   IN p_id UUID, 
   IN p_id_data_object UUID, 
   IN p_id_generic_data_type UUID, 
-  IN p_id_generic_property_type UUID, 
   IN p_id_validation UUID, 
+  IN p_id_generic_property_type UUID, 
   IN p_sequence INTEGER, 
   IN p_name VARCHAR, 
   IN p_description TEXT, 
@@ -47,8 +47,8 @@ BEGIN
     'id', p_id, 
     'id_data_object', p_id_data_object, 
     'id_generic_data_type', p_id_generic_data_type, 
-    'id_generic_property_type', p_id_generic_property_type, 
     'id_validation', p_id_validation, 
+    'id_generic_property_type', p_id_generic_property_type, 
     'sequence', p_sequence, 
     'name', p_name, 
     'description', p_description, 
@@ -79,7 +79,7 @@ BEGIN
       'Ensure all fields in the ''errors'' array are correctly formatted', 
       'The provided data did not pass validation checks'
     );
-    CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_created_by, v_metadata);
+    CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, p_updated_by, v_metadata);
     RETURN v_response;
   END IF;
   
@@ -90,8 +90,8 @@ BEGIN
   UPDATE pareto.property SET
     id_data_object = p_id_data_object, 
     id_generic_data_type = p_id_generic_data_type, 
-    id_generic_property_type = p_id_generic_property_type, 
     id_validation = p_id_validation, 
+    id_generic_property_type = p_id_generic_property_type, 
     sequence = p_sequence, 
     name = p_name, 
     description = p_description, 

@@ -4,14 +4,14 @@
 
 DROP FUNCTION IF EXISTS pareto.i_context_data_type;
 CREATE FUNCTION pareto.i_context_data_type(
-  IN id_context UUID, 
-  IN id_generic_data_type UUID, 
-  IN sequence INTEGER, 
-  IN name VARCHAR, 
-  IN description TEXT, 
-  IN alias TEXT, 
-  IN context_value TEXT, 
-  IN created_by VARCHAR
+  IN p_id_context UUID, 
+  IN p_id_generic_data_type UUID, 
+  IN p_sequence INTEGER, 
+  IN p_name VARCHAR, 
+  IN p_description TEXT, 
+  IN p_alias TEXT, 
+  IN p_context_value TEXT, 
+  IN p_created_by VARCHAR
 )
 RETURNS pg_resp
 AS $$
@@ -23,19 +23,10 @@ DECLARE
   v_errors       JSONB := '[]'::JSONB;
   v_val_resp     pareto.pg_val;  
   v_response     pareto.pg_resp;
-
   v_updated_at   TIMESTAMPTZ;
-
-  -- Set the Property Variables
-  v_id_context UUID := id_context;
-  v_name VARCHAR := name;
-  v_id UUID := NULL;
-  v_created_by VARCHAR := created_by;
-  v_id_generic_data_type UUID := id_generic_data_type;
-  v_sequence INTEGER := sequence;
-  v_context_value TEXT := context_value;
-  v_description TEXT := description;
-  v_alias TEXT := alias;
+  
+  -- Primary Key Field(s)
+  v_id uuid := NULL;
 
 BEGIN
 
@@ -44,21 +35,21 @@ BEGIN
   -- ------------------------------------------------------
 
   v_metadata := jsonb_build_object(
-    'id_context', id_context, 
-    'id_generic_data_type', id_generic_data_type, 
-    'sequence', sequence, 
-    'name', name, 
-    'description', description, 
-    'alias', alias, 
-    'context_value', context_value, 
-    'created_by', created_by
+    'id_context', p_id_context, 
+    'id_generic_data_type', p_id_generic_data_type, 
+    'sequence', p_sequence, 
+    'name', p_name, 
+    'description', p_description, 
+    'alias', p_alias, 
+    'context_value', p_context_value, 
+    'created_by', p_created_by
   );
   
   -- ------------------------------------------------------
   -- Validations
   -- ------------------------------------------------------
   
-  v_val_resp := is_name('name', name);
+  v_val_resp := is_name('name', p_name);
   IF NOT v_val_resp.passed THEN
     v_errors := v_errors || jsonb_build_object('type', 'validation', 'field', v_val_resp.field, 'message', v_val_resp.message);
   END IF;
@@ -73,14 +64,14 @@ BEGIN
       'Ensure all fields in the ''errors'' array are correctly formatted', 
       'The provided data did not pass validation checks'
     );
-    CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_created_by, v_metadata);
+    CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, p_created_by, v_metadata);
     RETURN v_response;
   END IF;
   
   -- ------------------------------------------------------
   -- Persist
   -- ------------------------------------------------------
-
+ 
   INSERT INTO pareto.context_data_type (
     id_context, 
     id_generic_data_type, 
@@ -93,15 +84,15 @@ BEGIN
     updated_by
   )
   VALUES (
-    v_id_context, 
-    v_id_generic_data_type, 
-    v_sequence, 
-    v_name, 
-    v_description, 
-    v_alias, 
-    v_context_value, 
-    v_created_by,
-    v_created_by
+    p_id_context, 
+    p_id_generic_data_type, 
+    p_sequence, 
+    p_name, 
+    p_description, 
+    p_alias, 
+    p_context_value, 
+    p_created_by,
+    p_created_by
   )
   RETURNING id, updated_at INTO v_id, v_updated_at;
 
@@ -131,7 +122,7 @@ BEGIN
         'A record already exists in the context_data_type table', 
         'Check the provided data and try again'
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_created_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, p_created_by, v_metadata);
       RETURN v_response;
   
     WHEN OTHERS THEN
@@ -144,7 +135,7 @@ BEGIN
         'Check database logs for more details', 
         SQLERRM
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_created_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, p_created_by, v_metadata);
       RETURN v_response;
   
 END;

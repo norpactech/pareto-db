@@ -4,10 +4,10 @@
 
 DROP FUNCTION IF EXISTS pareto.i_index;
 CREATE FUNCTION pareto.i_index(
-  IN id_data_object UUID, 
-  IN id_rt_index_type UUID, 
-  IN name VARCHAR, 
-  IN created_by VARCHAR
+  IN p_id_data_object UUID, 
+  IN p_id_rt_index_type UUID, 
+  IN p_name VARCHAR, 
+  IN p_created_by VARCHAR
 )
 RETURNS pg_resp
 AS $$
@@ -19,15 +19,10 @@ DECLARE
   v_errors       JSONB := '[]'::JSONB;
   v_val_resp     pareto.pg_val;  
   v_response     pareto.pg_resp;
-
   v_updated_at   TIMESTAMPTZ;
-
-  -- Set the Property Variables
-  v_name VARCHAR := name;
-  v_id UUID := NULL;
-  v_created_by VARCHAR := created_by;
-  v_id_data_object UUID := id_data_object;
-  v_id_rt_index_type UUID := id_rt_index_type;
+  
+  -- Primary Key Field(s)
+  v_id uuid := NULL;
 
 BEGIN
 
@@ -36,17 +31,17 @@ BEGIN
   -- ------------------------------------------------------
 
   v_metadata := jsonb_build_object(
-    'id_data_object', id_data_object, 
-    'id_rt_index_type', id_rt_index_type, 
-    'name', name, 
-    'created_by', created_by
+    'id_data_object', p_id_data_object, 
+    'id_rt_index_type', p_id_rt_index_type, 
+    'name', p_name, 
+    'created_by', p_created_by
   );
   
   -- ------------------------------------------------------
   -- Validations
   -- ------------------------------------------------------
   
-  v_val_resp := is_name('name', name);
+  v_val_resp := is_name('name', p_name);
   IF NOT v_val_resp.passed THEN
     v_errors := v_errors || jsonb_build_object('type', 'validation', 'field', v_val_resp.field, 'message', v_val_resp.message);
   END IF;
@@ -61,14 +56,14 @@ BEGIN
       'Ensure all fields in the ''errors'' array are correctly formatted', 
       'The provided data did not pass validation checks'
     );
-    CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_created_by, v_metadata);
+    CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, p_created_by, v_metadata);
     RETURN v_response;
   END IF;
   
   -- ------------------------------------------------------
   -- Persist
   -- ------------------------------------------------------
-
+ 
   INSERT INTO pareto.index (
     id_data_object, 
     id_rt_index_type, 
@@ -77,11 +72,11 @@ BEGIN
     updated_by
   )
   VALUES (
-    v_id_data_object, 
-    v_id_rt_index_type, 
-    v_name, 
-    v_created_by,
-    v_created_by
+    p_id_data_object, 
+    p_id_rt_index_type, 
+    p_name, 
+    p_created_by,
+    p_created_by
   )
   RETURNING id, updated_at INTO v_id, v_updated_at;
 
@@ -111,7 +106,7 @@ BEGIN
         'A record already exists in the index table', 
         'Check the provided data and try again'
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_created_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, p_created_by, v_metadata);
       RETURN v_response;
   
     WHEN OTHERS THEN
@@ -124,7 +119,7 @@ BEGIN
         'Check database logs for more details', 
         SQLERRM
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_created_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, p_created_by, v_metadata);
       RETURN v_response;
   
 END;

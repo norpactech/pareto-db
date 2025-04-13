@@ -4,11 +4,11 @@
 
 DROP FUNCTION IF EXISTS pareto.i_schema;
 CREATE FUNCTION pareto.i_schema(
-  IN id_tenant UUID, 
-  IN name VARCHAR, 
-  IN database VARCHAR, 
-  IN description TEXT, 
-  IN created_by VARCHAR
+  IN p_id_tenant UUID, 
+  IN p_name VARCHAR, 
+  IN p_description TEXT, 
+  IN p_database VARCHAR, 
+  IN p_created_by VARCHAR
 )
 RETURNS pg_resp
 AS $$
@@ -20,16 +20,10 @@ DECLARE
   v_errors       JSONB := '[]'::JSONB;
   v_val_resp     pareto.pg_val;  
   v_response     pareto.pg_resp;
-
   v_updated_at   TIMESTAMPTZ;
-
-  -- Set the Property Variables
-  v_name VARCHAR := name;
-  v_id UUID := NULL;
-  v_database VARCHAR := database;
-  v_created_by VARCHAR := created_by;
-  v_description TEXT := description;
-  v_id_tenant UUID := id_tenant;
+  
+  -- Primary Key Field(s)
+  v_id uuid := NULL;
 
 BEGIN
 
@@ -38,18 +32,18 @@ BEGIN
   -- ------------------------------------------------------
 
   v_metadata := jsonb_build_object(
-    'id_tenant', id_tenant, 
-    'name', name, 
-    'database', database, 
-    'description', description, 
-    'created_by', created_by
+    'id_tenant', p_id_tenant, 
+    'name', p_name, 
+    'description', p_description, 
+    'database', p_database, 
+    'created_by', p_created_by
   );
   
   -- ------------------------------------------------------
   -- Validations
   -- ------------------------------------------------------
   
-  v_val_resp := is_name('name', name);
+  v_val_resp := is_name('name', p_name);
   IF NOT v_val_resp.passed THEN
     v_errors := v_errors || jsonb_build_object('type', 'validation', 'field', v_val_resp.field, 'message', v_val_resp.message);
   END IF;
@@ -64,29 +58,29 @@ BEGIN
       'Ensure all fields in the ''errors'' array are correctly formatted', 
       'The provided data did not pass validation checks'
     );
-    CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_created_by, v_metadata);
+    CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, p_created_by, v_metadata);
     RETURN v_response;
   END IF;
   
   -- ------------------------------------------------------
   -- Persist
   -- ------------------------------------------------------
-
+ 
   INSERT INTO pareto.schema (
     id_tenant, 
     name, 
-    database, 
     description, 
+    database, 
     created_by,
     updated_by
   )
   VALUES (
-    v_id_tenant, 
-    v_name, 
-    v_database, 
-    v_description, 
-    v_created_by,
-    v_created_by
+    p_id_tenant, 
+    p_name, 
+    p_description, 
+    p_database, 
+    p_created_by,
+    p_created_by
   )
   RETURNING id, updated_at INTO v_id, v_updated_at;
 
@@ -116,7 +110,7 @@ BEGIN
         'A record already exists in the schema table', 
         'Check the provided data and try again'
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_created_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, p_created_by, v_metadata);
       RETURN v_response;
   
     WHEN OTHERS THEN
@@ -129,7 +123,7 @@ BEGIN
         'Check database logs for more details', 
         SQLERRM
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_created_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, p_created_by, v_metadata);
       RETURN v_response;
   
 END;

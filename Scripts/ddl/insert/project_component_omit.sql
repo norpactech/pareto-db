@@ -4,8 +4,8 @@
 
 DROP FUNCTION IF EXISTS pareto.i_project_component_omit;
 CREATE FUNCTION pareto.i_project_component_omit(
-  IN id_project_component UUID, 
-  IN id_data_object UUID
+  IN p_id_project_component UUID, 
+  IN p_id_data_object UUID
 )
 RETURNS pg_resp
 AS $$
@@ -17,12 +17,10 @@ DECLARE
   v_errors       JSONB := '[]'::JSONB;
   v_val_resp     pareto.pg_val;  
   v_response     pareto.pg_resp;
-
-  v_updated_at   TIMESTAMPTZ;
-
-  -- Set the Property Variables
-  v_id_project_component UUID := id_project_component;
-  v_id_data_object UUID := id_data_object;
+  
+  -- Primary Key Field(s)
+  v_id_project_component uuid := NULL;
+  v_id_data_object uuid := NULL;
 
 BEGIN
 
@@ -31,21 +29,21 @@ BEGIN
   -- ------------------------------------------------------
 
   v_metadata := jsonb_build_object(
-    'id_project_component', id_project_component, 
-    'id_data_object', id_data_object
+    'id_project_component', p_id_project_component, 
+    'id_data_object', p_id_data_object
   );
   
   -- ------------------------------------------------------
   -- Persist
   -- ------------------------------------------------------
-
+ 
   INSERT INTO pareto.project_component_omit (
     id_project_component, 
     id_data_object
   )
   VALUES (
-    v_id_project_component, 
-    v_id_data_object
+    p_id_project_component, 
+    p_id_data_object
   )
   RETURNING id_project_component, id_data_object INTO v_id_project_component, v_id_data_object;
 

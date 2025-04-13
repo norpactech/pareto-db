@@ -4,9 +4,9 @@
 
 DROP FUNCTION IF EXISTS pareto.i_context;
 CREATE FUNCTION pareto.i_context(
-  IN name VARCHAR, 
-  IN description TEXT, 
-  IN created_by VARCHAR
+  IN p_name VARCHAR, 
+  IN p_description TEXT, 
+  IN p_created_by VARCHAR
 )
 RETURNS pg_resp
 AS $$
@@ -18,14 +18,10 @@ DECLARE
   v_errors       JSONB := '[]'::JSONB;
   v_val_resp     pareto.pg_val;  
   v_response     pareto.pg_resp;
-
   v_updated_at   TIMESTAMPTZ;
-
-  -- Set the Property Variables
-  v_name VARCHAR := name;
-  v_id UUID := NULL;
-  v_created_by VARCHAR := created_by;
-  v_description TEXT := description;
+  
+  -- Primary Key Field(s)
+  v_id uuid := NULL;
 
 BEGIN
 
@@ -34,16 +30,16 @@ BEGIN
   -- ------------------------------------------------------
 
   v_metadata := jsonb_build_object(
-    'name', name, 
-    'description', description, 
-    'created_by', created_by
+    'name', p_name, 
+    'description', p_description, 
+    'created_by', p_created_by
   );
   
   -- ------------------------------------------------------
   -- Validations
   -- ------------------------------------------------------
   
-  v_val_resp := is_name('name', name);
+  v_val_resp := is_name('name', p_name);
   IF NOT v_val_resp.passed THEN
     v_errors := v_errors || jsonb_build_object('type', 'validation', 'field', v_val_resp.field, 'message', v_val_resp.message);
   END IF;
@@ -58,14 +54,14 @@ BEGIN
       'Ensure all fields in the ''errors'' array are correctly formatted', 
       'The provided data did not pass validation checks'
     );
-    CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_created_by, v_metadata);
+    CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, p_created_by, v_metadata);
     RETURN v_response;
   END IF;
   
   -- ------------------------------------------------------
   -- Persist
   -- ------------------------------------------------------
-
+ 
   INSERT INTO pareto.context (
     name, 
     description, 
@@ -73,10 +69,10 @@ BEGIN
     updated_by
   )
   VALUES (
-    v_name, 
-    v_description, 
-    v_created_by,
-    v_created_by
+    p_name, 
+    p_description, 
+    p_created_by,
+    p_created_by
   )
   RETURNING id, updated_at INTO v_id, v_updated_at;
 
@@ -106,7 +102,7 @@ BEGIN
         'A record already exists in the context table', 
         'Check the provided data and try again'
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_created_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, p_created_by, v_metadata);
       RETURN v_response;
   
     WHEN OTHERS THEN
@@ -119,7 +115,7 @@ BEGIN
         'Check database logs for more details', 
         SQLERRM
       );
-      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, v_created_by, v_metadata);
+      CALL pareto.i_logs(v_response.status, v_response.message, c_service_name, p_created_by, v_metadata);
       RETURN v_response;
   
 END;
