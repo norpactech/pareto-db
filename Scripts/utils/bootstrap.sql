@@ -75,11 +75,11 @@ CREATE TYPE pareto.pg_val AS (
 
 CREATE TABLE pareto.logs (  
   id           UUID DEFAULT gen_random_uuid(),
-  created_at   TIMESTAMPTZ   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  created_by   TEXT          NOT NULL DEFAULT 'unavailable',
-  level        TEXT          NOT NULL CHECK (level IN ('DEBUG','INFO','WARNING','ERROR','CRITICAL')),
-  message      TEXT          NOT NULL,
-  service_name TEXT          NOT NULL,
+  created_at   TIMESTAMPTZ   DEFAULT CURRENT_TIMESTAMP,
+  created_by   TEXT          DEFAULT 'unavailable',
+  level        TEXT,
+  message      TEXT,
+  service_name TEXT,
   metadata JSONB default '{}'::JSONB
 );
 
