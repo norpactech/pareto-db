@@ -6,8 +6,8 @@ CREATE FUNCTION pareto.u_schema(
   IN p_id UUID, 
   IN p_id_tenant UUID, 
   IN p_name VARCHAR, 
-  IN p_description TEXT, 
   IN p_database VARCHAR, 
+  IN p_description TEXT, 
   IN p_updated_at TIMESTAMP, 
   IN p_updated_by VARCHAR
 )
@@ -40,8 +40,8 @@ BEGIN
     'id', p_id, 
     'id_tenant', p_id_tenant, 
     'name', p_name, 
-    'description', p_description, 
     'database', p_database, 
+    'description', p_description, 
     'updated_at', p_updated_at, 
     'updated_by', p_updated_by
   );
@@ -76,8 +76,8 @@ BEGIN
   UPDATE pareto.schema SET
     id_tenant = p_id_tenant, 
     name = p_name, 
-    description = p_description, 
     database = p_database, 
+    description = p_description, 
     updated_by = p_updated_by, 
     updated_at = CURRENT_TIMESTAMP
     WHERE id = p_id

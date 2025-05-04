@@ -5,8 +5,8 @@ DROP TABLE IF EXISTS pareto.generic_property_type CASCADE;
 
 CREATE TABLE pareto.generic_property_type (
   id                               UUID             NOT NULL    DEFAULT GEN_RANDOM_UUID(), 
-  id_generic_data_type             UUID             NOT NULL, 
   id_tenant                        UUID             NOT NULL, 
+  id_generic_data_type             UUID             NOT NULL, 
   id_validation                    UUID             NULL, 
   name                             VARCHAR(32)      NOT NULL    CHECK (name ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
   description                      TEXT             NULL, 
@@ -27,15 +27,15 @@ CREATE UNIQUE INDEX generic_property_type_alt_key
     ON pareto.generic_property_type(id_tenant, LOWER(name));
 
 ALTER TABLE pareto.generic_property_type
-  ADD CONSTRAINT generic_property_type_id_generic_data_type
-  FOREIGN KEY (id_generic_data_type)
-  REFERENCES pareto.generic_data_type(id)
-  ON DELETE CASCADE;
-    
-ALTER TABLE pareto.generic_property_type
   ADD CONSTRAINT generic_property_type_id_tenant
   FOREIGN KEY (id_tenant)
   REFERENCES pareto.tenant(id)
+  ON DELETE CASCADE;
+    
+ALTER TABLE pareto.generic_property_type
+  ADD CONSTRAINT generic_property_type_id_generic_data_type
+  FOREIGN KEY (id_generic_data_type)
+  REFERENCES pareto.generic_data_type(id)
   ON DELETE CASCADE;
     
 ALTER TABLE pareto.generic_property_type

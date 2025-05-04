@@ -172,7 +172,7 @@ BEGIN
       jsonb_build_object('id', v_id, 'updated_at', v_updated_at), 
       NULL, 
       '00000',
-      'Deactivate was successful', 
+      'Reactivate was successful', 
       NULL, 
       NULL
     );
