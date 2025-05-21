@@ -6,8 +6,8 @@ DROP FUNCTION IF EXISTS pareto.i_schema;
 CREATE FUNCTION pareto.i_schema(
   IN p_id_tenant UUID, 
   IN p_name VARCHAR, 
-  IN p_database VARCHAR, 
   IN p_description TEXT, 
+  IN p_database VARCHAR, 
   IN p_created_by VARCHAR
 )
 RETURNS pg_resp
@@ -34,8 +34,8 @@ BEGIN
   v_metadata := jsonb_build_object(
     'id_tenant', p_id_tenant, 
     'name', p_name, 
-    'database', p_database, 
     'description', p_description, 
+    'database', p_database, 
     'created_by', p_created_by
   );
   
@@ -69,16 +69,16 @@ BEGIN
   INSERT INTO pareto.schema (
     id_tenant, 
     name, 
-    database, 
     description, 
+    database, 
     created_by,
     updated_by
   )
   VALUES (
     p_id_tenant, 
     p_name, 
-    p_database, 
     p_description, 
+    p_database, 
     p_created_by,
     p_created_by
   )
