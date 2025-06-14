@@ -6,8 +6,8 @@ DROP FUNCTION IF EXISTS pareto.i_property;
 CREATE FUNCTION pareto.i_property(
   IN p_id_data_object UUID, 
   IN p_id_generic_data_type UUID, 
-  IN p_id_validation UUID, 
   IN p_id_generic_property_type UUID, 
+  IN p_id_validation UUID, 
   IN p_sequence INTEGER, 
   IN p_name VARCHAR, 
   IN p_description TEXT, 
@@ -28,7 +28,7 @@ DECLARE
   v_errors       JSONB := '[]'::JSONB;
   v_val_resp     pareto.pg_val;  
   v_response     pareto.pg_resp;
-  v_updated_at   TIMESTAMPTZ;
+  v_updated_at   TIMESTAMP;
   
   -- Primary Key Field(s)
   v_id uuid := NULL;
@@ -42,8 +42,8 @@ BEGIN
   v_metadata := jsonb_build_object(
     'id_data_object', p_id_data_object, 
     'id_generic_data_type', p_id_generic_data_type, 
-    'id_validation', p_id_validation, 
     'id_generic_property_type', p_id_generic_property_type, 
+    'id_validation', p_id_validation, 
     'sequence', p_sequence, 
     'name', p_name, 
     'description', p_description, 
@@ -85,8 +85,8 @@ BEGIN
   INSERT INTO pareto.property (
     id_data_object, 
     id_generic_data_type, 
-    id_validation, 
     id_generic_property_type, 
+    id_validation, 
     sequence, 
     name, 
     description, 
@@ -101,8 +101,8 @@ BEGIN
   VALUES (
     p_id_data_object, 
     p_id_generic_data_type, 
-    p_id_validation, 
     p_id_generic_property_type, 
+    p_id_validation, 
     p_sequence, 
     p_name, 
     p_description, 

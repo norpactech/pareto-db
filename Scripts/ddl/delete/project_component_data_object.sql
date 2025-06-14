@@ -3,7 +3,7 @@
 -- ------------------------------------------------------
 CREATE OR REPLACE FUNCTION pareto.d_project_component_data_object(
   IN id UUID,
-  IN updated_at TIMESTAMPTZ,
+  IN updated_at TIMESTAMP,
   IN deleted_by TEXT
 )
 RETURNS pg_resp
@@ -17,7 +17,7 @@ DECLARE
   v_message      TEXT;
   
   v_id           UUID := id;
-  v_updated_at   TIMESTAMPTZ := updated_at;
+  v_updated_at   TIMESTAMP := updated_at;
   v_updates      INT;
   v_count        INT;
   

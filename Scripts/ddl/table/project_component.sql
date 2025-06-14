@@ -6,8 +6,8 @@ DROP TABLE IF EXISTS pareto.project_component CASCADE;
 CREATE TABLE pareto.project_component (
   id                               UUID             NOT NULL    DEFAULT GEN_RANDOM_UUID(), 
   id_project                       UUID             NOT NULL, 
-  id_plugin                        UUID             NOT NULL, 
   id_context                       UUID             NOT NULL, 
+  id_plugin                        UUID             NOT NULL, 
   name                             VARCHAR(32)      NOT NULL    CHECK (name ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
   description                      TEXT             NULL, 
   sub_package                      VARCHAR(32)      NOT NULL    CHECK (sub_package ~ '^[a-z0-9]+(\.[a-z0-9]+)*$'), 
@@ -30,15 +30,15 @@ ALTER TABLE pareto.project_component
   ON DELETE CASCADE;
     
 ALTER TABLE pareto.project_component
-  ADD CONSTRAINT project_component_id_plugin
-  FOREIGN KEY (id_plugin)
-  REFERENCES pareto.plugin(id)
-  ON DELETE CASCADE;
-    
-ALTER TABLE pareto.project_component
   ADD CONSTRAINT project_component_id_context
   FOREIGN KEY (id_context)
   REFERENCES pareto.context(id)
+  ON DELETE CASCADE;
+    
+ALTER TABLE pareto.project_component
+  ADD CONSTRAINT project_component_id_plugin
+  FOREIGN KEY (id_plugin)
+  REFERENCES pareto.plugin(id)
   ON DELETE CASCADE;
 
 CREATE TRIGGER update_at

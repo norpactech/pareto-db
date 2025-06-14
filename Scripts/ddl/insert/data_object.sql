@@ -22,7 +22,7 @@ DECLARE
   v_errors       JSONB := '[]'::JSONB;
   v_val_resp     pareto.pg_val;  
   v_response     pareto.pg_resp;
-  v_updated_at   TIMESTAMPTZ;
+  v_updated_at   TIMESTAMP;
   
   -- Primary Key Field(s)
   v_id uuid := NULL;

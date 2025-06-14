@@ -13,6 +13,10 @@ if not defined PGHOST (
   set PGHOST=localhost
 )
 
+REM SET PGHOST=v02.norpactech.com
+REM SET PGUSER=norpac
+REM SET PGPASSWORD=Theslideisblue1!
+
 if not defined PGPORT (
   set PGPORT=5432
 )

@@ -4,8 +4,8 @@
 
 DROP FUNCTION IF EXISTS pareto.i_generic_property_type;
 CREATE FUNCTION pareto.i_generic_property_type(
-  IN p_id_tenant UUID, 
   IN p_id_generic_data_type UUID, 
+  IN p_id_tenant UUID, 
   IN p_id_validation UUID, 
   IN p_name VARCHAR, 
   IN p_description TEXT, 
@@ -25,7 +25,7 @@ DECLARE
   v_errors       JSONB := '[]'::JSONB;
   v_val_resp     pareto.pg_val;  
   v_response     pareto.pg_resp;
-  v_updated_at   TIMESTAMPTZ;
+  v_updated_at   TIMESTAMP;
   
   -- Primary Key Field(s)
   v_id uuid := NULL;
@@ -37,8 +37,8 @@ BEGIN
   -- ------------------------------------------------------
 
   v_metadata := jsonb_build_object(
-    'id_tenant', p_id_tenant, 
     'id_generic_data_type', p_id_generic_data_type, 
+    'id_tenant', p_id_tenant, 
     'id_validation', p_id_validation, 
     'name', p_name, 
     'description', p_description, 
@@ -77,8 +77,8 @@ BEGIN
   -- ------------------------------------------------------
  
   INSERT INTO pareto.generic_property_type (
-    id_tenant, 
     id_generic_data_type, 
+    id_tenant, 
     id_validation, 
     name, 
     description, 
@@ -90,8 +90,8 @@ BEGIN
     updated_by
   )
   VALUES (
-    p_id_tenant, 
     p_id_generic_data_type, 
+    p_id_tenant, 
     p_id_validation, 
     p_name, 
     p_description, 

@@ -17,7 +17,7 @@ DECLARE
   v_response     pg_resp;
 
   v_id           UUID;
-  v_updated_at   TIMESTAMPTZ;
+  v_updated_at   TIMESTAMP;
 
   -- Set variables to avoid ambiguous column names
   v_id_project_component uuid := id_project_component;
