@@ -39,6 +39,7 @@ psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "ref_table_type.sq
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "ref_tables.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "schema.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "tenant.sql" || goto exception  
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "tenant_user.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "user.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "validation.sql" || goto exception  
 
