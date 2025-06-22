@@ -13,13 +13,18 @@ if not defined PGHOST (
   set PGHOST=localhost
 )
 
-SET PGHOST=v02.norpactech.com
-SET PGUSER=norpac
-SET PGPASSWORD=Theslideisblue1!
-
 if not defined PGPORT (
   set PGPORT=5432
 )
+REM SET PGHOST=v02.norpactech.com
+REM SET PGUSER=norpac
+REM SET PGPASSWORD=Theslideisblue1!
+
+SET PGHOST=localhost
+SET PGUSER=norpac
+SET PGPASSWORD=password
+
+
 echo Beginning Global Definitions
 rem goto start
 psql -d norpac -h %PGHOST% -p %PGPORT% -f ".\bootstrap.sql" || goto exception
