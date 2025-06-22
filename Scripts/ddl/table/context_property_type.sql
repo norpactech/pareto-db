@@ -6,7 +6,6 @@ DROP TABLE IF EXISTS pareto.context_property_type CASCADE;
 CREATE TABLE pareto.context_property_type (
   id                               UUID             NOT NULL    DEFAULT GEN_RANDOM_UUID(), 
   id_context                       UUID             NOT NULL, 
-  id_schema                        UUID             NOT NULL, 
   id_generic_property_type         UUID             NOT NULL, 
   length                           INTEGER          NULL, 
   scale                            INTEGER          NULL, 
@@ -22,18 +21,12 @@ CREATE TABLE pareto.context_property_type (
 ALTER TABLE pareto.context_property_type ADD PRIMARY KEY (id);
 
 CREATE UNIQUE INDEX context_property_type_alt_key
-    ON pareto.context_property_type(id_context, id_schema, id_generic_property_type);
+    ON pareto.context_property_type(id_context, id_generic_property_type);
 
 ALTER TABLE pareto.context_property_type
   ADD CONSTRAINT context_property_type_id_context
   FOREIGN KEY (id_context)
   REFERENCES pareto.context(id)
-  ON DELETE CASCADE;
-    
-ALTER TABLE pareto.context_property_type
-  ADD CONSTRAINT context_property_type_id_schema
-  FOREIGN KEY (id_schema)
-  REFERENCES pareto.schema(id)
   ON DELETE CASCADE;
     
 ALTER TABLE pareto.context_property_type

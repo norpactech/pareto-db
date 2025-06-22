@@ -23,7 +23,7 @@ CREATE TABLE pareto.generic_property_type (
 ALTER TABLE pareto.generic_property_type ADD PRIMARY KEY (id);
 
 CREATE UNIQUE INDEX generic_property_type_alt_key
-    ON pareto.generic_property_type(LOWER(name));
+    ON pareto.generic_property_type(id_generic_data_type, LOWER(name));
 
 ALTER TABLE pareto.generic_property_type
   ADD CONSTRAINT generic_property_type_id_generic_data_type
