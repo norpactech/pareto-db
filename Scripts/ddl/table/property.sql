@@ -7,11 +7,12 @@ CREATE TABLE pareto.property (
   id                               UUID             NOT NULL    DEFAULT GEN_RANDOM_UUID(), 
   id_data_object                   UUID             NOT NULL, 
   id_generic_data_type             UUID             NOT NULL, 
-  id_generic_property_type         UUID             NULL, 
   id_validation                    UUID             NULL, 
+  id_generic_property_type         UUID             NULL, 
   sequence                         INTEGER          NOT NULL, 
   name                             VARCHAR(32)      NOT NULL    CHECK (name ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
   description                      TEXT             NULL, 
+  is_updatable                     BOOLEAN          NOT NULL, 
   fk_viewable                      BOOLEAN          NOT NULL, 
   length                           INTEGER          NULL, 
   scale                            INTEGER          NULL, 
@@ -42,15 +43,15 @@ ALTER TABLE pareto.property
   ON DELETE CASCADE;
     
 ALTER TABLE pareto.property
-  ADD CONSTRAINT property_id_generic_property_type
-  FOREIGN KEY (id_generic_property_type)
-  REFERENCES pareto.generic_property_type(id)
-  ON DELETE SET NULL;
-    
-ALTER TABLE pareto.property
   ADD CONSTRAINT property_id_validation
   FOREIGN KEY (id_validation)
   REFERENCES pareto.validation(id)
+  ON DELETE SET NULL;
+    
+ALTER TABLE pareto.property
+  ADD CONSTRAINT property_id_generic_property_type
+  FOREIGN KEY (id_generic_property_type)
+  REFERENCES pareto.generic_property_type(id)
   ON DELETE SET NULL;
 
 CREATE TRIGGER update_at

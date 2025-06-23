@@ -4,7 +4,6 @@
 DROP FUNCTION IF EXISTS pareto.u_plugin;
 CREATE FUNCTION pareto.u_plugin(
   IN p_id UUID, 
-  IN p_id_context UUID, 
   IN p_name VARCHAR, 
   IN p_description TEXT, 
   IN p_plugin_service TEXT, 
@@ -38,7 +37,6 @@ BEGIN
 
   v_metadata := jsonb_build_object(
     'id', p_id, 
-    'id_context', p_id_context, 
     'name', p_name, 
     'description', p_description, 
     'plugin_service', p_plugin_service, 
@@ -79,7 +77,6 @@ BEGIN
   -- ------------------------------------------------------
 
   UPDATE pareto.plugin SET
-    id_context = p_id_context, 
     name = p_name, 
     description = p_description, 
     plugin_service = p_plugin_service, 

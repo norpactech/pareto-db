@@ -4,7 +4,6 @@
 DROP FUNCTION IF EXISTS pareto.u_generic_data_type;
 CREATE FUNCTION pareto.u_generic_data_type(
   IN p_id UUID, 
-  IN p_id_tenant UUID, 
   IN p_sequence INTEGER, 
   IN p_name VARCHAR, 
   IN p_description TEXT, 
@@ -39,7 +38,6 @@ BEGIN
 
   v_metadata := jsonb_build_object(
     'id', p_id, 
-    'id_tenant', p_id_tenant, 
     'sequence', p_sequence, 
     'name', p_name, 
     'description', p_description, 
@@ -76,7 +74,6 @@ BEGIN
   -- ------------------------------------------------------
 
   UPDATE pareto.generic_data_type SET
-    id_tenant = p_id_tenant, 
     sequence = p_sequence, 
     name = p_name, 
     description = p_description, 

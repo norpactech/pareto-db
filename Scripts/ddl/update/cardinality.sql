@@ -4,8 +4,6 @@
 DROP FUNCTION IF EXISTS pareto.u_cardinality;
 CREATE FUNCTION pareto.u_cardinality(
   IN p_id UUID, 
-  IN p_id_property UUID, 
-  IN p_id_object_reference UUID, 
   IN p_id_rt_cardinality UUID, 
   IN p_id_rt_cardinality_strength UUID, 
   IN p_has_referencial_action BOOLEAN, 
@@ -39,8 +37,6 @@ BEGIN
 
   v_metadata := jsonb_build_object(
     'id', p_id, 
-    'id_property', p_id_property, 
-    'id_object_reference', p_id_object_reference, 
     'id_rt_cardinality', p_id_rt_cardinality, 
     'id_rt_cardinality_strength', p_id_rt_cardinality_strength, 
     'has_referencial_action', p_has_referencial_action, 
@@ -53,8 +49,6 @@ BEGIN
   -- ------------------------------------------------------
 
   UPDATE pareto.cardinality SET
-    id_property = p_id_property, 
-    id_object_reference = p_id_object_reference, 
     id_rt_cardinality = p_id_rt_cardinality, 
     id_rt_cardinality_strength = p_id_rt_cardinality_strength, 
     has_referencial_action = p_has_referencial_action, 

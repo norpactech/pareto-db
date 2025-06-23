@@ -4,7 +4,6 @@
 DROP FUNCTION IF EXISTS pareto.u_ref_table_type;
 CREATE FUNCTION pareto.u_ref_table_type(
   IN p_id UUID, 
-  IN p_id_tenant UUID, 
   IN p_name VARCHAR, 
   IN p_description TEXT, 
   IN p_updated_at TIMESTAMP, 
@@ -37,7 +36,6 @@ BEGIN
 
   v_metadata := jsonb_build_object(
     'id', p_id, 
-    'id_tenant', p_id_tenant, 
     'name', p_name, 
     'description', p_description, 
     'updated_at', p_updated_at, 
@@ -72,7 +70,6 @@ BEGIN
   -- ------------------------------------------------------
 
   UPDATE pareto.ref_table_type SET
-    id_tenant = p_id_tenant, 
     name = p_name, 
     description = p_description, 
     updated_by = p_updated_by, 

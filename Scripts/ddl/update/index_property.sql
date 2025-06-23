@@ -4,7 +4,6 @@
 DROP FUNCTION IF EXISTS pareto.u_index_property;
 CREATE FUNCTION pareto.u_index_property(
   IN p_id UUID, 
-  IN p_id_index UUID, 
   IN p_id_property UUID, 
   IN p_id_rt_sort_order UUID, 
   IN p_sequence INTEGER, 
@@ -38,7 +37,6 @@ BEGIN
 
   v_metadata := jsonb_build_object(
     'id', p_id, 
-    'id_index', p_id_index, 
     'id_property', p_id_property, 
     'id_rt_sort_order', p_id_rt_sort_order, 
     'sequence', p_sequence, 
@@ -51,7 +49,6 @@ BEGIN
   -- ------------------------------------------------------
 
   UPDATE pareto.index_property SET
-    id_index = p_id_index, 
     id_property = p_id_property, 
     id_rt_sort_order = p_id_rt_sort_order, 
     sequence = p_sequence, 

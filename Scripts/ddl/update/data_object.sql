@@ -4,7 +4,6 @@
 DROP FUNCTION IF EXISTS pareto.u_data_object;
 CREATE FUNCTION pareto.u_data_object(
   IN p_id UUID, 
-  IN p_id_schema UUID, 
   IN p_name VARCHAR, 
   IN p_description TEXT, 
   IN p_has_identifier BOOLEAN, 
@@ -40,7 +39,6 @@ BEGIN
 
   v_metadata := jsonb_build_object(
     'id', p_id, 
-    'id_schema', p_id_schema, 
     'name', p_name, 
     'description', p_description, 
     'has_identifier', p_has_identifier, 
@@ -78,7 +76,6 @@ BEGIN
   -- ------------------------------------------------------
 
   UPDATE pareto.data_object SET
-    id_schema = p_id_schema, 
     name = p_name, 
     description = p_description, 
     has_identifier = p_has_identifier, 

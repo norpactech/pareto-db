@@ -4,7 +4,6 @@
 DROP FUNCTION IF EXISTS pareto.u_generic_data_type_attribute;
 CREATE FUNCTION pareto.u_generic_data_type_attribute(
   IN p_id UUID, 
-  IN p_id_generic_data_type UUID, 
   IN p_id_rt_attr_data_type UUID, 
   IN p_name VARCHAR, 
   IN p_description TEXT, 
@@ -38,7 +37,6 @@ BEGIN
 
   v_metadata := jsonb_build_object(
     'id', p_id, 
-    'id_generic_data_type', p_id_generic_data_type, 
     'id_rt_attr_data_type', p_id_rt_attr_data_type, 
     'name', p_name, 
     'description', p_description, 
@@ -74,7 +72,6 @@ BEGIN
   -- ------------------------------------------------------
 
   UPDATE pareto.generic_data_type_attribute SET
-    id_generic_data_type = p_id_generic_data_type, 
     id_rt_attr_data_type = p_id_rt_attr_data_type, 
     name = p_name, 
     description = p_description, 

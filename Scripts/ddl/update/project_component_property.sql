@@ -4,7 +4,6 @@
 DROP FUNCTION IF EXISTS pareto.u_project_component_property;
 CREATE FUNCTION pareto.u_project_component_property(
   IN p_id UUID, 
-  IN p_id_project_component UUID, 
   IN p_sequence INTEGER, 
   IN p_data_object_filter TEXT, 
   IN p_property_filter TEXT, 
@@ -38,7 +37,6 @@ BEGIN
 
   v_metadata := jsonb_build_object(
     'id', p_id, 
-    'id_project_component', p_id_project_component, 
     'sequence', p_sequence, 
     'data_object_filter', p_data_object_filter, 
     'property_filter', p_property_filter, 
@@ -51,7 +49,6 @@ BEGIN
   -- ------------------------------------------------------
 
   UPDATE pareto.project_component_property SET
-    id_project_component = p_id_project_component, 
     sequence = p_sequence, 
     data_object_filter = p_data_object_filter, 
     property_filter = p_property_filter, 

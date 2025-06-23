@@ -4,7 +4,6 @@
 DROP FUNCTION IF EXISTS pareto.u_index;
 CREATE FUNCTION pareto.u_index(
   IN p_id UUID, 
-  IN p_id_data_object UUID, 
   IN p_id_rt_index_type UUID, 
   IN p_name VARCHAR, 
   IN p_updated_at TIMESTAMP, 
@@ -37,7 +36,6 @@ BEGIN
 
   v_metadata := jsonb_build_object(
     'id', p_id, 
-    'id_data_object', p_id_data_object, 
     'id_rt_index_type', p_id_rt_index_type, 
     'name', p_name, 
     'updated_at', p_updated_at, 
@@ -72,7 +70,6 @@ BEGIN
   -- ------------------------------------------------------
 
   UPDATE pareto.index SET
-    id_data_object = p_id_data_object, 
     id_rt_index_type = p_id_rt_index_type, 
     name = p_name, 
     updated_by = p_updated_by, 

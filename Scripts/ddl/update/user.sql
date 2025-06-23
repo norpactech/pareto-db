@@ -8,9 +8,9 @@ CREATE FUNCTION pareto.u_user(
   IN p_id_rt_time_zone UUID, 
   IN p_zip_code VARCHAR, 
   IN p_phone VARCHAR, 
-  IN p_last_name VARCHAR, 
   IN p_first_name VARCHAR, 
   IN p_city VARCHAR, 
+  IN p_last_name VARCHAR, 
   IN p_street1 TEXT, 
   IN p_street2 TEXT, 
   IN p_terms_accepted TIMESTAMP, 
@@ -49,9 +49,9 @@ BEGIN
     'id_rt_time_zone', p_id_rt_time_zone, 
     'zip_code', p_zip_code, 
     'phone', p_phone, 
-    'last_name', p_last_name, 
     'first_name', p_first_name, 
     'city', p_city, 
+    'last_name', p_last_name, 
     'street1', p_street1, 
     'street2', p_street2, 
     'terms_accepted', p_terms_accepted, 
@@ -79,17 +79,17 @@ BEGIN
     v_errors := v_errors || jsonb_build_object('type', 'validation', 'field', v_val_resp.field, 'message', v_val_resp.message);
   END IF;
 
-  v_val_resp := is_name('last_name', p_last_name);
-  IF NOT v_val_resp.passed THEN
-    v_errors := v_errors || jsonb_build_object('type', 'validation', 'field', v_val_resp.field, 'message', v_val_resp.message);
-  END IF;
-
   v_val_resp := is_name('first_name', p_first_name);
   IF NOT v_val_resp.passed THEN
     v_errors := v_errors || jsonb_build_object('type', 'validation', 'field', v_val_resp.field, 'message', v_val_resp.message);
   END IF;
 
   v_val_resp := is_name('city', p_city);
+  IF NOT v_val_resp.passed THEN
+    v_errors := v_errors || jsonb_build_object('type', 'validation', 'field', v_val_resp.field, 'message', v_val_resp.message);
+  END IF;
+
+  v_val_resp := is_name('last_name', p_last_name);
   IF NOT v_val_resp.passed THEN
     v_errors := v_errors || jsonb_build_object('type', 'validation', 'field', v_val_resp.field, 'message', v_val_resp.message);
   END IF;
@@ -122,9 +122,9 @@ BEGIN
     id_rt_time_zone = p_id_rt_time_zone, 
     zip_code = p_zip_code, 
     phone = p_phone, 
-    last_name = p_last_name, 
     first_name = p_first_name, 
     city = p_city, 
+    last_name = p_last_name, 
     street1 = p_street1, 
     street2 = p_street2, 
     terms_accepted = p_terms_accepted, 
