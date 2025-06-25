@@ -1,8 +1,8 @@
 -- -------------------------------------------------------
--- Deactivate index (Soft Delete)
+-- Deactivate data_index_property (Soft Delete)
 -- ------------------------------------------------------
-DROP FUNCTION IF EXISTS pareto.deact_index;
-CREATE FUNCTION pareto.deact_index (
+DROP FUNCTION IF EXISTS pareto.deact_data_index_property;
+CREATE FUNCTION pareto.deact_data_index_property (
   IN p_id UUID, 
   IN p_updated_at TIMESTAMP, 
   IN p_updated_by VARCHAR
@@ -11,7 +11,7 @@ RETURNS pg_resp
 AS $$
 DECLARE
 
-  c_service_name TEXT := 'deact_index';
+  c_service_name TEXT := 'deact_data_index_property';
 
   v_metadata     JSONB := '{}'::JSONB;
   v_response     pareto.pg_resp;
@@ -36,10 +36,10 @@ BEGIN
   );
   
   -- ------------------------------------------------------
-  -- Deactivate index
+  -- Deactivate data_index_property
   -- ------------------------------------------------------
 
- UPDATE pareto.index
+ UPDATE pareto.data_index_property
     SET is_active = false 
     WHERE id = v_id
       AND DATE_TRUNC('second', updated_at) = DATE_TRUNC('second', p_updated_at)
@@ -61,7 +61,7 @@ BEGIN
   ELSE
     -- Check for Optimistic Lock Error
     SELECT count(*) INTO v_count   
-      FROM pareto.index 
+      FROM pareto.data_index_property 
     WHERE id = v_id;
           
     IF (v_count > 0) THEN
@@ -118,10 +118,10 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- -------------------------------------------------------
--- Reactivate index (Soft Undelete)
+-- Reactivate data_index_property (Soft Undelete)
 -- ------------------------------------------------------
-DROP FUNCTION IF EXISTS pareto.react_index;
-CREATE FUNCTION pareto.react_index (
+DROP FUNCTION IF EXISTS pareto.react_data_index_property;
+CREATE FUNCTION pareto.react_data_index_property (
   IN p_id UUID, 
   IN p_updated_at TIMESTAMP, 
   IN p_updated_by VARCHAR
@@ -130,7 +130,7 @@ RETURNS pg_resp
 AS $$
 DECLARE
 
-  c_service_name TEXT := 'react_index';
+  c_service_name TEXT := 'react_data_index_property';
 
   v_metadata     JSONB := '{}'::JSONB;
   v_response     pareto.pg_resp;
@@ -155,10 +155,10 @@ BEGIN
   );
   
   -- ------------------------------------------------------
-  -- Deactivate index
+  -- Deactivate data_index_property
   -- ------------------------------------------------------
 
- UPDATE pareto.index
+ UPDATE pareto.data_index_property
     SET is_active = TRUE 
     WHERE id = v_id
       AND DATE_TRUNC('second', updated_at) = DATE_TRUNC('second', p_updated_at)
@@ -180,7 +180,7 @@ BEGIN
   ELSE
     -- Check for Optimistic Lock Error
     SELECT count(*) INTO v_count   
-      FROM pareto.index 
+      FROM pareto.data_index_property 
     WHERE id = v_id;
           
     IF (v_count > 0) THEN

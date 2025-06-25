@@ -20,7 +20,7 @@ CREATE TABLE pareto.validation (
 
 ALTER TABLE pareto.validation ADD PRIMARY KEY (id);
 
-CREATE UNIQUE INDEX validation_alt_key
+CREATE INDEX validation_alt_key
     ON pareto.validation(id_tenant, LOWER(name));
 
 ALTER TABLE pareto.validation

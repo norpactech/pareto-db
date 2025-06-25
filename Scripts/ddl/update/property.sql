@@ -5,8 +5,8 @@ DROP FUNCTION IF EXISTS pareto.u_property;
 CREATE FUNCTION pareto.u_property(
   IN p_id UUID, 
   IN p_id_generic_data_type UUID, 
-  IN p_id_validation UUID, 
   IN p_id_generic_property_type UUID, 
+  IN p_id_validation UUID, 
   IN p_sequence INTEGER, 
   IN p_name VARCHAR, 
   IN p_description TEXT, 
@@ -47,8 +47,8 @@ BEGIN
   v_metadata := jsonb_build_object(
     'id', p_id, 
     'id_generic_data_type', p_id_generic_data_type, 
-    'id_validation', p_id_validation, 
     'id_generic_property_type', p_id_generic_property_type, 
+    'id_validation', p_id_validation, 
     'sequence', p_sequence, 
     'name', p_name, 
     'description', p_description, 
@@ -91,8 +91,8 @@ BEGIN
 
   UPDATE pareto.property SET
     id_generic_data_type = p_id_generic_data_type, 
-    id_validation = p_id_validation, 
     id_generic_property_type = p_id_generic_property_type, 
+    id_validation = p_id_validation, 
     sequence = p_sequence, 
     name = p_name, 
     description = p_description, 

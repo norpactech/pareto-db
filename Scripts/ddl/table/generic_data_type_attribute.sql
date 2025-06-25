@@ -18,7 +18,7 @@ CREATE TABLE pareto.generic_data_type_attribute (
 
 ALTER TABLE pareto.generic_data_type_attribute ADD PRIMARY KEY (id);
 
-CREATE UNIQUE INDEX generic_data_type_attribute_alt_key
+CREATE INDEX generic_data_type_attribute_alt_key
     ON pareto.generic_data_type_attribute(id_generic_data_type, LOWER(name));
 
 ALTER TABLE pareto.generic_data_type_attribute

@@ -1,8 +1,8 @@
 -- -------------------------------------------------------
--- Delete index_property
+-- Delete data_index
 -- ------------------------------------------------------
-DROP FUNCTION IF EXISTS pareto.d_index_property;
-CREATE FUNCTION pareto.d_index_property(
+DROP FUNCTION IF EXISTS pareto.d_data_index;
+CREATE FUNCTION pareto.d_data_index(
   IN p_id UUID, 
   IN p_updated_at TIMESTAMP, 
   IN p_updated_by VARCHAR
@@ -11,7 +11,7 @@ RETURNS pg_resp
 AS $$
 DECLARE
 
-  c_service_name TEXT := 'd_index_property';
+  c_service_name TEXT := 'd_data_index';
 
   v_metadata     JSONB := '{}'::JSONB;
   v_response     pareto.pg_resp;
@@ -39,7 +39,7 @@ BEGIN
   -- Delete
   -- ------------------------------------------------------
 
-  DELETE FROM pareto.index_property 
+  DELETE FROM pareto.data_index 
     WHERE id = v_id
       AND DATE_TRUNC('second', updated_at) = DATE_TRUNC('second', p_updated_at)
   ;
@@ -60,7 +60,7 @@ BEGIN
   ELSE  
     -- Check for Optimistic Lock Error
     SELECT count(*) INTO v_count   
-      FROM pareto.index_property 
+      FROM pareto.data_index 
     WHERE id = v_id;
           
     IF (v_count > 0) THEN

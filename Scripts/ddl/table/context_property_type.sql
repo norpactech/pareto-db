@@ -20,7 +20,7 @@ CREATE TABLE pareto.context_property_type (
 
 ALTER TABLE pareto.context_property_type ADD PRIMARY KEY (id);
 
-CREATE UNIQUE INDEX context_property_type_alt_key
+CREATE INDEX context_property_type_alt_key
     ON pareto.context_property_type(id_context, id_generic_property_type);
 
 ALTER TABLE pareto.context_property_type

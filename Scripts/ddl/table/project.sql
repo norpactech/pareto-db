@@ -19,7 +19,7 @@ CREATE TABLE pareto.project (
 
 ALTER TABLE pareto.project ADD PRIMARY KEY (id);
 
-CREATE UNIQUE INDEX project_alt_key
+CREATE INDEX project_alt_key
     ON pareto.project(id_schema, LOWER(name));
 
 ALTER TABLE pareto.project

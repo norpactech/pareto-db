@@ -10,11 +10,11 @@ CREATE VIEW pareto.v_index AS
          i.name AS "index", 
          p.name AS "property",
          rt.name AS "sort_sequence"
-  FROM pareto.index i
-  JOIN pareto.data_object o     ON (o.id = i.id_data_object)
-  JOIN pareto.index_property ip ON (ip.id_index = i.id)
-  JOIN pareto.property p        ON (p.id = ip.id_property)
-  JOIN pareto.ref_tables rt     ON (rt.id = ip.id_rt_sort_order);
+  FROM pareto.data_index i
+  JOIN pareto.data_object o          ON (o.id = i.id_data_object)
+  JOIN pareto.data_index_property ip ON (ip.id_data_index = i.id)
+  JOIN pareto.property p             ON (p.id = ip.id_property)
+  JOIN pareto.ref_tables rt          ON (rt.id = ip.id_rt_sort_order);
 
 -- List all tables and order by least to most dependent 	
 
