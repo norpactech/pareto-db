@@ -16,7 +16,7 @@ CREATE TABLE pareto.context (
 
 ALTER TABLE pareto.context ADD PRIMARY KEY (id);
 
-CREATE INDEX context_alt_key
+CREATE UNIQUE INDEX context_alt_key
     ON pareto.context(LOWER(name));
 
 CREATE TRIGGER update_at

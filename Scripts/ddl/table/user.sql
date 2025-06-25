@@ -25,7 +25,7 @@ CREATE TABLE pareto.user (
 
 ALTER TABLE pareto.user ADD PRIMARY KEY (id);
 
-CREATE INDEX user_alt_key
+CREATE UNIQUE INDEX user_alt_key
     ON pareto.user(LOWER(email));
 
 ALTER TABLE pareto.user

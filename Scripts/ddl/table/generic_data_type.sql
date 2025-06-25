@@ -19,7 +19,7 @@ CREATE TABLE pareto.generic_data_type (
 
 ALTER TABLE pareto.generic_data_type ADD PRIMARY KEY (id);
 
-CREATE INDEX generic_data_type_alt_key
+CREATE UNIQUE INDEX generic_data_type_alt_key
     ON pareto.generic_data_type(id_tenant, LOWER(name));
 
 ALTER TABLE pareto.generic_data_type

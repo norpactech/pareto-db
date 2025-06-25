@@ -18,7 +18,7 @@ CREATE TABLE pareto.plugin (
 
 ALTER TABLE pareto.plugin ADD PRIMARY KEY (id);
 
-CREATE INDEX plugin_alt_key
+CREATE UNIQUE INDEX plugin_alt_key
     ON pareto.plugin(id_context, LOWER(name));
 
 ALTER TABLE pareto.plugin

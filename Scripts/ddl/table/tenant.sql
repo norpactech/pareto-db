@@ -17,7 +17,7 @@ CREATE TABLE pareto.tenant (
 
 ALTER TABLE pareto.tenant ADD PRIMARY KEY (id);
 
-CREATE INDEX tenant_alt_key
+CREATE UNIQUE INDEX tenant_alt_key
     ON pareto.tenant(LOWER(name));
 
 CREATE TRIGGER update_at

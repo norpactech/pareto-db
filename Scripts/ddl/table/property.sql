@@ -27,7 +27,7 @@ CREATE TABLE pareto.property (
 
 ALTER TABLE pareto.property ADD PRIMARY KEY (id);
 
-CREATE INDEX property_alt_key
+CREATE UNIQUE INDEX property_alt_key
     ON pareto.property(id_data_object, LOWER(name));
 
 ALTER TABLE pareto.property
