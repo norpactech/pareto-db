@@ -6,16 +6,15 @@ DROP TABLE IF EXISTS pareto.user CASCADE;
 CREATE TABLE pareto.user (
   id                               UUID             NOT NULL    DEFAULT GEN_RANDOM_UUID(), 
   email                            VARCHAR(126)     NOT NULL    CHECK (email ~ '^[A-Za-z0-9]+([._%+-][A-Za-z0-9]+)*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'), 
-  id_rt_time_zone                  UUID             NULL, 
-  zip_code                         VARCHAR(10)      NOT NULL    CHECK (zip_code ~ '^\d{5}(-\d{4})?$'), 
-  phone                            VARCHAR(12)      NOT NULL    CHECK (phone ~ '^\d{3}-\d{3}-\d{4}$'), 
   last_name                        VARCHAR(32)      NOT NULL    CHECK (last_name ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
   first_name                       VARCHAR(32)      NOT NULL    CHECK (first_name ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
-  city                             VARCHAR(32)      NOT NULL    CHECK (city ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
+  phone                            VARCHAR(12)      NOT NULL    CHECK (phone ~ '^\d{3}-\d{3}-\d{4}$'), 
   street1                          TEXT             NOT NULL, 
   street2                          TEXT             NULL, 
-  terms_accepted                   TIMESTAMP        NULL, 
+  city                             VARCHAR(32)      NOT NULL    CHECK (city ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
   state                            CHAR(2)          NOT NULL    CHECK (state IN ('AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY')), 
+  zip_code                         VARCHAR(10)      NOT NULL    CHECK (zip_code ~ '^\d{5}(-\d{4})?$'), 
+  terms_accepted                   TIMESTAMP        NULL, 
   created_at                       TIMESTAMP        NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
   created_by                       VARCHAR(32)      NOT NULL, 
   updated_at                       TIMESTAMP        NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
@@ -27,12 +26,6 @@ ALTER TABLE pareto.user ADD PRIMARY KEY (id);
 
 CREATE UNIQUE INDEX user_alt_key
     ON pareto.user(LOWER(email));
-
-ALTER TABLE pareto.user
-  ADD CONSTRAINT user_id_rt_time_zone
-  FOREIGN KEY (id_rt_time_zone)
-  REFERENCES pareto.ref_tables(id)
-  ON DELETE SET NULL;
 
 CREATE TRIGGER update_at
   BEFORE UPDATE ON pareto.user 

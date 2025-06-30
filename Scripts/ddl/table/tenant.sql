@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS pareto.tenant CASCADE;
 
 CREATE TABLE pareto.tenant (
   id                               UUID             NOT NULL    DEFAULT GEN_RANDOM_UUID(), 
+  id_rt_time_zone                  UUID             NULL, 
   name                             VARCHAR(32)      NOT NULL    CHECK (name ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
   description                      TEXT             NULL, 
   copyright                        TEXT             NULL, 
@@ -19,6 +20,12 @@ ALTER TABLE pareto.tenant ADD PRIMARY KEY (id);
 
 CREATE UNIQUE INDEX tenant_alt_key
     ON pareto.tenant(LOWER(name));
+
+ALTER TABLE pareto.tenant
+  ADD CONSTRAINT tenant_id_rt_time_zone
+  FOREIGN KEY (id_rt_time_zone)
+  REFERENCES pareto.ref_tables(id)
+  ON DELETE SET NULL;
 
 CREATE TRIGGER update_at
   BEFORE UPDATE ON pareto.tenant 

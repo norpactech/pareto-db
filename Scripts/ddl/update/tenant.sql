@@ -4,6 +4,7 @@
 DROP FUNCTION IF EXISTS pareto.u_tenant;
 CREATE FUNCTION pareto.u_tenant(
   IN p_id UUID, 
+  IN p_id_rt_time_zone UUID, 
   IN p_name VARCHAR, 
   IN p_description TEXT, 
   IN p_copyright TEXT, 
@@ -37,6 +38,7 @@ BEGIN
 
   v_metadata := jsonb_build_object(
     'id', p_id, 
+    'id_rt_time_zone', p_id_rt_time_zone, 
     'name', p_name, 
     'description', p_description, 
     'copyright', p_copyright, 
@@ -72,6 +74,7 @@ BEGIN
   -- ------------------------------------------------------
 
   UPDATE pareto.tenant SET
+    id_rt_time_zone = p_id_rt_time_zone, 
     name = p_name, 
     description = p_description, 
     copyright = p_copyright, 

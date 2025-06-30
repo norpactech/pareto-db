@@ -5,16 +5,15 @@
 DROP FUNCTION IF EXISTS pareto.i_user;
 CREATE FUNCTION pareto.i_user(
   IN p_email VARCHAR, 
-  IN p_id_rt_time_zone UUID, 
-  IN p_zip_code VARCHAR, 
-  IN p_phone VARCHAR, 
   IN p_last_name VARCHAR, 
   IN p_first_name VARCHAR, 
-  IN p_city VARCHAR, 
+  IN p_phone VARCHAR, 
   IN p_street1 TEXT, 
   IN p_street2 TEXT, 
-  IN p_terms_accepted TIMESTAMP, 
+  IN p_city VARCHAR, 
   IN p_state CHAR, 
+  IN p_zip_code VARCHAR, 
+  IN p_terms_accepted TIMESTAMP, 
   IN p_created_by VARCHAR
 )
 RETURNS pg_resp
@@ -40,16 +39,15 @@ BEGIN
 
   v_metadata := jsonb_build_object(
     'email', p_email, 
-    'id_rt_time_zone', p_id_rt_time_zone, 
-    'zip_code', p_zip_code, 
-    'phone', p_phone, 
     'last_name', p_last_name, 
     'first_name', p_first_name, 
-    'city', p_city, 
+    'phone', p_phone, 
     'street1', p_street1, 
     'street2', p_street2, 
-    'terms_accepted', p_terms_accepted, 
+    'city', p_city, 
     'state', p_state, 
+    'zip_code', p_zip_code, 
+    'terms_accepted', p_terms_accepted, 
     'created_by', p_created_by
   );
   
@@ -58,16 +56,6 @@ BEGIN
   -- ------------------------------------------------------
   
   v_val_resp := is_email('email', p_email);
-  IF NOT v_val_resp.passed THEN
-    v_errors := v_errors || jsonb_build_object('type', 'validation', 'field', v_val_resp.field, 'message', v_val_resp.message);
-  END IF;
-
-  v_val_resp := is_us_zip_code('zip_code', p_zip_code);
-  IF NOT v_val_resp.passed THEN
-    v_errors := v_errors || jsonb_build_object('type', 'validation', 'field', v_val_resp.field, 'message', v_val_resp.message);
-  END IF;
-
-  v_val_resp := is_us_phone('phone', p_phone);
   IF NOT v_val_resp.passed THEN
     v_errors := v_errors || jsonb_build_object('type', 'validation', 'field', v_val_resp.field, 'message', v_val_resp.message);
   END IF;
@@ -82,12 +70,22 @@ BEGIN
     v_errors := v_errors || jsonb_build_object('type', 'validation', 'field', v_val_resp.field, 'message', v_val_resp.message);
   END IF;
 
+  v_val_resp := is_us_phone('phone', p_phone);
+  IF NOT v_val_resp.passed THEN
+    v_errors := v_errors || jsonb_build_object('type', 'validation', 'field', v_val_resp.field, 'message', v_val_resp.message);
+  END IF;
+
   v_val_resp := is_name('city', p_city);
   IF NOT v_val_resp.passed THEN
     v_errors := v_errors || jsonb_build_object('type', 'validation', 'field', v_val_resp.field, 'message', v_val_resp.message);
   END IF;
 
   v_val_resp := is_us_state('state', p_state);
+  IF NOT v_val_resp.passed THEN
+    v_errors := v_errors || jsonb_build_object('type', 'validation', 'field', v_val_resp.field, 'message', v_val_resp.message);
+  END IF;
+
+  v_val_resp := is_us_zip_code('zip_code', p_zip_code);
   IF NOT v_val_resp.passed THEN
     v_errors := v_errors || jsonb_build_object('type', 'validation', 'field', v_val_resp.field, 'message', v_val_resp.message);
   END IF;
@@ -112,31 +110,29 @@ BEGIN
  
   INSERT INTO pareto.user (
     email, 
-    id_rt_time_zone, 
-    zip_code, 
-    phone, 
     last_name, 
     first_name, 
-    city, 
+    phone, 
     street1, 
     street2, 
-    terms_accepted, 
+    city, 
     state, 
+    zip_code, 
+    terms_accepted, 
     created_by,
     updated_by
   )
   VALUES (
     p_email, 
-    p_id_rt_time_zone, 
-    p_zip_code, 
-    p_phone, 
     p_last_name, 
     p_first_name, 
-    p_city, 
+    p_phone, 
     p_street1, 
     p_street2, 
-    p_terms_accepted, 
+    p_city, 
     p_state, 
+    p_zip_code, 
+    p_terms_accepted, 
     p_created_by,
     p_created_by
   )
