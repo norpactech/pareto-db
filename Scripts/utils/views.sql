@@ -18,8 +18,8 @@ CREATE VIEW pareto.v_index AS
 
 -- List all tables and order by least to most dependent 	
 
-DROP VIEW IF EXISTS pareto.v_table_dependencies;
-CREATE VIEW pareto.v_table_dependencies AS
+DROP VIEW IF EXISTS pareto.v_table_dependencies2;
+CREATE VIEW pareto.v_table_dependencies2 AS
   -- has dependencies
   SELECT t.id     AS id_tenant,
          t.name   AS tenant_name,
@@ -56,3 +56,20 @@ CREATE VIEW pareto.v_table_dependencies AS
                          JOIN pareto.generic_property_type pt ON (pt.id = p.id_generic_property_type)
                          JOIN pareto.cardinality c ON (c.id_property = p.id)
                         WHERE s2.id = s1.id);
+
+
+DROP VIEW IF EXISTS pareto.v_table_dependencies;
+CREATE VIEW pareto.v_table_dependencies AS
+  SELECT
+    tc.table_schema,
+    tc.table_name AS child_table,
+    ccu.table_name AS parent_table
+  FROM
+    information_schema.table_constraints AS tc
+    JOIN information_schema.key_column_usage AS kcu
+      ON tc.constraint_name = kcu.constraint_name
+      AND tc.table_schema = kcu.table_schema
+    JOIN information_schema.constraint_column_usage AS ccu
+      ON ccu.constraint_name = tc.constraint_name
+      AND ccu.table_schema = tc.table_schema
+   WHERE tc.constraint_type = 'FOREIGN KEY';
