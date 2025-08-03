@@ -1,0 +1,15 @@
+tenant,schema,project,project_component,source_directory,sub_package_directory
+// pgsql,,,,,
+system,pareto,pareto-db,database_tables,/Users/scott/Pareto/pareto-db,/Scripts
+system,pareto,pareto-db,database_validations,/Users/scott/Pareto/pareto-db,/Scripts
+system,pareto,pareto-db,database_insert,/Users/scott/Pareto/pareto-db,/Scripts
+system,pareto,pareto-db,database_update,/Users/scott/Pareto/pareto-db,/Scripts
+system,pareto,pareto-db,database_delete,/Users/scott/Pareto/pareto-db,/Scripts
+system,pareto,pareto-db,database_active,/Users/scott/Pareto/pareto-db,/Scripts
+// msdos,,,,,
+system,pareto,pareto-db,create_tables_os_script,/Users/scott/Pareto/pareto-db,/Scripts
+system,pareto,pareto-db,validations_os_script,/Users/scott/Pareto/pareto-db,/Scripts
+system,pareto,pareto-db,insert_os_script,/Users/scott/Pareto/pareto-db,/Scripts
+system,pareto,pareto-db,update_os_script,/Users/scott/Pareto/pareto-db,/Scripts
+system,pareto,pareto-db,delete_os_script,/Users/scott/Pareto/pareto-db,/Scripts
+system,pareto,pareto-db,active_os_script,/Users/scott/Pareto/pareto-db,/Scripts

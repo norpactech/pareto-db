@@ -37,7 +37,6 @@ psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "data_index.sql" |
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "project_component.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "generic_property_type.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "project_component_property.sql" || goto exception  
-psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "project_component_omit.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "context_property_type.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "property.sql" || goto exception  
 psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f "data_index_property.sql" || goto exception  
