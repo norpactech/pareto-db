@@ -35,7 +35,7 @@ CREATE VIEW pareto.v_table_dependencies2 AS
     JOIN pareto.property p ON (p.id_data_object = o1.id)
     JOIN pareto.generic_property_type pt ON (pt.id = p.id_generic_property_type)
     JOIN pareto.cardinality c ON (c.id_property = p.id)
-    JOIN pareto.data_object o2 ON (o2.id = c.id_object_reference)
+    JOIN pareto.data_object o2 ON (o2.id = c.id_data_object)
    UNION
   -- No dependencies
   SELECT t.id     AS id_tenant,

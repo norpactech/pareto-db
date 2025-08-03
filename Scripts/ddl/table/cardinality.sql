@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS pareto.cardinality CASCADE;
 CREATE TABLE pareto.cardinality (
   id                               UUID             NOT NULL    DEFAULT GEN_RANDOM_UUID(), 
   id_property                      UUID             NOT NULL, 
-  id_object_reference              UUID             NOT NULL, 
+  id_data_object                   UUID             NOT NULL, 
   id_rt_cardinality                UUID             NOT NULL, 
   id_rt_cardinality_strength       UUID             NOT NULL, 
   has_referencial_action           BOOLEAN          NOT NULL, 
@@ -20,7 +20,7 @@ CREATE TABLE pareto.cardinality (
 ALTER TABLE pareto.cardinality ADD PRIMARY KEY (id);
 
 CREATE UNIQUE INDEX cardinality_alt_key
-    ON pareto.cardinality(id_property, id_object_reference);
+    ON pareto.cardinality(id_property, id_data_object);
 
 ALTER TABLE pareto.cardinality
   ADD CONSTRAINT cardinality_id_property
@@ -29,8 +29,8 @@ ALTER TABLE pareto.cardinality
   ON DELETE CASCADE;
     
 ALTER TABLE pareto.cardinality
-  ADD CONSTRAINT cardinality_id_object_reference
-  FOREIGN KEY (id_object_reference)
+  ADD CONSTRAINT cardinality_id_data_object
+  FOREIGN KEY (id_data_object)
   REFERENCES pareto.data_object(id)
   ON DELETE CASCADE;
     
