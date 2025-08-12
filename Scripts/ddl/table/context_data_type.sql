@@ -22,7 +22,7 @@ CREATE TABLE pareto.context_data_type (
 ALTER TABLE pareto.context_data_type ADD PRIMARY KEY (id);
 
 CREATE UNIQUE INDEX context_data_type_alt_key
-    ON pareto.context_data_type(id_context, LOWER(name));
+    ON pareto.context_data_type(id_context, id_generic_data_type);
 
 ALTER TABLE pareto.context_data_type
   ADD CONSTRAINT context_data_type_id_context
