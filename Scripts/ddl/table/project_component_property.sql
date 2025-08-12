@@ -18,8 +18,8 @@ CREATE TABLE pareto.project_component_property (
 
 ALTER TABLE pareto.project_component_property ADD PRIMARY KEY (id);
 
-CREATE INDEX project_component_property_idx01
-    ON pareto.project_component_property(id_project_component, LOWER(data_object_filter));
+CREATE UNIQUE INDEX project_component_property_alt_key
+    ON pareto.project_component_property(id_project_component, LOWER(data_object_filter), LOWER(property_filter));
 
 ALTER TABLE pareto.project_component_property
   ADD CONSTRAINT project_component_property_id_project_component
