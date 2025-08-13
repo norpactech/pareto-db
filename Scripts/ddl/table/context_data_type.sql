@@ -8,7 +8,7 @@ CREATE TABLE pareto.context_data_type (
   id_context                       UUID             NOT NULL, 
   id_generic_data_type             UUID             NOT NULL, 
   sequence                         INTEGER          NOT NULL, 
-  name                             VARCHAR(32)      NOT NULL    CHECK (name ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
+  name                             VARCHAR(32)      NOT NULL, 
   description                      TEXT             NULL, 
   alias                            TEXT             NOT NULL, 
   context_value                    TEXT             NOT NULL, 
