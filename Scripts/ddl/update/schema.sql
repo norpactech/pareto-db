@@ -5,8 +5,8 @@ DROP FUNCTION IF EXISTS pareto.u_schema;
 CREATE FUNCTION pareto.u_schema(
   IN p_id UUID, 
   IN p_name VARCHAR, 
-  IN p_database VARCHAR, 
   IN p_description TEXT, 
+  IN p_database VARCHAR, 
   IN p_updated_at TIMESTAMP, 
   IN p_updated_by VARCHAR
 )
@@ -38,8 +38,8 @@ BEGIN
   v_metadata := jsonb_build_object(
     'id', p_id, 
     'name', p_name, 
-    'database', p_database, 
     'description', p_description, 
+    'database', p_database, 
     'updated_at', p_updated_at, 
     'updated_by', p_updated_by
   );
@@ -73,8 +73,8 @@ BEGIN
 
   UPDATE pareto.schema SET
     name = p_name, 
-    database = p_database, 
     description = p_description, 
+    database = p_database, 
     updated_by = p_updated_by, 
     updated_at = CURRENT_TIMESTAMP
     WHERE id = p_id
