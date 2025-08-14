@@ -8,20 +8,19 @@
 -- Drop all dependent objects and recreate the schemas
 -- ----------------------------------------------------------------------------
 
-DROP SCHEMA IF EXISTS public cascade;
-CREATE SCHEMA public AUTHORIZATION norpac;
+CREATE SCHEMA IF NOT EXISTS public AUTHORIZATION norpac;
 
-DROP schema IF EXISTS pareto cascade;
-CREATE schema pareto AUTHORIZATION norpac;
+DROP schema IF EXISTS united_bins cascade;
+CREATE SCHEMA IF NOT EXISTS united_bins AUTHORIZATION norpac;
 
-CREATE EXTENSION pldbgapi; -- Debugging
+CREATE EXTENSION IF NOT EXISTS pldbgapi; -- Debugging
 
 -- ----------------------------------------------------------------------------
--- Trigger function(s) in the Public Schema
+-- Public functions - Shared across all schemas
 -- ----------------------------------------------------------------------------
 
-DROP FUNCTION IF EXISTS update_at() CASCADE;
-CREATE FUNCTION update_at()
+-- Create or replace the public update_at function (shared by all schemas)
+CREATE OR REPLACE FUNCTION public.update_at()
 RETURNS TRIGGER AS $$
 BEGIN
   NEW.updated_at = now();
@@ -30,50 +29,42 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- ----------------------------------------------------------------------------
--- Type(s) in the Public Schema
+-- Public types - Shared across all schemas  
 -- ----------------------------------------------------------------------------
 
-DROP TYPE IF EXISTS pg_resp CASCADE;
-CREATE TYPE pg_resp AS (
-  status     TEXT,
-  data       JSONB,
-  errors     JSONB,
-  error_code TEXT,
-  message    TEXT,
-  hint       TEXT,
-  detail     TEXT
-);
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'pg_resp' AND typnamespace = (SELECT oid FROM pg_namespace WHERE nspname = 'public')) THEN
+    CREATE TYPE public.pg_resp AS (
+      status     TEXT,
+      data       JSONB,
+      errors     JSONB,
+      error_code TEXT,
+      message    TEXT,
+      hint       TEXT,
+      detail     TEXT
+  );
+  END IF;
+END
+$$;
 
-DROP TYPE IF EXISTS pareto.pg_resp CASCADE;
-CREATE TYPE pareto.pg_resp AS (
-  status     TEXT,
-  data       JSONB,
-  errors     JSONB,
-  error_code TEXT,
-  message    TEXT,
-  hint       TEXT,
-  detail     TEXT
-);
-
-DROP TYPE IF EXISTS pg_val CASCADE;
-CREATE TYPE pg_val AS (
-  passed  BOOLEAN,
-  field   TEXT,
-  message TEXT
-);
-
-DROP TYPE IF EXISTS pareto.pg_val CASCADE;
-CREATE TYPE pareto.pg_val AS (
-  passed  BOOLEAN,
-  field   TEXT,
-  message TEXT
-);
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'pg_val' AND typnamespace = (SELECT oid FROM pg_namespace WHERE nspname = 'public')) THEN
+    CREATE TYPE public.pg_val AS (
+      passed  BOOLEAN,
+      field   TEXT,
+      message TEXT
+  );
+  END IF;
+END
+$$;
 
 -- ----------------------------------------------------------------------------
 -- Logging
 -- ----------------------------------------------------------------------------
 
-CREATE TABLE pareto.logs (  
+CREATE TABLE united_bins.logs (  
   id           UUID DEFAULT gen_random_uuid(),
   created_at   TIMESTAMPTZ   DEFAULT CURRENT_TIMESTAMP,
   created_by   TEXT          DEFAULT 'unavailable',
@@ -83,16 +74,16 @@ CREATE TABLE pareto.logs (
   metadata JSONB default '{}'::JSONB
 );
 
-ALTER TABLE pareto.logs
+ALTER TABLE united_bins.logs
   ADD PRIMARY KEY (id);
 
-CREATE INDEX logs_created_at   ON pareto.logs (created_at DESC);
-CREATE INDEX logs_level        ON pareto.logs (level);
-CREATE INDEX logs_service_name ON pareto.logs (service_name);
+CREATE INDEX logs_created_at   ON united_bins.logs (created_at DESC);
+CREATE INDEX logs_level        ON united_bins.logs (level);
+CREATE INDEX logs_service_name ON united_bins.logs (service_name);
 
 -- Insert Logs
 
-CREATE PROCEDURE pareto.i_logs(
+CREATE PROCEDURE united_bins.i_logs(
   IN in_level         TEXT,
   IN in_message       TEXT,
   IN in_service_name  TEXT,
@@ -104,7 +95,7 @@ AS $$
 DECLARE
 BEGIN
 
-  INSERT INTO pareto.logs (
+  INSERT INTO united_bins.logs (
     level,
     message,
     service_name,
