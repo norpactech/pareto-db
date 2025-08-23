@@ -9,7 +9,7 @@ CREATE TABLE pareto.cardinality (
   id_data_object                   UUID             NOT NULL, 
   id_rt_cardinality                UUID             NOT NULL, 
   id_rt_cardinality_strength       UUID             NOT NULL, 
-  has_referencial_action           BOOLEAN          NOT NULL, 
+  has_referential_action           BOOLEAN          NOT NULL, 
   created_at                       TIMESTAMP        NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
   created_by                       VARCHAR(32)      NOT NULL, 
   updated_at                       TIMESTAMP        NOT NULL    DEFAULT CURRENT_TIMESTAMP, 

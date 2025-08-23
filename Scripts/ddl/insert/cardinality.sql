@@ -8,7 +8,7 @@ CREATE FUNCTION pareto.i_cardinality(
   IN p_id_data_object UUID, 
   IN p_id_rt_cardinality UUID, 
   IN p_id_rt_cardinality_strength UUID, 
-  IN p_has_referencial_action BOOLEAN, 
+  IN p_has_referential_action BOOLEAN, 
   IN p_created_by VARCHAR
 )
 RETURNS pg_resp
@@ -37,7 +37,7 @@ BEGIN
     'id_data_object', p_id_data_object, 
     'id_rt_cardinality', p_id_rt_cardinality, 
     'id_rt_cardinality_strength', p_id_rt_cardinality_strength, 
-    'has_referencial_action', p_has_referencial_action, 
+    'has_referential_action', p_has_referential_action, 
     'created_by', p_created_by
   );
   
@@ -50,7 +50,7 @@ BEGIN
     id_data_object, 
     id_rt_cardinality, 
     id_rt_cardinality_strength, 
-    has_referencial_action, 
+    has_referential_action, 
     created_by,
     updated_by
   )
@@ -59,7 +59,7 @@ BEGIN
     p_id_data_object, 
     p_id_rt_cardinality, 
     p_id_rt_cardinality_strength, 
-    p_has_referencial_action, 
+    p_has_referential_action, 
     p_created_by,
     p_created_by
   )

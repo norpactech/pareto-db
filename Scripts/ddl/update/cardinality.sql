@@ -6,7 +6,7 @@ CREATE FUNCTION pareto.u_cardinality(
   IN p_id UUID, 
   IN p_id_rt_cardinality UUID, 
   IN p_id_rt_cardinality_strength UUID, 
-  IN p_has_referencial_action BOOLEAN, 
+  IN p_has_referential_action BOOLEAN, 
   IN p_updated_at TIMESTAMP, 
   IN p_updated_by VARCHAR
 )
@@ -39,7 +39,7 @@ BEGIN
     'id', p_id, 
     'id_rt_cardinality', p_id_rt_cardinality, 
     'id_rt_cardinality_strength', p_id_rt_cardinality_strength, 
-    'has_referencial_action', p_has_referencial_action, 
+    'has_referential_action', p_has_referential_action, 
     'updated_at', p_updated_at, 
     'updated_by', p_updated_by
   );
@@ -51,7 +51,7 @@ BEGIN
   UPDATE pareto.cardinality SET
     id_rt_cardinality = p_id_rt_cardinality, 
     id_rt_cardinality_strength = p_id_rt_cardinality_strength, 
-    has_referencial_action = p_has_referencial_action, 
+    has_referential_action = p_has_referential_action, 
     updated_by = p_updated_by, 
     updated_at = CURRENT_TIMESTAMP
     WHERE id = p_id
