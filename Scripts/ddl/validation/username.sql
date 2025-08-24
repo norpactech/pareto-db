@@ -13,6 +13,14 @@ DECLARE
   v_result pareto.pg_val;
 
 BEGIN
+  
+  -- -------------------------------------------
+  -- Null validations are checked elsewhere
+  -- -------------------------------------------
+  IF (in_value IS NULL) THEN
+    v_result := (TRUE, in_attribute, NULL);
+    return v_result;
+  END IF;
 
   IF (in_value ~ '^[a-zA-Z][a-zA-Z0-9_-]{2,31}$') THEN
     v_result := (TRUE, in_attribute, NULL);

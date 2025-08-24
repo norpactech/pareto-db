@@ -1,5 +1,33 @@
-select (select count(*) from pareto.data_object) as data_object_count,
-       (select count(*) from pareto.property) as property_count,
-       (select count(*) from pareto.data_index) as data_index_count,
-       (select count(*) from pareto.data_index_property) as data_index_property_count,
-       (select count(*) from pareto.cardinality) as cardinality_count;
+create or replace FUNCTION united_bins.is_email(
+  IN in_attribute TEXT,
+  IN in_value     TEXT
+) 
+RETURNS pareto.pg_val
+AS $$
+DECLARE
+
+  v_result pareto.pg_val;
+
+BEGIN
+
+  -- -------------------------------------------
+  -- Null validations are checked elsewhere
+  -- -------------------------------------------
+  IF (in_value IS NULL) THEN
+    v_result := (TRUE, in_attribute, NULL);
+    return v_result;
+  END IF;
+
+  IF (in_value ~ '^[A-Za-z0-9]+([._%+-][A-Za-z0-9]+)*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$') THEN
+    v_result := (TRUE, in_attribute, NULL);
+  ELSE
+    v_result := (FALSE, in_attribute, 'Invalid Email Format');
+  END IF;
+
+  RETURN v_result;
+
+END;
+$$ LANGUAGE plpgsql;
+
+
+select united_bins.is_email('email', null);

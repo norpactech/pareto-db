@@ -13,6 +13,14 @@ DECLARE
   v_result pareto.pg_val;
 
 BEGIN
+  
+  -- -------------------------------------------
+  -- Null validations are checked elsewhere
+  -- -------------------------------------------
+  IF (in_value IS NULL) THEN
+    v_result := (TRUE, in_attribute, NULL);
+    return v_result;
+  END IF;
 
   IF (in_value ~ '^[a-z0-9]+(\.[a-z0-9]+)*$') THEN
     v_result := (TRUE, in_attribute, NULL);
