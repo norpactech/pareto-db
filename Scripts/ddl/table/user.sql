@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS pareto.user CASCADE;
 CREATE TABLE pareto.user (
   id                               UUID             NOT NULL    DEFAULT GEN_RANDOM_UUID(), 
   email                            VARCHAR(126)     NOT NULL    CHECK (email ~ '^[A-Za-z0-9]+([._%+-][A-Za-z0-9]+)*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'), 
+  oauth_id_user                    VARCHAR(64)      NULL, 
   last_name                        VARCHAR(32)      NOT NULL    CHECK (last_name ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
   first_name                       VARCHAR(32)      NOT NULL    CHECK (first_name ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
   phone                            VARCHAR(12)      NOT NULL    CHECK (phone ~ '^\d{3}-\d{3}-\d{4}$'), 
@@ -26,6 +27,9 @@ ALTER TABLE pareto.user ADD PRIMARY KEY (id);
 
 CREATE UNIQUE INDEX user_alt_key
     ON pareto.user(LOWER(email));
+    
+CREATE UNIQUE INDEX user_idx01
+    ON pareto.user(LOWER(oauth_id_user));
 
 CREATE TRIGGER update_at
   BEFORE UPDATE ON pareto.user 

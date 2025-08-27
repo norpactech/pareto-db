@@ -5,6 +5,7 @@ DROP FUNCTION IF EXISTS pareto.u_user;
 CREATE FUNCTION pareto.u_user(
   IN p_id UUID, 
   IN p_email VARCHAR, 
+  IN p_oauth_id_user VARCHAR, 
   IN p_last_name VARCHAR, 
   IN p_first_name VARCHAR, 
   IN p_phone VARCHAR, 
@@ -45,6 +46,7 @@ BEGIN
   v_metadata := jsonb_build_object(
     'id', p_id, 
     'email', p_email, 
+    'oauth_id_user', p_oauth_id_user, 
     'last_name', p_last_name, 
     'first_name', p_first_name, 
     'phone', p_phone, 
@@ -117,6 +119,7 @@ BEGIN
 
   UPDATE pareto.user SET
     email = p_email, 
+    oauth_id_user = p_oauth_id_user, 
     last_name = p_last_name, 
     first_name = p_first_name, 
     phone = p_phone, 
