@@ -43,3 +43,4 @@ CREATE TRIGGER update_at
   BEFORE UPDATE ON pareto.data_index_property 
     FOR EACH ROW
       EXECUTE FUNCTION update_at();
+

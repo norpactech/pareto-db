@@ -8,7 +8,8 @@ CREATE TABLE pareto.schema (
   id_tenant                        UUID             NOT NULL, 
   name                             VARCHAR(32)      NOT NULL    CHECK (name ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
   description                      TEXT             NULL, 
-  database                         VARCHAR(32)      NOT NULL, 
+  database                         VARCHAR(32)      NOT NULL    CHECK (database ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
+  username                         VARCHAR(32)      NOT NULL    CHECK (username ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
   created_at                       TIMESTAMP        NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
   created_by                       VARCHAR(32)      NOT NULL, 
   updated_at                       TIMESTAMP        NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
@@ -20,6 +21,9 @@ ALTER TABLE pareto.schema ADD PRIMARY KEY (id);
 
 CREATE UNIQUE INDEX schema_alt_key
     ON pareto.schema(id_tenant, LOWER(name));
+    
+CREATE INDEX schema_idx01
+    ON pareto.schema(LOWER(username));
 
 ALTER TABLE pareto.schema
   ADD CONSTRAINT schema_id_tenant
@@ -31,3 +35,4 @@ CREATE TRIGGER update_at
   BEFORE UPDATE ON pareto.schema 
     FOR EACH ROW
       EXECUTE FUNCTION update_at();
+

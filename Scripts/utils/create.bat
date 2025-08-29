@@ -58,7 +58,6 @@ call create_active.bat || goto exception
 cd ..\..\utils
 
 psql -d norpac -h %PGHOST% -p %PGPORT% -f ".\views.sql" || goto exception
-psql -d norpac -h %PGHOST% -p %PGPORT% -f ".\multi-tenancy.sql" || goto exception
 
 echo Create Completed Successfully
 exit /b 0

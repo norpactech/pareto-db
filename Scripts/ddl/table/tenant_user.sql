@@ -21,3 +21,4 @@ ALTER TABLE pareto.tenant_user
   FOREIGN KEY (id_user)
   REFERENCES pareto.user(id)
   ON DELETE CASCADE;
+

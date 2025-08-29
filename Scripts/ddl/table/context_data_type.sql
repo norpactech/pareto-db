@@ -40,3 +40,4 @@ CREATE TRIGGER update_at
   BEFORE UPDATE ON pareto.context_data_type 
     FOR EACH ROW
       EXECUTE FUNCTION update_at();
+

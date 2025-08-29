@@ -36,3 +36,4 @@ CREATE TRIGGER update_at
   BEFORE UPDATE ON pareto.generic_data_type_attribute 
     FOR EACH ROW
       EXECUTE FUNCTION update_at();
+

@@ -32,3 +32,4 @@ CREATE TRIGGER update_at
   BEFORE UPDATE ON pareto.ref_tables 
     FOR EACH ROW
       EXECUTE FUNCTION update_at();
+

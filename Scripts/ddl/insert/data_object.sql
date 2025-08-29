@@ -8,6 +8,7 @@ CREATE FUNCTION pareto.i_data_object(
   IN p_name VARCHAR, 
   IN p_description TEXT, 
   IN p_has_identifier BOOLEAN, 
+  IN p_has_tenancy BOOLEAN, 
   IN p_has_audit BOOLEAN, 
   IN p_has_active BOOLEAN, 
   IN p_created_by VARCHAR
@@ -38,6 +39,7 @@ BEGIN
     'name', p_name, 
     'description', p_description, 
     'has_identifier', p_has_identifier, 
+    'has_tenancy', p_has_tenancy, 
     'has_audit', p_has_audit, 
     'has_active', p_has_active, 
     'created_by', p_created_by
@@ -75,6 +77,7 @@ BEGIN
     name, 
     description, 
     has_identifier, 
+    has_tenancy, 
     has_audit, 
     has_active, 
     created_by,
@@ -85,6 +88,7 @@ BEGIN
     p_name, 
     p_description, 
     p_has_identifier, 
+    p_has_tenancy, 
     p_has_audit, 
     p_has_active, 
     p_created_by,

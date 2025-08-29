@@ -34,8 +34,8 @@ $$ LANGUAGE plpgsql;
 
 DO $$
 BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'pg_resp' AND typnamespace = (SELECT oid FROM pg_namespace WHERE nspname = 'public')) THEN
-    CREATE TYPE public.pg_resp AS (
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'pg_resp' AND typnamespace = (SELECT oid FROM pg_namespace WHERE nspname = 'pareto')) THEN
+    CREATE TYPE pareto.pg_resp AS (
       status     TEXT,
       data       JSONB,
       errors     JSONB,
@@ -50,8 +50,8 @@ $$;
 
 DO $$
 BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'pg_val' AND typnamespace = (SELECT oid FROM pg_namespace WHERE nspname = 'public')) THEN
-    CREATE TYPE public.pg_val AS (
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'pg_val' AND typnamespace = (SELECT oid FROM pg_namespace WHERE nspname = 'pareto')) THEN
+    CREATE TYPE pareto.pg_val AS (
       passed  BOOLEAN,
       field   TEXT,
       message TEXT

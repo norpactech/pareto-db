@@ -45,3 +45,4 @@ CREATE TRIGGER update_at
   BEFORE UPDATE ON pareto.project_component 
     FOR EACH ROW
       EXECUTE FUNCTION update_at();
+

@@ -8,6 +8,7 @@ CREATE FUNCTION pareto.i_schema(
   IN p_name VARCHAR, 
   IN p_description TEXT, 
   IN p_database VARCHAR, 
+  IN p_username VARCHAR, 
   IN p_created_by VARCHAR
 )
 RETURNS pg_resp
@@ -36,6 +37,7 @@ BEGIN
     'name', p_name, 
     'description', p_description, 
     'database', p_database, 
+    'username', p_username, 
     'created_by', p_created_by
   );
   
@@ -44,6 +46,16 @@ BEGIN
   -- ------------------------------------------------------
   
   v_val_resp := is_name('name', p_name);
+  IF NOT v_val_resp.passed THEN
+    v_errors := v_errors || jsonb_build_object('type', 'validation', 'field', v_val_resp.field, 'message', v_val_resp.message);
+  END IF;
+
+  v_val_resp := is_name('database', p_database);
+  IF NOT v_val_resp.passed THEN
+    v_errors := v_errors || jsonb_build_object('type', 'validation', 'field', v_val_resp.field, 'message', v_val_resp.message);
+  END IF;
+
+  v_val_resp := is_name('username', p_username);
   IF NOT v_val_resp.passed THEN
     v_errors := v_errors || jsonb_build_object('type', 'validation', 'field', v_val_resp.field, 'message', v_val_resp.message);
   END IF;
@@ -71,6 +83,7 @@ BEGIN
     name, 
     description, 
     database, 
+    username, 
     created_by,
     updated_by
   )
@@ -79,6 +92,7 @@ BEGIN
     p_name, 
     p_description, 
     p_database, 
+    p_username, 
     p_created_by,
     p_created_by
   )

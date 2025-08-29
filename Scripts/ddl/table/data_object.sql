@@ -9,6 +9,7 @@ CREATE TABLE pareto.data_object (
   name                             VARCHAR(32)      NOT NULL    CHECK (name ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
   description                      TEXT             NULL, 
   has_identifier                   BOOLEAN          NOT NULL    DEFAULT TRUE, 
+  has_tenancy                      BOOLEAN          NOT NULL    DEFAULT FALSE, 
   has_audit                        BOOLEAN          NOT NULL    DEFAULT TRUE, 
   has_active                       BOOLEAN          NOT NULL    DEFAULT TRUE, 
   created_at                       TIMESTAMP        NOT NULL    DEFAULT CURRENT_TIMESTAMP, 
@@ -33,3 +34,4 @@ CREATE TRIGGER update_at
   BEFORE UPDATE ON pareto.data_object 
     FOR EACH ROW
       EXECUTE FUNCTION update_at();
+

@@ -58,3 +58,4 @@ CREATE TRIGGER update_at
   BEFORE UPDATE ON pareto.property 
     FOR EACH ROW
       EXECUTE FUNCTION update_at();
+
