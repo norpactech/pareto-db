@@ -4,6 +4,7 @@
 
 DROP FUNCTION IF EXISTS pareto.i_cardinality;
 CREATE FUNCTION pareto.i_cardinality(
+  IN p_id_tenant UUID, 
   IN p_id_property UUID, 
   IN p_id_data_object UUID, 
   IN p_id_rt_cardinality UUID, 
@@ -33,6 +34,7 @@ BEGIN
   -- ------------------------------------------------------
 
   v_metadata := jsonb_build_object(
+    'id_tenant', p_id_tenant, 
     'id_property', p_id_property, 
     'id_data_object', p_id_data_object, 
     'id_rt_cardinality', p_id_rt_cardinality, 
@@ -46,6 +48,7 @@ BEGIN
   -- ------------------------------------------------------
  
   INSERT INTO pareto.cardinality (
+    id_tenant, 
     id_property, 
     id_data_object, 
     id_rt_cardinality, 
@@ -55,6 +58,7 @@ BEGIN
     updated_by
   )
   VALUES (
+    p_id_tenant, 
     p_id_property, 
     p_id_data_object, 
     p_id_rt_cardinality, 

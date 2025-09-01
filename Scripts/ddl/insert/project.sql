@@ -4,6 +4,7 @@
 
 DROP FUNCTION IF EXISTS pareto.i_project;
 CREATE FUNCTION pareto.i_project(
+  IN p_id_tenant UUID, 
   IN p_id_schema UUID, 
   IN p_name VARCHAR, 
   IN p_description TEXT, 
@@ -33,6 +34,7 @@ BEGIN
   -- ------------------------------------------------------
 
   v_metadata := jsonb_build_object(
+    'id_tenant', p_id_tenant, 
     'id_schema', p_id_schema, 
     'name', p_name, 
     'description', p_description, 
@@ -79,6 +81,7 @@ BEGIN
   -- ------------------------------------------------------
  
   INSERT INTO pareto.project (
+    id_tenant, 
     id_schema, 
     name, 
     description, 
@@ -88,6 +91,7 @@ BEGIN
     updated_by
   )
   VALUES (
+    p_id_tenant, 
     p_id_schema, 
     p_name, 
     p_description, 

@@ -4,6 +4,7 @@
 
 DROP FUNCTION IF EXISTS pareto.i_project_component;
 CREATE FUNCTION pareto.i_project_component(
+  IN p_id_tenant UUID, 
   IN p_id_project UUID, 
   IN p_id_context UUID, 
   IN p_id_plugin UUID, 
@@ -34,6 +35,7 @@ BEGIN
   -- ------------------------------------------------------
 
   v_metadata := jsonb_build_object(
+    'id_tenant', p_id_tenant, 
     'id_project', p_id_project, 
     'id_context', p_id_context, 
     'id_plugin', p_id_plugin, 
@@ -76,6 +78,7 @@ BEGIN
   -- ------------------------------------------------------
  
   INSERT INTO pareto.project_component (
+    id_tenant, 
     id_project, 
     id_context, 
     id_plugin, 
@@ -86,6 +89,7 @@ BEGIN
     updated_by
   )
   VALUES (
+    p_id_tenant, 
     p_id_project, 
     p_id_context, 
     p_id_plugin, 

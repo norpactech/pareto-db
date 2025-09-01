@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS pareto.context_property_type CASCADE;
 
 CREATE TABLE pareto.context_property_type (
   id                               UUID             NOT NULL    DEFAULT GEN_RANDOM_UUID(), 
+  id_tenant                        UUID             NOT NULL, 
   id_context                       UUID             NOT NULL, 
   id_generic_property_type         UUID             NOT NULL, 
   length                           INTEGER          NULL, 
@@ -21,8 +22,14 @@ CREATE TABLE pareto.context_property_type (
 ALTER TABLE pareto.context_property_type ADD PRIMARY KEY (id);
 
 CREATE UNIQUE INDEX context_property_type_alt_key
-    ON pareto.context_property_type(id_context, id_generic_property_type);
+    ON pareto.context_property_type(id_tenant, id_context, id_generic_property_type);
 
+ALTER TABLE pareto.context_property_type
+  ADD CONSTRAINT context_property_type_id_tenant
+  FOREIGN KEY (id_tenant)
+  REFERENCES pareto.tenant(id)
+  ON DELETE CASCADE;
+    
 ALTER TABLE pareto.context_property_type
   ADD CONSTRAINT context_property_type_id_context
   FOREIGN KEY (id_context)
@@ -40,3 +47,7 @@ CREATE TRIGGER update_at
     FOR EACH ROW
       EXECUTE FUNCTION update_at();
 
+ALTER TABLE pareto.context_property_type ENABLE ROW LEVEL SECURITY;
+CREATE POLICY tenant_isolation_policy ON pareto.context_property_type
+  FOR ALL TO web_update
+    USING (id_tenant = current_setting('app.current_tenant')::uuid);

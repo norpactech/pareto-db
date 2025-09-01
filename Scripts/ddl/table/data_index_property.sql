@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS pareto.data_index_property CASCADE;
 
 CREATE TABLE pareto.data_index_property (
   id                               UUID             NOT NULL    DEFAULT GEN_RANDOM_UUID(), 
+  id_tenant                        UUID             NOT NULL, 
   id_data_index                    UUID             NOT NULL, 
   id_property                      UUID             NOT NULL, 
   id_rt_sort_order                 UUID             NOT NULL, 
@@ -19,8 +20,14 @@ CREATE TABLE pareto.data_index_property (
 ALTER TABLE pareto.data_index_property ADD PRIMARY KEY (id);
 
 CREATE UNIQUE INDEX data_index_property_alt_key
-    ON pareto.data_index_property(id_data_index, id_property);
+    ON pareto.data_index_property(id_tenant, id_data_index, id_property);
 
+ALTER TABLE pareto.data_index_property
+  ADD CONSTRAINT data_index_property_id_tenant
+  FOREIGN KEY (id_tenant)
+  REFERENCES pareto.tenant(id)
+  ON DELETE CASCADE;
+    
 ALTER TABLE pareto.data_index_property
   ADD CONSTRAINT data_index_property_id_data_index
   FOREIGN KEY (id_data_index)
@@ -44,3 +51,7 @@ CREATE TRIGGER update_at
     FOR EACH ROW
       EXECUTE FUNCTION update_at();
 
+ALTER TABLE pareto.data_index_property ENABLE ROW LEVEL SECURITY;
+CREATE POLICY tenant_isolation_policy ON pareto.data_index_property
+  FOR ALL TO web_update
+    USING (id_tenant = current_setting('app.current_tenant')::uuid);

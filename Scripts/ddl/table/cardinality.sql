@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS pareto.cardinality CASCADE;
 
 CREATE TABLE pareto.cardinality (
   id                               UUID             NOT NULL    DEFAULT GEN_RANDOM_UUID(), 
+  id_tenant                        UUID             NOT NULL, 
   id_property                      UUID             NOT NULL, 
   id_data_object                   UUID             NOT NULL, 
   id_rt_cardinality                UUID             NOT NULL, 
@@ -20,8 +21,14 @@ CREATE TABLE pareto.cardinality (
 ALTER TABLE pareto.cardinality ADD PRIMARY KEY (id);
 
 CREATE UNIQUE INDEX cardinality_alt_key
-    ON pareto.cardinality(id_property, id_data_object);
+    ON pareto.cardinality(id_tenant, id_property, id_data_object);
 
+ALTER TABLE pareto.cardinality
+  ADD CONSTRAINT cardinality_id_tenant
+  FOREIGN KEY (id_tenant)
+  REFERENCES pareto.tenant(id)
+  ON DELETE CASCADE;
+    
 ALTER TABLE pareto.cardinality
   ADD CONSTRAINT cardinality_id_property
   FOREIGN KEY (id_property)
@@ -51,3 +58,7 @@ CREATE TRIGGER update_at
     FOR EACH ROW
       EXECUTE FUNCTION update_at();
 
+ALTER TABLE pareto.cardinality ENABLE ROW LEVEL SECURITY;
+CREATE POLICY tenant_isolation_policy ON pareto.cardinality
+  FOR ALL TO web_update
+    USING (id_tenant = current_setting('app.current_tenant')::uuid);

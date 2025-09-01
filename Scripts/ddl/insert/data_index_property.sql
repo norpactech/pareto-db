@@ -4,6 +4,7 @@
 
 DROP FUNCTION IF EXISTS pareto.i_data_index_property;
 CREATE FUNCTION pareto.i_data_index_property(
+  IN p_id_tenant UUID, 
   IN p_id_data_index UUID, 
   IN p_id_property UUID, 
   IN p_id_rt_sort_order UUID, 
@@ -32,6 +33,7 @@ BEGIN
   -- ------------------------------------------------------
 
   v_metadata := jsonb_build_object(
+    'id_tenant', p_id_tenant, 
     'id_data_index', p_id_data_index, 
     'id_property', p_id_property, 
     'id_rt_sort_order', p_id_rt_sort_order, 
@@ -44,6 +46,7 @@ BEGIN
   -- ------------------------------------------------------
  
   INSERT INTO pareto.data_index_property (
+    id_tenant, 
     id_data_index, 
     id_property, 
     id_rt_sort_order, 
@@ -52,6 +55,7 @@ BEGIN
     updated_by
   )
   VALUES (
+    p_id_tenant, 
     p_id_data_index, 
     p_id_property, 
     p_id_rt_sort_order, 

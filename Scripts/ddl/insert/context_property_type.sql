@@ -4,6 +4,7 @@
 
 DROP FUNCTION IF EXISTS pareto.i_context_property_type;
 CREATE FUNCTION pareto.i_context_property_type(
+  IN p_id_tenant UUID, 
   IN p_id_context UUID, 
   IN p_id_generic_property_type UUID, 
   IN p_length INTEGER, 
@@ -34,6 +35,7 @@ BEGIN
   -- ------------------------------------------------------
 
   v_metadata := jsonb_build_object(
+    'id_tenant', p_id_tenant, 
     'id_context', p_id_context, 
     'id_generic_property_type', p_id_generic_property_type, 
     'length', p_length, 
@@ -48,6 +50,7 @@ BEGIN
   -- ------------------------------------------------------
  
   INSERT INTO pareto.context_property_type (
+    id_tenant, 
     id_context, 
     id_generic_property_type, 
     length, 
@@ -58,6 +61,7 @@ BEGIN
     updated_by
   )
   VALUES (
+    p_id_tenant, 
     p_id_context, 
     p_id_generic_property_type, 
     p_length, 

@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS pareto.ref_tables CASCADE;
 
 CREATE TABLE pareto.ref_tables (
   id                               UUID             NOT NULL    DEFAULT GEN_RANDOM_UUID(), 
+  id_tenant                        UUID             NOT NULL, 
   id_ref_table_type                UUID             NOT NULL, 
   name                             VARCHAR(32)      NOT NULL    CHECK (name ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
   description                      TEXT             NULL, 
@@ -20,8 +21,14 @@ CREATE TABLE pareto.ref_tables (
 ALTER TABLE pareto.ref_tables ADD PRIMARY KEY (id);
 
 CREATE UNIQUE INDEX ref_tables_alt_key
-    ON pareto.ref_tables(id_ref_table_type, LOWER(name));
+    ON pareto.ref_tables(id_tenant, id_ref_table_type, LOWER(name));
 
+ALTER TABLE pareto.ref_tables
+  ADD CONSTRAINT ref_tables_id_tenant
+  FOREIGN KEY (id_tenant)
+  REFERENCES pareto.tenant(id)
+  ON DELETE CASCADE;
+    
 ALTER TABLE pareto.ref_tables
   ADD CONSTRAINT ref_tables_id_ref_table_type
   FOREIGN KEY (id_ref_table_type)
@@ -33,3 +40,7 @@ CREATE TRIGGER update_at
     FOR EACH ROW
       EXECUTE FUNCTION update_at();
 
+ALTER TABLE pareto.ref_tables ENABLE ROW LEVEL SECURITY;
+CREATE POLICY tenant_isolation_policy ON pareto.ref_tables
+  FOR ALL TO web_update
+    USING (id_tenant = current_setting('app.current_tenant')::uuid);

@@ -22,3 +22,7 @@ ALTER TABLE pareto.tenant_user
   REFERENCES pareto.user(id)
   ON DELETE CASCADE;
 
+ALTER TABLE pareto.tenant_user ENABLE ROW LEVEL SECURITY;
+CREATE POLICY tenant_isolation_policy ON pareto.tenant_user
+  FOR ALL TO web_update
+    USING (id_tenant = current_setting('app.current_tenant')::uuid);

@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS pareto.generic_data_type_attribute CASCADE;
 
 CREATE TABLE pareto.generic_data_type_attribute (
   id                               UUID             NOT NULL    DEFAULT GEN_RANDOM_UUID(), 
+  id_tenant                        UUID             NOT NULL, 
   id_generic_data_type             UUID             NOT NULL, 
   id_rt_attr_data_type             UUID             NOT NULL, 
   name                             VARCHAR(32)      NOT NULL    CHECK (name ~ '^[A-Za-z0-9_][A-Za-z0-9\s\-,\.&''()*_:]{0,30}[A-Za-z0-9_]$'), 
@@ -19,8 +20,14 @@ CREATE TABLE pareto.generic_data_type_attribute (
 ALTER TABLE pareto.generic_data_type_attribute ADD PRIMARY KEY (id);
 
 CREATE UNIQUE INDEX generic_data_type_attribute_alt_key
-    ON pareto.generic_data_type_attribute(id_generic_data_type, LOWER(name));
+    ON pareto.generic_data_type_attribute(id_tenant, id_generic_data_type, LOWER(name));
 
+ALTER TABLE pareto.generic_data_type_attribute
+  ADD CONSTRAINT generic_data_type_attribute_id_tenant
+  FOREIGN KEY (id_tenant)
+  REFERENCES pareto.tenant(id)
+  ON DELETE CASCADE;
+    
 ALTER TABLE pareto.generic_data_type_attribute
   ADD CONSTRAINT generic_data_type_attribute_id_generic_data_type
   FOREIGN KEY (id_generic_data_type)
@@ -37,3 +44,7 @@ CREATE TRIGGER update_at
     FOR EACH ROW
       EXECUTE FUNCTION update_at();
 
+ALTER TABLE pareto.generic_data_type_attribute ENABLE ROW LEVEL SECURITY;
+CREATE POLICY tenant_isolation_policy ON pareto.generic_data_type_attribute
+  FOR ALL TO web_update
+    USING (id_tenant = current_setting('app.current_tenant')::uuid);

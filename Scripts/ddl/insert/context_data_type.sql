@@ -4,6 +4,7 @@
 
 DROP FUNCTION IF EXISTS pareto.i_context_data_type;
 CREATE FUNCTION pareto.i_context_data_type(
+  IN p_id_tenant UUID, 
   IN p_id_context UUID, 
   IN p_id_generic_data_type UUID, 
   IN p_sequence INTEGER, 
@@ -35,6 +36,7 @@ BEGIN
   -- ------------------------------------------------------
 
   v_metadata := jsonb_build_object(
+    'id_tenant', p_id_tenant, 
     'id_context', p_id_context, 
     'id_generic_data_type', p_id_generic_data_type, 
     'sequence', p_sequence, 
@@ -50,6 +52,7 @@ BEGIN
   -- ------------------------------------------------------
  
   INSERT INTO pareto.context_data_type (
+    id_tenant, 
     id_context, 
     id_generic_data_type, 
     sequence, 
@@ -61,6 +64,7 @@ BEGIN
     updated_by
   )
   VALUES (
+    p_id_tenant, 
     p_id_context, 
     p_id_generic_data_type, 
     p_sequence, 

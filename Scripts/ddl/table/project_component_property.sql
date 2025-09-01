@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS pareto.project_component_property CASCADE;
 
 CREATE TABLE pareto.project_component_property (
   id                               UUID             NOT NULL    DEFAULT GEN_RANDOM_UUID(), 
+  id_tenant                        UUID             NOT NULL, 
   id_project_component             UUID             NOT NULL, 
   sequence                         INTEGER          NOT NULL, 
   data_object_filter               TEXT             NOT NULL, 
@@ -19,8 +20,14 @@ CREATE TABLE pareto.project_component_property (
 ALTER TABLE pareto.project_component_property ADD PRIMARY KEY (id);
 
 CREATE UNIQUE INDEX project_component_property_alt_key
-    ON pareto.project_component_property(id_project_component, LOWER(data_object_filter), LOWER(property_filter));
+    ON pareto.project_component_property(id_tenant, id_project_component, LOWER(data_object_filter), LOWER(property_filter));
 
+ALTER TABLE pareto.project_component_property
+  ADD CONSTRAINT project_component_property_id_tenant
+  FOREIGN KEY (id_tenant)
+  REFERENCES pareto.tenant(id)
+  ON DELETE CASCADE;
+    
 ALTER TABLE pareto.project_component_property
   ADD CONSTRAINT project_component_property_id_project_component
   FOREIGN KEY (id_project_component)
@@ -32,3 +39,7 @@ CREATE TRIGGER update_at
     FOR EACH ROW
       EXECUTE FUNCTION update_at();
 
+ALTER TABLE pareto.project_component_property ENABLE ROW LEVEL SECURITY;
+CREATE POLICY tenant_isolation_policy ON pareto.project_component_property
+  FOR ALL TO web_update
+    USING (id_tenant = current_setting('app.current_tenant')::uuid);

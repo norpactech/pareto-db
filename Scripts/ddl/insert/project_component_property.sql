@@ -4,6 +4,7 @@
 
 DROP FUNCTION IF EXISTS pareto.i_project_component_property;
 CREATE FUNCTION pareto.i_project_component_property(
+  IN p_id_tenant UUID, 
   IN p_id_project_component UUID, 
   IN p_sequence INTEGER, 
   IN p_data_object_filter TEXT, 
@@ -32,6 +33,7 @@ BEGIN
   -- ------------------------------------------------------
 
   v_metadata := jsonb_build_object(
+    'id_tenant', p_id_tenant, 
     'id_project_component', p_id_project_component, 
     'sequence', p_sequence, 
     'data_object_filter', p_data_object_filter, 
@@ -44,6 +46,7 @@ BEGIN
   -- ------------------------------------------------------
  
   INSERT INTO pareto.project_component_property (
+    id_tenant, 
     id_project_component, 
     sequence, 
     data_object_filter, 
@@ -52,6 +55,7 @@ BEGIN
     updated_by
   )
   VALUES (
+    p_id_tenant, 
     p_id_project_component, 
     p_sequence, 
     p_data_object_filter, 

@@ -29,10 +29,6 @@ echo Beginning Global Definitions
 rem goto start
 psql -d norpac -h %PGHOST% -p %PGPORT% -f ".\bootstrap.sql" || goto exception
 
-echo Beginning PostgREST Users
-psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f ".\users.sql" || goto exception
-echo Completed PostgREST Users
-
 cd ..\ddl\table
 call create_table.bat || goto exception
 cd ..\..\utils
@@ -58,6 +54,11 @@ call create_active.bat || goto exception
 cd ..\..\utils
 
 psql -d norpac -h %PGHOST% -p %PGPORT% -f ".\views.sql" || goto exception
+
+rem Note: Order is important! After the tables are created, define the users that
+rem will actually access the database. 
+
+psql -d norpac -v ON_ERROR_STOP=ON -h %PGHOST% -p %PGPORT% -f ".\users.sql" || goto exception
 
 echo Create Completed Successfully
 exit /b 0
