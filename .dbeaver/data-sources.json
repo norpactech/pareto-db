@@ -4,7 +4,7 @@
 		"postgres-jdbc-1985b6e7f00-3c7965e56ca91e7e": {
 			"provider": "postgresql",
 			"driver": "postgres-jdbc",
-			"name": "norpac",
+			"name": "localhost",
 			"save-password": true,
 			"configuration": {
 				"host": "localhost",
@@ -23,6 +23,41 @@
 			},
 			"extensions": {
 				"dashboards": "\u003cdashboardList\u003e\u003cdashboards id\u003d\"default\" name\u003d\"Default\"\u003e\u003cview/\u003e\u003cdashboard id\u003d\"database:postgresql.sessionCount\" viewType\u003d\"timeseries\" index\u003d\"0\" widthRatio\u003d\"1.5\" updatePeriod\u003d\"2000\" maxItems\u003d\"300\" maxAge\u003d\"1800000\" legendVisible\u003d\"true\" gridVisible\u003d\"true\" domainTicksVisible\u003d\"true\" rangeTicksVisible\u003d\"true\" description\u003d\"Shows active/idle server sessions\"/\u003e\u003cdashboard id\u003d\"database:postgresql.transactionCount\" viewType\u003d\"timeseries\" index\u003d\"1\" widthRatio\u003d\"1.5\" updatePeriod\u003d\"2000\" maxItems\u003d\"300\" maxAge\u003d\"1800000\" legendVisible\u003d\"true\" gridVisible\u003d\"true\" domainTicksVisible\u003d\"true\" rangeTicksVisible\u003d\"true\" description\u003d\"Shows commit/rollback transactions per second\"/\u003e\u003c/dashboards\u003e\u003c/dashboardList\u003e"
+			}
+		},
+		"postgres-jdbc-1991bb8da50-700ccd1a61f91645": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "v02.norpactech.com",
+			"save-password": true,
+			"configuration": {
+				"host": "v02.norpactech.com",
+				"port": "5432",
+				"database": "norpac",
+				"url": "jdbc:postgresql://v02.norpactech.com:5432/norpac",
+				"configurationType": "MANUAL",
+				"home": "postgresql-x64-17",
+				"type": "dev",
+				"closeIdleConnection": true,
+				"properties": {
+					"connectTimeout": "20",
+					"loginTimeout": "20",
+					"escapeSyntaxCallMode": "callIfNoReturn"
+				},
+				"provider-properties": {
+					"@dbeaver-show-non-default-db@": "false",
+					"@dbeaver-chosen-role@": "",
+					"@dbeaver-show-template-db@": "false",
+					"@dbeaver-show-unavailable-db@": "false",
+					"show-database-statistics": "false",
+					"@dbeaver-read-all-data-types-db@": "false",
+					"read-keys-with-columns": "false",
+					"replace-legacy-timezone": "false",
+					"@dbeaver-use-prepared-statements-db@": "false",
+					"postgresql.dd.plain.string": "false",
+					"postgresql.dd.tag.string": "false"
+				},
+				"auth-model": "native"
 			}
 		}
 	},
